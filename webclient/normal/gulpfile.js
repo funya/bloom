@@ -14,7 +14,7 @@ gulp.task('clean:dist', function() {
 })
 
 gulp.task('useref', function(){
-  return gulp.src('app/*.html')
+  return gulp.src('src/*.html')
     .pipe(useref())
     // Minifies only if it's a CSS file
     .pipe(gulpIf('*.css', cssnano()))
@@ -24,7 +24,7 @@ gulp.task('useref', function(){
 gulp.task('browserSync', function() {
   browserSync.init({
     server: {
-      baseDir: 'app'
+      baseDir: 'src'
     },
   })
 })
@@ -32,19 +32,19 @@ gulp.task('browserSync', function() {
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {
-  return gulp.src('app/scss/**/*.scss') // Gets all files ending with .scss in app/scss
+  return gulp.src('src/scss/**/*.scss') // Gets all files ending with .scss in app/scss
     .pipe(sass())
-    .pipe(gulp.dest('app/css'))
+    .pipe(gulp.dest('src/css'))
     .pipe(browserSync.reload({
       stream: true
     }))
 });
 
 gulp.task('watch', ['browserSync', 'sass'], function (){
-  gulp.watch('app/scss/**/*.scss', ['sass']); 
+  gulp.watch('src/scss/**/*.scss', ['sass']); 
   // Reloads the browser whenever HTML or JS files change
-  gulp.watch('app/*.html', browserSync.reload); 
-  gulp.watch('app/js/**/*.js', browserSync.reload); 
+  gulp.watch('src/*.html', browserSync.reload); 
+  gulp.watch('src/js/**/*.js', browserSync.reload); 
 });
 
 gulp.task('default', function (callback) {
