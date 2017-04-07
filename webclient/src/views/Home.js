@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
-import { Container, Header, Image, Button, Grid } from 'semantic-ui-react'
+import { Container, Header, Image, Grid } from 'semantic-ui-react'
 
 import image from '../img/image.png';
 import mediaparagraph from '../img/mediaparagraph.png';
 import paragraph from '../img/paragraph.png';
 
-import Link from 'react-router-dom';
+
+import Btn from '../components/Button.js';
 
 
 
@@ -58,8 +59,8 @@ class Home extends Component {
 				<Container id="jumbo" textAlign='center'>
 					<Image centered={true} src={image} size='small' />
 					<Header size='huge'>You have the power to own your story</Header>
-					
-						<Button size='small'>Submit Your Own</Button>
+						
+						<Btn path='/story' content='Submit Your Own' />
 						
 				</Container>
 				<StoriesGrid />

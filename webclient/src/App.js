@@ -17,7 +17,7 @@ import Edit from './views/Edit.js';
 
 //<Route path="/r/:name" component={SubredditPageContainer} />
 const App = (props) => (
-    <BrowserRouter>
+    <BrowserRouter forceRefresh={true}>
         <Container fluid id="app">
             <TopNavbar />
             <Route exact path="/" component={Home} />
