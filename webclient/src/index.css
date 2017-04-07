@@ -2,15 +2,21 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Helvetica Neue", Helvetica, sans-serif;
-  margin-top: 40px;
 }
 
-.body {
+#app {
   min-height: 100vh;
+  margin-top: 100px;
+
+}
+
+#nav-logo {
+  margin-right: 10px;
 }
 
 #footer {
   border-radius: 0;
+
 }
 
 #jumbo {
