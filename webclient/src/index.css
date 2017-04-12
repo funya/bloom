@@ -4,6 +4,19 @@ body {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
 }
 
+.center-text {
+  text-align: center;
+}
+
+#signup {
+      margin: 0 auto;
+      width: 470px;
+      padding: 40px;
+      border: 1px solid lightgray;
+      border-radius: 4px;
+      margin-bottom: 20px;
+}
+
 #app {
   min-height: 100vh;
   margin-top: 100px;
