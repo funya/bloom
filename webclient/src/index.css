@@ -19,8 +19,14 @@ body {
 
 #app {
   min-height: 100vh;
-  margin-top: 100px;
+  margin-top: 55px;
+}
 
+#main-edit-container {
+  min-height: 100vh;
+  border: none !important;
+  border-radius: none !important;
+  padding-bottom: none;
 }
 
 #nav-logo {
@@ -36,6 +42,12 @@ body {
   min-height: 30vh;
   padding-top: 100px;
   padding-bottom: 100px;
+}
+
+.add-timeline-item-button {
+    vertical-align: middle;
+    margin: auto;
+    padding: 3px;
 }
 
 .btn {

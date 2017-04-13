@@ -1,4 +1,4 @@
-import sections from './sections.json'
+import example from './exampleedit.json'
 
 const timelineitem = (state = {}, action) => {
     switch (action.type) {

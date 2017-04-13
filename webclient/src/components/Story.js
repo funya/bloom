@@ -16,7 +16,6 @@ class Story extends Component {
             <li key={index} className="timeline-item">
                 <div className="timeline-info"><span>{item.date}</span></div>
                 <div className="timeline-marker">
-                    <div className='timeline-add'></div>
                 </div>
                 <div className="timeline-content">
                     <h3 className="timeline-title">{item.title}</h3>

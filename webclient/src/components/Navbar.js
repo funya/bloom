@@ -16,7 +16,7 @@ class TopNavBar extends Component {
 		const { activeItem } = this.state
 
 		return (
-			<Menu fixed='top' inverted>
+			<Menu fixed='top'>
 				<Container>
 						<Menu.Item  header as={Link} to='/'>	
 							<Image size='mini' src={image} id='nav-logo'></Image>

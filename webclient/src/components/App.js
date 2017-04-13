@@ -21,15 +21,17 @@ import Login from './Login';
 
 const App = () => (
     <BrowserRouter>
-        <Container fluid id="app">
+        <Container fluid>
             <Navbar />
-            <Route exact path="/" component={Home} />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/account" component={Account} />
-            <Route exact path="/story" component={Story} />
-            <Route exact path="/edit" component={Edit} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={Signup} />
+            <Container fluid id='app'>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/account" component={Account} />
+                <Route exact path="/story" component={Story} />
+                <Route exact path="/edit" component={Edit} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={Signup} />
+            </Container>
             <Footer />
         </Container>
     </BrowserRouter>

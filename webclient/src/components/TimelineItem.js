@@ -11,7 +11,6 @@ class TimelineItem extends Component {
             <li className="timeline-item">
                 <div className="timeline-info"><span>{date}</span></div>
                 <div className="timeline-marker">
-                    <div className='timeline-add'></div>
                 </div>
                 <div className="timeline-content">
                     <h3 className="timeline-title">{title}</h3>
