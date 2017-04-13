@@ -22,11 +22,28 @@ body {
   margin-top: 55px;
 }
 
-#main-edit-container {
+#addform {
+  width: 800px;
+}
+
+
+.no-border {
+  border: none !important;
+  border-radius: none !important;
+  box-shadow: none !important;
+}
+
+.main-edit-container {
   min-height: 100vh;
   border: none !important;
   border-radius: none !important;
   padding-bottom: none;
+  box-shadow: none;
+}
+
+#leftSidebar {
+  min-height: 100vh;
+  background-color: rgb(239, 239, 239);
 }
 
 #nav-logo {

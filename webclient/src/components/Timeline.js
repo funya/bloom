@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Container, Header, Image, Icon } from 'semantic-ui-react'
+import { Container, Header, Image, Icon, Segment } from 'semantic-ui-react'
 import classNames from 'classnames';
 
 import image from '../img/image.png';
 import TimelineItem from './TimelineItem'
 
-//import { Menu, Container, Header, Image, Button, Grid, Input } from 'semantic-ui-react'
 
 class Timeline extends Component {
 
@@ -29,11 +28,6 @@ class Timeline extends Component {
                                 key={timelineitem.id}
                             />
                         )}
-                        <li className={classNames('timeline-item', 'timeline-add-item')}>
-                            <div className="timeline-marker">
-                                <Icon name='add' size='small' className='add-timeline-item-button'/>
-                            </div>
-                        </li>
                     </ul>
                 </Container>
             </div>
