@@ -9,28 +9,16 @@ import TimelineItem from './TimelineItem'
 class Timeline extends Component {
 
     render() {
-        const { timelineitems, onTimelineItemClick } = this.props
-        console.log("Passed down props", timelineitems)
-        console.log(this.props)
         return (
-            <div>
-                <Container>
-                    <Image src={image} size='small' />
-                    <Header size='huge'>Point of No Return</Header>
-                    <p>Queer / Filipina / Woman / 42 years old</p>
-                </Container>
-                <Container >
-                    <ul className='timeline'>
-                        {timelineitems.map(timelineitem =>
-                            <Timeline
-                                onClick={() => onTimelineItemClick(timelineitem.id)}
-                                {...timelineitem}
-                                key={timelineitem.id}
-                            />
-                        )}
-                    </ul>
-                </Container>
-            </div>
+            <ul className='timeline'>
+                {this.props.timelineitems.map(timelineitem =>
+                    <Timeline
+                        onClick={() => this.props.onTimelineItemClick(timelineitem.id)}
+                        {...timelineitem}
+                        key={timelineitem.id}
+                    />
+                )}
+            </ul>
         )
     }
 }
@@ -39,9 +27,9 @@ Timeline.propTypes = {
     timelineitems: PropTypes.arrayOf(PropTypes.shape({
         date: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired,
+        body: PropTypes.string.isRequired,
         id: PropTypes.number.isRequired,
-        public: PropTypes.bool.isRequired
+        ispublic: PropTypes.bool.isRequired
     }).isRequired).isRequired,
     onTimelineItemClick: PropTypes.func.isRequired
 }

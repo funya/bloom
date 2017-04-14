@@ -5,8 +5,10 @@ const timelineitem = (state = {}, action) => {
         case 'ADD_TIMELINE_ITEM':
             return {
                 id: action.id,
-                text: action.text,
-                public: false
+                body: action.body,
+                title: action.title,
+                date: action.date,
+                ispublic: false
             }
         case 'TOGGLE_TIMELINE_ITEM':
             if (state.id !== action.id) {
@@ -15,7 +17,7 @@ const timelineitem = (state = {}, action) => {
 
             return {
                 ...state,
-                public: !state.public
+                ispublic: !state.public
             }
 
         default:

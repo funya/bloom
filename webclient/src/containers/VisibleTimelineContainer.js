@@ -7,9 +7,9 @@ const getVisibibleTimelineItems = (timelineitems, filter) => {
         case 'SHOW_ALL':
             return timelineitems
         case 'SHOW_PUBLIC':
-            return timelineitems.filter(t => t.public)
+            return timelineitems.filter(t => t.ispublic)
         case 'SHOW_PRIVATE':
-            return timelineitems.filter(t => !t.public)
+            return timelineitems.filter(t => !t.ispublic)
         default:
             throw new Error('Unknown filter:' + filter)
     }

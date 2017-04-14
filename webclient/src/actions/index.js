@@ -1,11 +1,13 @@
 let nextTimelineItemId = 0
 
 //action creators
-export const addTimelineItem = (text) => {
+export const addTimelineItem = (body, title, date) => {
     return { 
         type: 'ADD_TIMELINE_ITEM',
         id: nextTimelineItemId++,
-        text
+        body,
+        title,
+        date
     }
 }
 

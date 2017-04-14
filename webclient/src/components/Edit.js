@@ -1,78 +1,66 @@
 import React, { Component } from 'react';
-import { Container, Grid, Menu, Sidebar, Segment, Button, Icon, Header, Form, Rail } from 'semantic-ui-react'
+import { Container, Grid, Menu, Sidebar, Segment, Image, Button, Icon, Header, Form, TextArea, Input } from 'semantic-ui-react'
 
-import VisibleTimeline from '../containers/VisibleTimeline'
-
-
-class LeftSidebar extends Component {
-    
-    
-    render() {
-        return (
-            <Menu vertical secondary text>
-                <Menu.Item header>EDIT</Menu.Item>
-                <Menu.Item name='add-section' onClick={this.showAddSectionWindow}>
-                <Icon name='add' />
-                    Add Section
-                </Menu.Item>
-                <Menu.Item>
-                    <Icon name='trash outline' />
-                    Delete Section
-                </Menu.Item>
-                <Menu.Item >
-                    <Icon name='edit' />
-                    Edit Section
-                </Menu.Item>
-            </Menu>
-        )
-    }
-}
-
-class RightSidebar extends Component {
-    render() {
-        return (
-            <Container>
-                <Header size='large' textAlign='center'>Add New Section</Header>
-                <Form>
-
-                </Form>
-            </Container>
-        )
-    }
-}
+import VisibleTimelineContainer from '../containers/VisibleTimelineContainer'
+import AddFormContainer from '../containers/AddFormContainer'
+import image from '../img/image.png'
 
 class Edit extends Component {
-    state = { 
-        selectedtimelineitem: {},
-        timeline: {
-            author: "",
-            title: "",
-            ispublic: false,
-            timelineitems: []
-        }
+    state = {
+        visibleRightSidebar: false
     }
-    
+
     componentDidMount() {
         document.title = "Bloom | Edit";
     }
 
-    showAddSectionWindow = () => {
+    toggleRightSidebar = () => this.setState({ visibleRightSidebar: !this.state.visibleRightSidebar })
 
-    }
+    // handleTimelineItemClick = () => {
+    //     this.showAddSectionWindow()
+
+    // }
+
+    //handleAuthorChange = (e) => this.setState(...this.state, time)
 
     render() {
         return (
             <Sidebar.Pushable as={Segment} className='main-edit-container'>
-                <Sidebar>
-                    <RightSidebar />
+                <Sidebar as={Grid} animation='overlay'
+                    direction='right' visible={this.state.visibleRightSidebar}
+                    id='addform'>
+                    <Container as='Segment'>
+                        <Header size='large' textAlign='center'>Add/Edit Event</Header>
+                        <AddFormContainer />
+                    </Container>
                 </Sidebar>
                 <Sidebar.Pusher>
-                    <Grid>
-                        <Grid.Column width={3}>
-                            <LeftSidebar />
+                    <Grid className='main-edit-container'>
+                        <Grid.Column as={Menu} width={3}
+                            id='leftSidebar' className='no-border'
+                            vertical fixed='left' borderless>
+                            <Menu.Item header>
+                                EDIT
+                            </Menu.Item>
+                            <Menu.Item name='add-section' onClick={this.toggleRightSidebar}>
+                                <Icon name='add' />
+                                Add Section
+                                </Menu.Item>
                         </Grid.Column>
-                        <Grid.Column width={13}>
-                            <VisibleTimeline />
+                        <Grid.Column width={13} className='main-edit-container'>
+                            <Segment basic>
+                                <Container fluid>
+                                    <Container>
+                                        <Image src={image} size='small' />
+                                        <Input size='small' defaultValue='Timeline Title'/>
+                                        <br />
+                                        <Input size='small' defaultValue='Timeline Author'/>
+                                    </Container>
+                                    <Container >
+                                        <VisibleTimelineContainer />
+                                    </Container>
+                                </Container>
+                            </Segment>
                         </Grid.Column>
                     </Grid>
                 </Sidebar.Pusher>
