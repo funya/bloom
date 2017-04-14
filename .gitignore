@@ -4,7 +4,7 @@ apiserver/apiserver
 # React web client ignore files
 /webclient/node_modules
 /webclient/coverage
-/webclient/build
+/webclient
 
 # misc
 .DS_Store
