@@ -52,8 +52,13 @@ body {
 }
 
 #footer {
+  margin-top: 0px;
   border-radius: 0;
 
+}
+
+.pusher {
+  height: 100vh;
 }
 
 #jumbo {
