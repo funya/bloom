@@ -30,7 +30,6 @@ class AddForm extends Component {
         //tell the browser to prevent the default form submit
         //behavior so that we don't navigate away from the page
         event.preventDefault();
-        console.log("Submitting form in AddForm.js", this.state.body, this.state.title, this.state.date)
         //call the func prop that handles when submit is clicked.
         //which basically adds the state fields turns it into an timeline
         //item, and add to the timeline
@@ -44,7 +43,6 @@ class AddForm extends Component {
     }
 
     render() {
-        console.log("Addform updated", this.state)
         return (
             <Form onSubmit={event => this.handleSubmit(event)}>
                 <Form.Field>

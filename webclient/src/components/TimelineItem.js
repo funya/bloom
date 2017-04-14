@@ -6,15 +6,14 @@ import React, { PropTypes, Component } from 'react';
 
 class TimelineItem extends Component {
     render() {
-        const { date, title, text } = this.prop
         return (
             <li className="timeline-item">
-                <div className="timeline-info"><span>{date}</span></div>
+                <div className="timeline-info"><span>{this.props.date}</span></div>
                 <div className="timeline-marker">
                 </div>
                 <div className="timeline-content">
-                    <h3 className="timeline-title">{title}</h3>
-                    <p>{text}</p>
+                    <h3 className="timeline-title">{this.props.title}</h3>
+                    <p>{this.props.body}</p>
                 </div>
             </li>
         )
@@ -24,7 +23,9 @@ class TimelineItem extends Component {
 TimelineItem.propTypes = {
     date: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired
+    body: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+    ispublic: PropTypes.bool.isRequired
 }
 
 export default TimelineItem

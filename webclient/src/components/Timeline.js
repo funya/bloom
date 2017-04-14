@@ -9,10 +9,11 @@ import TimelineItem from './TimelineItem'
 class Timeline extends Component {
 
     render() {
+        console.log("Timeline.js props", this.props)
         return (
             <ul className='timeline'>
                 {this.props.timelineitems.map(timelineitem =>
-                    <Timeline
+                    <TimelineItem
                         onClick={() => this.props.onTimelineItemClick(timelineitem.id)}
                         {...timelineitem}
                         key={timelineitem.id}
@@ -25,11 +26,7 @@ class Timeline extends Component {
 
 Timeline.propTypes = {
     timelineitems: PropTypes.arrayOf(PropTypes.shape({
-        date: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        body: PropTypes.string.isRequired,
         id: PropTypes.number.isRequired,
-        ispublic: PropTypes.bool.isRequired
     }).isRequired).isRequired,
     onTimelineItemClick: PropTypes.func.isRequired
 }
