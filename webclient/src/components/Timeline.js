@@ -1,19 +1,32 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component, PropTypes } from 'react';
+//import { Container, Header, Image, Icon, Segment } from 'semantic-ui-react'
+//import classNames from 'classnames';
+
+import TimelineItem from './TimelineItem'
+
 
 class Timeline extends Component {
-    constructor(props) {
-        super(props);
-        
-    }
 
     render() {
         return (
-            <ul className='timeline'>
-
+            <ul className='timeline timeline-centered'>
+                {this.props.timelineitems.map(timelineitem =>
+                    <TimelineItem
+                        onClick={(event) => this.props.onTimelineItemClick(event)}
+                        {...timelineitem}
+                        key={timelineitem.id}
+                    />
+                )}
             </ul>
         )
     }
+}
+
+Timeline.propTypes = {
+    timelineitems: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+    }).isRequired).isRequired,
+    onTimelineItemClick: PropTypes.func.isRequired
 }
 
 export default Timeline

@@ -3,23 +3,25 @@ import React, { Component } from 'react';
 import { Container, Grid, Header } from 'semantic-ui-react'
 import classNames from 'classnames';
 
-//import store from '../components/shared-state.js'
-//import Timeline from '../components/Timeline.js'
-import sections from '../data/sections.json'
+import sections from '../reducers/sections.json'
 
 class Story extends Component {
+    componentDidMount() {
+            document.title = "Bloom | " + this.props.path;
+    }
 
     render() {
 
-        var timelineitems = sections.map((item, index) => 
-                <li key={index} className="timeline-item">
-                    <div className="timeline-info"><span>{item.date}</span></div>
-                    <div className="timeline-marker"></div>
-                    <div className="timeline-content">
-                        <h3 className="timeline-title">{item.title}</h3>
-                        <p>{item.text}</p>
-                    </div>
-                </li>
+        let timelineitems = sections.map((item, index) =>
+            <li key={index} className="timeline-item">
+                <div className="timeline-info"><span>{item.date}</span></div>
+                <div className="timeline-marker">
+                </div>
+                <div className="timeline-content">
+                    <h3 className="timeline-title">{item.title}</h3>
+                    <p>{item.text}</p>
+                </div>
+            </li>
         );
         console.log(timelineitems);
         return (

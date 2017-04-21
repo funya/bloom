@@ -1,0 +1,27 @@
+#editcontainer {
+    padding-top: 50px;
+}
+
+#timeline-title input {
+    text-align: center;
+}
+
+#lotus {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+#submenu {
+    border: none !important;
+    box-shadow: none;
+}
+
+#submenu .item {
+    padding: 13px 2px;
+}
+
+#editmessage {
+    margin: 0 auto;
+    width: 95vw;
+}
