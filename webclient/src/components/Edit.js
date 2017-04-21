@@ -1,70 +1,88 @@
 import React, { Component } from 'react';
-import { Container, Grid, Menu, Sidebar, Segment, Image, Button, Icon, Header, Form, TextArea, Input } from 'semantic-ui-react'
+import { Container, Grid, Menu, Sidebar, Segment, Image, Icon, Header, Input, Message, Modal } from 'semantic-ui-react'
+import Vivus from "vivus";
 
-import VisibleTimelineContainer from '../containers/VisibleTimelineContainer'
-import AddFormContainer from '../containers/AddFormContainer'
+import EditTimeline from '../components/EditTimeline'
 import image from '../img/image.png'
+import lotuspath from '../img/lotus.svg'
+import exampletlitems from '../reducers/exampleedit.json'
+
+import './edit.css';
+
 
 class Edit extends Component {
-    state = {
-        visibleRightSidebar: false
+    constructor(props) {
+        super(props);
+
+        //track two mutable state properties:
+        // titleVisibleInput = a boolean to keep track of focus of input bar
+        // title = the title of the timeline
+        // timeline = containers the timeline sections
+        this.state = {
+            titleVisibleInput: true,
+            title: "",
+            timelineitems: exampletlitems
+        };
     }
+
 
     componentDidMount() {
         document.title = "Bloom | Edit";
+        new Vivus('lotus', { duration: 1000, file: lotuspath, type: 'oneByOne' })
     }
 
-    toggleRightSidebar = () => this.setState({ visibleRightSidebar: !this.state.visibleRightSidebar })
+    handleTitleInputFocus = () => this.setState({ titleVisibleInput: !this.state.titleVisibleInput })
 
-    // handleTimelineItemClick = () => {
-    //     this.showAddSectionWindow()
+    handleTimelineTitleChange = (event) => this.setState({ title: event.target.value })
 
-    // }
+    handleTimelineItemClick = (event) => {console.log(event)}
 
-    //handleAuthorChange = (e) => this.setState(...this.state, time)
+    handleAddSectionButton = () => {
+        console.log(this)
+    }
 
     render() {
         return (
-            <Sidebar.Pushable as={Segment} className='main-edit-container'>
-                <Sidebar as={Grid} animation='overlay'
-                    direction='right' visible={this.state.visibleRightSidebar}
-                    id='addform'>
-                    <Container as='Segment'>
-                        <Header size='large' textAlign='center'>Add/Edit Event</Header>
-                        <AddFormContainer />
-                    </Container>
-                </Sidebar>
-                <Sidebar.Pusher>
-                    <Grid className='main-edit-container'>
-                        <Grid.Column as={Menu} width={3}
-                            id='leftSidebar' className='no-border'
-                            vertical fixed='left' borderless>
-                            <Menu.Item header>
-                                EDIT
-                            </Menu.Item>
-                            <Menu.Item name='add-section' onClick={this.toggleRightSidebar}>
-                                <Icon name='add' />
+            <div>
+                <Segment className='no-border'><Message id='editmessage' attached color='teal'>You are now in edit mode</Message></Segment>
+                
+                <Container fluid id='editcontainer'>
+                    <Container textAlign='right'>
+                        <Menu compact icon='labeled' borderless id='submenu'>
+                            <Menu.Item name='plus' onClick={this.handleAddSectionButton}>
+                                <Icon circular inverted name='plus' color='blue' />
                                 Add Section
-                                </Menu.Item>
-                        </Grid.Column>
-                        <Grid.Column width={13} className='main-edit-container'>
-                            <Segment basic>
-                                <Container fluid>
-                                    <Container>
-                                        <Image src={image} size='small' />
-                                        <Input size='small' defaultValue='Timeline Title'/>
-                                        <br />
-                                        <Input size='small' defaultValue='Timeline Author'/>
-                                    </Container>
-                                    <Container >
-                                        <VisibleTimelineContainer />
-                                    </Container>
-                                </Container>
-                            </Segment>
-                        </Grid.Column>
-                    </Grid>
-                </Sidebar.Pusher>
-            </Sidebar.Pushable>
+                            </Menu.Item>
+                            <Menu.Item name='send'>
+                                <Icon circular inverted name='send' color='blue'/>
+                                Submit
+                            </Menu.Item>
+                            <Menu.Item name='ordered list'>
+                                <Icon circular inverted name='ordered list' color='blue' onClick={this.handleReorder}/>
+                                Reorder
+                            </Menu.Item>
+                            <Menu.Item name='save'>
+                                <Icon circular inverted name='save' color='blue'/>
+                                Save
+                            </Menu.Item>
+                            <Menu.Item name='eye'>
+                                <Icon circular inverted name='eye' color='blue'/>
+                                Preview
+                            </Menu.Item>
+                        </Menu>
+                    </Container>
+                    <Container> {/* timeline title */}
+                        <Segment textAlign='center' padded basic>
+                            <div id='lotus'></div>
+                            <Input id='timeline-title' size='small' placeholder='Title' value={this.state.title} onChange={event => this.handleTimelineTitleChange(event)} onFocus={this.handleTitleInputFocus} onBlur={this.handleTitleInputFocus} transparent={this.state.titleVisibleInput} />
+                        </Segment>
+                    </Container>
+                    <Container > {/* timeline sections */}
+                            <EditTimeline timelineitems={this.state.timelineitems} onTimelineItemClick={this.handleTimelineItemClick}>
+                            </EditTimeline>
+                    </Container>
+                </Container>
+            </div>
         )
     }
 }

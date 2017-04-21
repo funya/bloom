@@ -18,7 +18,7 @@ body {
 }
 
 #app {
-  min-height: 100vh;
+
   margin-top: 55px;
 }
 
@@ -35,7 +35,7 @@ body {
 }
 
 .main-edit-container {
-  min-height: 100vh;
+
   border: none !important;
   border-radius: none !important;
   padding-bottom: none;
@@ -45,6 +45,7 @@ body {
 #leftSidebar {
   min-height: 100vh;
   background-color: rgb(239, 239, 239);
+  padding-right: 0; 
 }
 
 #nav-logo {
@@ -57,9 +58,6 @@ body {
 
 }
 
-.pusher {
-  height: 100vh;
-}
 
 #jumbo {
   min-height: 30vh;
@@ -142,7 +140,7 @@ body {
   left: 0;
   width: 15px; }
   .timeline-marker:before {
-    background: rgba(231, 110, 29, 0.5);
+    background: rgba(241, 163, 168, 0.5);
     border: 3px solid transparent;
     border-radius: 100%;
     content: "";
@@ -155,10 +153,9 @@ body {
     transition: background 0.3s ease-in-out, border 0.3s ease-in-out; }
   .timeline-marker:after {
     content: "";
-    width: 3px;
-    background: #CCD5DB;
-    display: block;
+    width: 4px;
     position: absolute;
+    background: rgb(138, 118, 108);
     top: 24px;
     bottom: 0;
     left: 6px; }
