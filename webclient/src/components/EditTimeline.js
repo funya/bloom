@@ -1,45 +1,48 @@
 import React, { Component, PropTypes } from 'react';
-import { Icon, Form, Input } from 'semantic-ui-react'
+import { Icon, Form, Input, Segment, Label, Button } from 'semantic-ui-react'
 
 import TimelineItem from './TimelineItem'
 
 class EditTimelineItem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            body: ""
+        };
+    }
+
     handleItemMouseEnter = () => {
         //console.log(this)
     }
 
+    handleEditBody = (event) => this.setState({ body: event.target.value })
+
+
     render() {
         return (
             <li className="timeline-item" onMouseEnter={this.handleItemMouseEnter}>
-                <div className="timeline-info"></div>
-                <div className="timeline-marker">
-                </div>
+                <div className="timeline-marker"></div>
                 <div className="timeline-content">
-                    <Form size='small'>
-                            <Form.Field width='7' inline>
-                                <label>Date (Optional)</label>
-                                <Input icon='calendar' type='date' />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Image</label>
-                                <Input icon='picture' type='file' />
-                            </Form.Field>
-                            <Form.Field>
-                                <label>Audio</label>
-                                <Input icon='volume up' type='file' />
-                            </Form.Field>
+                    <Segment>
+                        <Label color='pink' attached='top'>Section {this.props.id}</Label>
+                        <Form size='small'>
+                            <Form.Input control='Input' label='Date(Optional)' type='date' icon='calendar' width='7'/>
+                            <Form.Input control='Input' label='Image' type='file' icon='image'/>
+                            <Form.Input control='Input' label='Audio' type='file' icon='volume up'/>
 
-                        <Form.TextArea label='Body Content' defaultValue={this.props.body} placeholder='Tell us your story' />
-                    </Form>
+                            <Form.TextArea value={this.state.body} onChange={event => this.handleEditBody(event)} label='Body Content' placeholder='Tell us your story' />
+
+                            <Button type='submit' color='green' size='tiny' inverted>Submit</Button>
+                        </Form>
+                    </Segment>
                 </div>
-
             </li>
         )
     }
 }
 
 EditTimelineItem.propTypes = {
-    body: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired
 }
 

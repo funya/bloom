@@ -25,8 +25,7 @@ class Timeline extends Component {
 Timeline.propTypes = {
     timelineitems: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
-    }).isRequired).isRequired,
-    onTimelineItemClick: PropTypes.func.isRequired
+    }).isRequired).isRequired
 }
 
 export default Timeline
