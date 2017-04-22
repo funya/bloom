@@ -5,7 +5,7 @@ import TimelineItem from './TimelineItem'
 
 class EditTimelineItem extends Component {
     handleItemMouseEnter = () => {
-        console.log(this)
+        //console.log(this)
     }
 
     render() {
@@ -15,21 +15,20 @@ class EditTimelineItem extends Component {
                 <div className="timeline-marker">
                 </div>
                 <div className="timeline-content">
-                    <Form>
-                        <Form.Group widths='equal'>
-                            <Form.Field>
-                                <label>Date</label>
-                                <input  type='date' />
+                    <Form size='small'>
+                            <Form.Field width='7' inline>
+                                <label>Date (Optional)</label>
+                                <Input icon='calendar' type='date' />
                             </Form.Field>
                             <Form.Field>
                                 <label>Image</label>
-                                <input  type='image' />
+                                <Input icon='picture' type='file' />
                             </Form.Field>
                             <Form.Field>
                                 <label>Audio</label>
-                                <input  type='file' />
+                                <Input icon='volume up' type='file' />
                             </Form.Field>
-                        </Form.Group>
+
                         <Form.TextArea label='Body Content' defaultValue={this.props.body} placeholder='Tell us your story' />
                     </Form>
                 </div>
@@ -40,7 +39,6 @@ class EditTimelineItem extends Component {
 }
 
 EditTimelineItem.propTypes = {
-    title: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired
 }
@@ -49,12 +47,10 @@ EditTimelineItem.propTypes = {
 class EditTimeline extends Component {
 
     render() {
-        console.log("EditTimeline.js props", this.props)
         return (
             <ul className='timeline timeline-centered'>
                 {this.props.timelineitems.map(timelineitem =>
                     <EditTimelineItem
-                        onClick={(event) => this.props.onTimelineItemClick(event)}
                         {...timelineitem}
                         key={timelineitem.id}
                     />
@@ -72,8 +68,7 @@ class EditTimeline extends Component {
 EditTimeline.propTypes = {
     timelineitems: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
-    }).isRequired).isRequired,
-    onTimelineItemClick: PropTypes.func.isRequired
+    }).isRequired).isRequired
 }
 
 export default EditTimeline

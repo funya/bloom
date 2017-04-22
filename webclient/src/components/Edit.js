@@ -9,6 +9,7 @@ import exampletlitems from '../reducers/exampleedit.json'
 
 import './edit.css';
 
+let nextid = 0
 
 class Edit extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class Edit extends Component {
         this.state = {
             titleVisibleInput: true,
             title: "",
-            timelineitems: exampletlitems
+            timelineitems: []
         };
     }
 
@@ -35,10 +36,17 @@ class Edit extends Component {
 
     handleTimelineTitleChange = (event) => this.setState({ title: event.target.value })
 
-    handleTimelineItemClick = (event) => {console.log(event)}
-
     handleAddSectionButton = () => {
-        console.log(this)
+
+
+        let t = {
+            body: "",
+            id: nextid++,
+        }
+        let ti = this.state.timelineitems.slice()
+        ti.push(t)
+        this.setState({timelineitems: ti})
+        console.log(this.state.timelineitems)
     }
 
     render() {
@@ -53,10 +61,6 @@ class Edit extends Component {
                                 <Icon circular inverted name='plus' color='blue' />
                                 Add Section
                             </Menu.Item>
-                            <Menu.Item name='send'>
-                                <Icon circular inverted name='send' color='blue'/>
-                                Submit
-                            </Menu.Item>
                             <Menu.Item name='ordered list'>
                                 <Icon circular inverted name='ordered list' color='blue' onClick={this.handleReorder}/>
                                 Reorder
@@ -68,6 +72,10 @@ class Edit extends Component {
                             <Menu.Item name='eye'>
                                 <Icon circular inverted name='eye' color='blue'/>
                                 Preview
+                            </Menu.Item>
+                            <Menu.Item name='send'>
+                                <Icon circular inverted name='send' color='blue'/>
+                                Submit
                             </Menu.Item>
                         </Menu>
                     </Container>
