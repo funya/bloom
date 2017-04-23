@@ -21,3 +21,9 @@ body {
 .center-text {
     color:black;
 }
+
+#disclaimer{
+    font-size: 10px;
+    color:darkred;
+    text-align: center;
+}

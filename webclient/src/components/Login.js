@@ -19,7 +19,7 @@ class Login extends Component {
                 <Form id='signup'>
                     <Header textAlign='center' size='large'> Log In</Header>
                     <Form.Field>
-                        <input placeholder='Email address' />
+                        <input placeholder='Username' type='text'/>
                     </Form.Field>
                     <Form.Field>
                         <input placeholder='Password' />

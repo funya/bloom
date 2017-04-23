@@ -18,16 +18,10 @@ class Signup extends Component {
                 <Form id='signup'>
                     <Header textAlign='center' size='large'> Sign Up</Header>
                     <Form.Field>
-                        <input placeholder='Email address' type='email'/>
+                        <input placeholder='Email address*' type='email'/>
                     </Form.Field>
                     <Form.Field>
                         <input placeholder='Username' type='text'/>
-                    </Form.Field>
-                    <Form.Field>
-                        <input placeholder='First Name' type='text'/>
-                    </Form.Field>
-                    <Form.Field>
-                        <input placeholder='Last Name' type='text'/>
                     </Form.Field>
                     <Form.Field>
                         <input placeholder='Password' type='password'/>
@@ -38,6 +32,8 @@ class Signup extends Component {
                     <Button id="button" fluid={true} type='submit'>Submit</Button>
                     <p className='center-text'>
                         By signing up, you agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>
+                    </p><br/>
+                    <p id="disclaimer">*Disclaimer: your email address is for the use of API Chaya alone and will not be displayed on the site
                     </p>
                 </Form>
                 <p className='center-text'>Already have an account? <Link to='/login'>Log In</Link></p>
