@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { Form, Header, Container, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 
-import image from '../img/image.png'
+import image from '../img/lotus.svg'
+
+//stylesheet shared with login
+import './Login_Signup.css'
 
 class Signup extends Component {
     render() {
         return (
             <Container>
-                <Header size='huge' textAlign='center'>
+                <Header id="title" size='huge' textAlign='center'>
                     <img src={image} alt='logo' />
                     Bloom
                 </Header>
@@ -32,13 +35,14 @@ class Signup extends Component {
                     <Form.Field>
                         <input placeholder='Confirm Password' type='password'/>
                     </Form.Field>
-                    <Button color='green' fluid={true} type='submit'>Submit</Button>
+                    <Button id="button" fluid={true} type='submit'>Submit</Button>
                     <p className='center-text'>
                         By signing up, you agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>
                     </p>
                 </Form>
                 <p className='center-text'>Already have an account? <Link to='/login'>Log In</Link></p>
-            </Container>
+                <br/>
+            </Container> 
         )
     }
 }
