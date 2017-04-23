@@ -18,7 +18,7 @@ class Edit extends Component {
     constructor(props) {
         super(props);
 
-        //track two mutable state properties:
+        //track three mutable state properties:
         // titleVisibleInput = a boolean to keep track of focus of input bar
         // title = the title of the timeline
         // timeline = containers the timeline sections
@@ -57,32 +57,33 @@ class Edit extends Component {
         return (
             <div>
                 <Container fluid id='editcontainer'>
-                    <Menu secondary size='small' icon='labeled'>
+                    <Menu secondary size='tiny' icon='labeled'>
                         <Container>
                             <Menu.Menu position='right'>
                                 <Menu.Item name='plus' onClick={this.handleAddSectionButton}>
-                                    <Icon circular inverted name='plus' color='blue' />
+                                    <Icon inverted name='plus' color='blue' />
                                     Add Section
                                 </Menu.Item>
 
                                 <Modal
-                                    trigger={<Menu.Item onClick={this.handleOpen} name='ordered list'><Icon circular inverted name='ordered list' color='blue' />Reorder</Menu.Item>}
+                                    trigger={<Menu.Item onClick={this.handleOpen} name='ordered list'><Icon inverted name='ordered list' color='blue' />Reorder</Menu.Item>}
                                     open={this.state.modalOpen}
                                     onClose={this.handleClose}
                                     closeIcon='close'
                                 >
                                     <Header icon='ordered list' content='Reorder Sections' />
                                     <Modal.Content>
-                                        <SortableComponent />
+                                        <Message color='blue'>Drag and drop any section to reorder your timeline! It will be automatically saved.</Message>
+                                        <SortableComponent items={this.state.timelineitems}/>
                                     </Modal.Content>
                                 </Modal>
 
                                 <Menu.Item name='save'>
-                                    <Icon circular inverted name='save' color='blue' />
+                                    <Icon inverted name='save' color='blue' />
                                     Save
                                 </Menu.Item>
                                 <Modal
-                                    trigger={<Menu.Item name='eye'><Icon circular inverted name='eye' color='blue' />Preview</Menu.Item>}
+                                    trigger={<Menu.Item name='eye'><Icon inverted name='eye' color='blue' />Preview</Menu.Item>}
                                     open={this.state.modalOpen}
                                     onClose={this.handleClose}
                                     closeIcon='close'
@@ -93,7 +94,7 @@ class Edit extends Component {
                                     </Modal.Content>
                                 </Modal>
                                 <Menu.Item name='send'>
-                                    <Icon circular inverted name='send' color='blue' />
+                                    <Icon inverted name='send' color='blue' />
                                     Publish
                                 </Menu.Item>
                             </Menu.Menu>
@@ -109,7 +110,7 @@ class Edit extends Component {
                         </Segment>
                     </Container>
                     <Container > {/* timeline sections */}
-                        <EditTimeline timelineitems={this.state.timelineitems}>
+                        <EditTimeline timelineitems={this.state.timelineitems} addsection={this.handleAddSectionButton}>
                         </EditTimeline>
                     </Container>
                 </Container>
@@ -119,16 +120,16 @@ class Edit extends Component {
 }
 
 const SortableItem = SortableElement(({ value }) =>
-    <li>{value}</li>
+    <div className='reorderitem'>{value}</div>
 );
 
 const SortableList = SortableContainer(({ items }) => {
     return (
-        <ul>
+        <div id='reorderlist'>
             {items.map((value, index) => (
                 <SortableItem key={`item-${index}`} index={index} value={value} />
             ))}
-        </ul>
+        </div>
     );
 });
 

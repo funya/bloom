@@ -59,8 +59,8 @@ class EditTimeline extends Component {
                     />
                 )}
                 <li className='timeline-item'>
-                    <div className="timeline-marker">
-                    </div>
+
+                        <Icon circular name='plus' inverted onClick={this.props.addsection} className='add-timeline-item-button'/>
 
                 </li>
             </ul>
