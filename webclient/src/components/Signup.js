@@ -33,7 +33,7 @@ class Signup extends Component {
                     <p className='center-text'>
                         By signing up, you agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>
                     </p><br/>
-                    <p id="disclaimer">*Disclaimer: your email address is for the use of API Chaya alone and will not be displayed on the site
+                    <p id="disclaimer">*disclaimer: your email address is for the use of API Chaya alone and will never be displayed publically
                     </p>
                 </Form>
                 <p className='center-text'>Already have an account? <Link to='/login'>Log In</Link></p>

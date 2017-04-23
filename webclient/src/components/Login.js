@@ -17,7 +17,7 @@ class Login extends Component {
                     Bloom
                 </Header>
                 <Form id='signup'>
-                    <Header textAlign='center' size='large'> Log In</Header>
+                    <Header textAlign='center' size='large'> Sign In</Header>
                     <Form.Field>
                         <input placeholder='Username' type='text'/>
                     </Form.Field>
