@@ -23,7 +23,6 @@ const (
 // route paths
 const (
 	apiRoot         = "/v1/"
-	apiSummary      = apiRoot + "summary"
 	apiUsers        = apiRoot + "users"
 	apiSessions     = apiRoot + "sessions"
 	apiSessionsMine = apiSessions + "/mine"
@@ -37,8 +36,8 @@ func main() {
 	// PORT - port number to listen on for HTTP requests (if not set, use defaultPort)
 	// HOST - host address to respond to (if not set, leave empty, which means any host)
 	// SESSIONKEY - a string to use as the session ID singing key
-	// REDISADDR - the address of your redis session store
-	// DBADDR - the address of your database server
+	// REDISADDR - the address of your redis session store (if not set, use defaultRedisPort)
+	// DBADDR - the address of your database server (if not set, use defaultMongoPort)
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
 		fmt.Println("Port number not set. Defaulting to port: " + defaultPort)
@@ -97,11 +96,6 @@ func main() {
 	muxLogged.HandleFunc(apiSessions, ctx.SessionsHandler)
 	muxLogged.HandleFunc(apiSessionsMine, ctx.SessionsMineHandler)
 	muxLogged.HandleFunc(apiUsersMe, ctx.UsersMeHanlder)
-
-	//add your handlers.SummaryHandler function as a handler
-	//for the apiSummary route
-	//HINT: https://golang.org/pkg/net/http/#HandleFunc
-	mux.HandleFunc(apiSummary, handlers.SummaryHandler)
 
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	mux.Handle(apiRoot, middleware.Adapt(muxLogged, middleware.CORS("", "", "", ""), middleware.Notify(logger)))
