@@ -1,0 +1,29 @@
+body {
+  margin: 0px;
+  padding: 0;
+  font-family: 'Open Sans',"Helvetica Neue", Helvetica, sans-serif;;
+}
+
+#signup {
+    color: #9D8189;
+    margin-top: 0px;
+}
+
+#title {
+    padding: 30px;
+    padding-bottom: 10px;
+}
+
+#button{
+    background-color: #D8E2DC;
+}
+
+.center-text {
+    color:black;
+}
+
+#disclaimer{
+    font-size: 10px;
+    color:darkred;
+    text-align: center;
+}

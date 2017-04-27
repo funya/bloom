@@ -17,6 +17,8 @@ import Edit from './Edit';
 import Signup from './Signup';
 import Login from './Login';
 
+//for fonts
+var FontAwesome = require('react-fontawesome');
 
 
 const App = () => (

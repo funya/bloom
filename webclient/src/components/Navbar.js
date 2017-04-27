@@ -5,7 +5,7 @@ import { Menu, Container, Image, Input } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 
 
-import image from '../img/image.png';
+import image from '../img/lotus.svg';
 
 class TopNavBar extends Component {
 	state = {}
