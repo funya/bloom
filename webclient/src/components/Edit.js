@@ -32,7 +32,7 @@ class Edit extends Component {
 
     componentDidMount() {
         document.title = "Bloom | Edit";
-        new Vivus('lotus', { duration: 1000, file: lotuspath, type: 'oneByOne' })
+        new Vivus('lotus', { duration: 80, file: lotuspath})
     }
 
     handleTitleInputFocus = () => this.setState({ titleVisibleInput: !this.state.titleVisibleInput })

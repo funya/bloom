@@ -27,9 +27,9 @@ class EditTimelineItem extends Component {
                     <Segment>
                         <Label color='pink' attached='top'>Section {this.props.id}</Label>
                         <Form size='small'>
-                            <Form.Input control='Input' label='Date(Optional)' type='date' icon='calendar' width='7'/>
-                            <Form.Input control='Input' label='Image' type='file' icon='image'/>
-                            <Form.Input control='Input' label='Audio' type='file' icon='volume up'/>
+                            <Form.Input control='Input' label='Image' type='file' icon='image' accept='image/*'/>
+                            <Form.Input control='Input' label='Date(Optional)' type='date' icon='calendar' width='7' />
+                            <Form.Input control='Input' label='Audio' type='file' icon='volume up' accept='audio/*'/>
 
                             <Form.TextArea value={this.state.body} onChange={event => this.handleEditBody(event)} label='Body Content' placeholder='Tell us your story' />
 
