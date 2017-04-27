@@ -31,6 +31,7 @@ const (
 
 //main is the main entry point for this program
 func main() {
+	fmt.Println("Starting Bloom App..")
 	//read and use the following environment variables
 	//when initializing and starting your web server
 	// PORT - port number to listen on for HTTP requests (if not set, use defaultPort)
