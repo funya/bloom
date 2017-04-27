@@ -8,7 +8,7 @@ import Timeline from './Timeline'
 import EditTimeline from './EditTimeline'
 import image from '../img/image.png'
 import lotuspath from '../img/lotus.svg'
-import exampletlitems from '../reducers/exampleedit.json'
+import exampletlitems from '../data/exampleedit.json'
 
 import './edit.css';
 

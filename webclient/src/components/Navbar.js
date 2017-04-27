@@ -33,7 +33,7 @@ class TopNavBar extends Component {
 							Account
         				</Menu.Item>*/}
 						<Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick} as={Link} to='/login'>
-							Login
+							Log in
         				</Menu.Item>
 						<Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.handleItemClick} as={Link} to='/signup'>
 							Sign Up

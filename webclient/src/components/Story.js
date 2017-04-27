@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Container, Grid, Header } from 'semantic-ui-react'
 import classNames from 'classnames';
 
-import sections from '../reducers/sections.json'
+import sections from '../data/sections.json'
 
 class Story extends Component {
     componentDidMount() {
