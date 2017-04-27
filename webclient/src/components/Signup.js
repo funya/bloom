@@ -29,11 +29,11 @@ class Signup extends Component {
                     <Form.Field>
                         <input placeholder='Confirm Password' type='password'/>
                     </Form.Field>
-                    <Button id="button" fluid={true} type='submit'>Submit</Button>
+                    <Button className="submit-button" fluid={true} >Submit</Button>
                     <p className='center-text'>
                         By signing up, you agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>
                     </p><br/>
-                    <p id="disclaimer">*disclaimer: your email address is for the use of API Chaya alone and will never be displayed publically
+                    <p id="disclaimer">*Disclaimer: your email address is for the use of API Chaya alone and will never be displayed publically
                     </p>
                 </Form>
                 <p className='center-text'>Already have an account? <Link to='/login'>Log In</Link></p>

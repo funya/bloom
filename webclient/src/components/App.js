@@ -23,9 +23,9 @@ var FontAwesome = require('react-fontawesome');
 
 const App = () => (
     <BrowserRouter>
-        <Container fluid>
+        <Container fluid id='app'>
             <Navbar />
-            <Container fluid id='app'>
+            <div>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/about" component={About} />
                 <Route exact path="/account" component={Account} />
@@ -33,7 +33,7 @@ const App = () => (
                 <Route exact path="/edit" component={Edit} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
-            </Container>
+            </div>
             <Footer />
         </Container>
     </BrowserRouter>

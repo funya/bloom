@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Header, Container, Button } from 'semantic-ui-react'
+import { Form, Header, Container, Button, Image } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
 
 
@@ -12,8 +12,8 @@ class Login extends Component {
     render() {
         return (
             <Container>
-                <Header id="title" size='huge' textAlign='center'>
-                    <img src={image} alt='logo' />
+                <Header id="title" textAlign='center' as='h1'>
+                    <Image src={image} alt='logo'/>
                     Bloom
                 </Header>
                 <Form id='signup'>
@@ -22,9 +22,9 @@ class Login extends Component {
                         <input placeholder='Username' type='text'/>
                     </Form.Field>
                     <Form.Field>
-                        <input placeholder='Password' />
+                        <input placeholder='Password' type='password'/>
                     </Form.Field>
-                    <Button id="button" fluid={true} type='submit'>Submit</Button>
+                    <Button className="submit-button" fluid={true}>Submit</Button>
                     <p className='center-text'>
                         <Link to='/login'>Forgot password?</Link>
                     </p>
