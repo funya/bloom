@@ -19,13 +19,9 @@ import Signup from './Signup'
 import Login from './Login'
 
 class App extends Component {
-    state = {
-        uid: null
-    }
-
     render() {
         return (
-            <BrowserRouter>
+            <BrowserRouter forceRefresh={!('pushState' in window.history)} >
                 <Container fluid id='app'>
                     <Navbar />
                     <div>
@@ -46,7 +42,7 @@ class App extends Component {
 
 const AuthRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
-        Auth.isAuthenticated ? (
+        Auth.isAuthenticated() ? (
             <Component {...props} />
         ) : (
                 <Redirect to={{

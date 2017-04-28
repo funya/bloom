@@ -57,7 +57,7 @@ class Login extends Component {
                     <Form.Field>
                         <input placeholder='Password' required type='password' value={this.state.password} onChange={event => this.handlePasswordChange(event)} />
                     </Form.Field>
-                    <Button className="submit-button" fluid={true}>Submit</Button>
+                    <Button className="submit-button" fluid={true} onClick={event => this.handleSignInSubmit(event)}>Submit</Button>
                     <Message warning>{this.state.errmsg}</Message>
                     <p className='center-text'>
                         <Link to='/login'>Forgot password?</Link>
