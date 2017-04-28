@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Menu, Container, Image, Input } from 'semantic-ui-react'
+import { Menu, Container, Image } from 'semantic-ui-react'
 
 import { Link } from 'react-router-dom';
 
@@ -8,13 +8,7 @@ import { Link } from 'react-router-dom';
 import image from '../img/lotus.svg';
 
 class TopNavBar extends Component {
-	state = {}
-
-	handleItemClick = (e, { name }) => this.setState({ activeItem: name })
-
 	render() {
-		const { activeItem } = this.state
-
 		return (
 			<Menu fixed='top'>
 				<Container>
@@ -23,22 +17,24 @@ class TopNavBar extends Component {
 							Bloom
 						</Menu.Item>
 					<Menu.Menu position='right'>
-						<Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} as={Link} to='/'>
+						<Menu.Item name='home' as={Link} to='/'>
 							Home
        					</Menu.Item>
-						<Menu.Item name='about' active={activeItem === 'about'} onClick={this.handleItemClick} as={Link} to='/about'>
+						<Menu.Item name='about' as={Link} to='/about'>
 							About
         				</Menu.Item>
 						{/*<Menu.Item name='account' active={activeItem === 'account'} onClick={this.handleItemClick} as={Link} to='/account'>
 							Account
         				</Menu.Item>*/}
-						<Menu.Item name='login' active={activeItem === 'login'} onClick={this.handleItemClick} as={Link} to='/login'>
+						<Menu.Item name='login' as={Link} to='/login'>
 							Log in
         				</Menu.Item>
-						<Menu.Item name='signup' active={activeItem === 'signup'} onClick={this.handleItemClick} as={Link} to='/signup'>
+						<Menu.Item name='signup' as={Link} to='/signup'>
 							Sign Up
         				</Menu.Item>
-
+						<Menu.Item name='account' as={Link} to='/account'>
+							Account
+        				</Menu.Item>
 					</Menu.Menu>
 				</Container>
 			</Menu>
