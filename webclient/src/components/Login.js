@@ -13,7 +13,8 @@ class Login extends Component {
         password: "",
         redirectToReferrer: false,
         loading: false,
-        error: false
+        error: false,
+        errmsg: ""
     }
 
 
@@ -57,10 +58,7 @@ class Login extends Component {
                         <input placeholder='Password' required type='password' value={this.state.password} onChange={event => this.handlePasswordChange(event)} />
                     </Form.Field>
                     <Button className="submit-button" fluid={true}>Submit</Button>
-                    <Message
-                        warning
-                        content='Invalid username or password.'
-                    />
+                    <Message warning>{this.state.errmsg}</Message>
                     <p className='center-text'>
                         <Link to='/login'>Forgot password?</Link>
                     </p>
