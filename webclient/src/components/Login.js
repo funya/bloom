@@ -63,7 +63,7 @@ class Login extends Component {
                         <Link to='/login'>Forgot password?</Link>
                     </p>
                 </Form>
-                <p className='center-text'>Don't have an account? 
+                <p className='center-text'>Don't have an account?
                     <Link to='/signup'>Sign Up</Link>
                 </p>
                 <br />
