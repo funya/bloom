@@ -12,8 +12,10 @@ class Login extends Component {
         username: "",
         password: "",
         redirectToReferrer: false,
+        loading: false,
+        error: false
     }
-    
+
 
     handlePasswordChange = (event) => this.setState({ password: event.target.value })
     handleUsernameChange = (event) => this.setState({ username: event.target.value })
@@ -21,13 +23,13 @@ class Login extends Component {
     handleSignInSubmit = (event) => {
         event.preventDefault();
 
-        Auth.authenticate(this.state.username, this.state.password)
+        Auth.authenticate(this, this.state.username, this.state.password)
     }
 
     render() {
         const { from } = this.props.location.state || { from: { pathname: '/' } }
         const { redirectToReferrer } = this.state
-    
+
         if (redirectToReferrer) {
             return (
                 <Redirect to={from} />
@@ -36,7 +38,7 @@ class Login extends Component {
 
         let warningmessage = null
         if (from.pathname === "/account") {
-            warningmessage = <Message error content='You need to sign in for access to this page.'/>
+            warningmessage = <Message error content='You need to sign in for access to this page.' />
         }
 
         return (
@@ -46,15 +48,19 @@ class Login extends Component {
                     <Image src={image} alt='logo' />
                     Bloom
                 </Header>
-                <Form id='signup' onSubmit={event => this.handleSignInSubmit(event)}>
+                <Form id='signup' onSubmit={event => this.handleSignInSubmit(event)} loading={this.state.loading} warning={this.state.error}>
                     <Header textAlign='center' size='large'> Sign In</Header>
                     <Form.Field>
-                        <input placeholder='Username' type='text' value={this.state.username} onChange={event => this.handleUsernameChange(event)} />
+                        <input placeholder='Username' required type='text' value={this.state.username} onChange={event => this.handleUsernameChange(event)} />
                     </Form.Field>
                     <Form.Field>
-                        <input placeholder='Password' type='password' value={this.state.password} onChange={event => this.handlePasswordChange(event)} />
+                        <input placeholder='Password' required type='password' value={this.state.password} onChange={event => this.handlePasswordChange(event)} />
                     </Form.Field>
                     <Button className="submit-button" fluid={true}>Submit</Button>
+                    <Message
+                        warning
+                        content='Invalid username or password.'
+                    />
                     <p className='center-text'>
                         <Link to='/login'>Forgot password?</Link>
                     </p>
