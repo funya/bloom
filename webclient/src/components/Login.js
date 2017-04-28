@@ -1,28 +1,58 @@
 import React, { Component } from 'react';
-import { Form, Header, Container, Button, Image } from 'semantic-ui-react'
-import { Link } from 'react-router-dom';
+import { Form, Header, Container, Button, Image, Message } from 'semantic-ui-react'
+import { Link, Redirect } from 'react-router-dom';
 
-
-//stylesheet shared with Signup
 import './Login_Signup.css'
 
 import image from '../img/lotus.svg'
+import { Auth, storageKey } from './Auth'
 
 class Login extends Component {
+    state = {
+        username: "",
+        password: "",
+        redirectToReferrer: false,
+    }
+    
+
+    handlePasswordChange = (event) => this.setState({ password: event.target.value })
+    handleUsernameChange = (event) => this.setState({ username: event.target.value })
+
+    handleSignInSubmit = (event) => {
+        event.preventDefault();
+
+        Auth.authenticate(this.state.username, this.state.password)
+    }
+
     render() {
+        const { from } = this.props.location.state || { from: { pathname: '/' } }
+        const { redirectToReferrer } = this.state
+    
+        if (redirectToReferrer) {
+            return (
+                <Redirect to={from} />
+            )
+        }
+
+        let warningmessage = null
+        if (from.pathname === "/account") {
+            warningmessage = <Message error content='You need to sign in for access to this page.'/>
+        }
+
         return (
             <Container>
+                {warningmessage}
                 <Header id="title" textAlign='center' as='h1'>
-                    <Image src={image} alt='logo'/>
+                    <Image src={image} alt='logo' />
                     Bloom
                 </Header>
-                <Form id='signup'>
+                <Form id='signup' onSubmit={event => this.handleSignInSubmit(event)}>
                     <Header textAlign='center' size='large'> Sign In</Header>
                     <Form.Field>
-                        <input placeholder='Username' type='text'/>
+                        <input placeholder='Username' type='text' value={this.state.username} onChange={event => this.handleUsernameChange(event)} />
                     </Form.Field>
                     <Form.Field>
-                        <input placeholder='Password' type='password'/>
+                        <input placeholder='Password' type='password' value={this.state.password} onChange={event => this.handlePasswordChange(event)} />
                     </Form.Field>
                     <Button className="submit-button" fluid={true}>Submit</Button>
                     <p className='center-text'>
@@ -30,7 +60,7 @@ class Login extends Component {
                     </p>
                 </Form>
                 <p className='center-text'>Don't have an account? <Link to='/signup'>Sign Up</Link></p>
-                <br/>
+                <br />
             </Container>
         )
     }
