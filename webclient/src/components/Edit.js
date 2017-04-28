@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Grid, Menu, Sidebar, Segment, Image, Icon, Header, Input, Message, Modal, Button } from 'semantic-ui-react'
+import { Container, Menu, Segment, Icon, Header, Input, Message, Modal } from 'semantic-ui-react'
 import Vivus from "vivus";
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
 
 import Timeline from './Timeline'
 import EditTimeline from './EditTimeline'
-import image from '../img/image.png'
 import lotuspath from '../img/lotus.svg'
-import exampletlitems from '../data/exampleedit.json'
 
 import './edit.css';
 
