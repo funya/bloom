@@ -100,14 +100,14 @@ func (ctx *Context) SessionsHandler(w http.ResponseWriter, r *http.Request) {
 		//respond with an http.StatusUnauthorized
 		u, err := ctx.UserStore.GetByUserName(c.UserName)
 		if err != nil {
-			http.Error(w, "Incorrect username or password "+err.Error(), http.StatusUnauthorized)
+			http.Error(w, "Incorrect username or password ", http.StatusUnauthorized)
 			return
 		}
 
 		//Authenticate the user using the provided password; if that fails,
 		//respond with an http.StatusUnauthorized
 		if err := u.Authenticate(c.Password); err != nil {
-			http.Error(w, "Incorrect username or password "+err.Error(), http.StatusUnauthorized)
+			http.Error(w, "Incorrect username or password ", http.StatusUnauthorized)
 			return
 		}
 
