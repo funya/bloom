@@ -1,6 +1,5 @@
-import React, { PropTypes, Component } from 'react';
-//import { Container, Header } from 'semantic-ui-react'
-//import classNames from 'classnames';
+import React, {Component } from 'react';
+import PropTypes from 'prop-types';
 
 
 

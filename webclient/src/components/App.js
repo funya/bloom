@@ -14,7 +14,7 @@ import Home from './Home'
 import About from './About'
 import Account from './Account'
 import Story from './Story'
-import Edit from './Edit'
+import Edit from './Edit/Edit'
 import Signup from './Signup'
 import Login from './Login'
 
