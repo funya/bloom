@@ -17,6 +17,7 @@ import Story from './Story'
 import Edit from './Edit/Edit'
 import Signup from './Signup'
 import Login from './Login'
+import Account2 from './Account2'
 
 class App extends Component {
     render() {
@@ -32,6 +33,7 @@ class App extends Component {
                         <Route exact path="/edit" component={Edit} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/signup" component={Signup} />
+                        <Route exact path="/account2" component={Account2} />
                     </div>
                     <Footer />
                 </Container>
