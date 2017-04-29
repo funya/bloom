@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Icon, Form, Input, Segment, Label, Button } from 'semantic-ui-react'
+import PropTypes from 'prop-types';
 
-import TimelineItem from './TimelineItem'
+import TimelineItem from '../TimelineItem'
 
 class EditTimelineItem extends Component {
     constructor(props) {
@@ -25,15 +26,12 @@ class EditTimelineItem extends Component {
                 <div className="timeline-marker"></div>
                 <div className="timeline-content">
                     <Segment>
-                        <Label color='pink' attached='top'>Section {this.props.id}</Label>
+                        <Label attached='top'></Label>
                         <Form size='small'>
                             <Form.Input control='Input' label='Image' type='file' icon='image' accept='image/*'/>
-                            <Form.Input control='Input' label='Date(Optional)' type='date' icon='calendar' width='7' />
-                            <Form.Input control='Input' label='Audio' type='file' icon='volume up' accept='audio/*'/>
+                            <Form.TextArea value={this.state.body} onChange={event => this.handleEditBody(event)} placeholder='Tell us your story' />
 
-                            <Form.TextArea value={this.state.body} onChange={event => this.handleEditBody(event)} label='Body Content' placeholder='Tell us your story' />
-
-                            <Button type='submit' color='green' size='tiny' inverted>Submit</Button>
+                            <Button size='tiny' className='timelineitem-submit-button'>Submit</Button>
                         </Form>
                     </Segment>
                 </div>

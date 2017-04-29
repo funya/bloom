@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react';
-//import { Container, Header, Image, Icon, Segment } from 'semantic-ui-react'
-//import classNames from 'classnames';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 
 import TimelineItem from './TimelineItem'
 
