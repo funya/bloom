@@ -14,8 +14,6 @@ class Edit extends Component {
     constructor(props) {
         super(props);
 
-        // title = the title of the timeline
-        // timeline = containers the timeline sections
         this.state = {
             story: {},
             timelineitems: [],
@@ -25,11 +23,15 @@ class Edit extends Component {
         };
     }
 
+    // Initialization of DOM nodes goes here. When the edit page is mounted, two fetch calls
+    // are made to fetch the story and the sections of the story. 
     componentDidMount() {
+        // Get the single story information 
         fetch(`http://rest.learncode.academy/api/bloom/stories/590aaa2a68f75b01005ad675`)
             .then(resp => resp.json())
             .then(data => {
                 this.setState({ story: data })
+                // After getting the ID of the story, fetch the sections related to this story
                 return fetch(`http://rest.learncode.academy/api/bloom/sections`)
             })
             .then(resp => resp.json())
@@ -39,47 +41,47 @@ class Edit extends Component {
             .catch(err => console.log(err))
     }
 
+    // Event handler that manages the changing of the story title
     handleTimelineTitleChange = (event) => this.setState({ title: event.target.value })
 
-    handleAddSectionButton = () => {
-        console.log("clicked add")
-        let t = {
-            id: nextid++,
-            title: `item-${nextid}`
-        }
-        let ti = this.state.timelineitems.slice()
-        ti.push(t)
-        this.setState({ timelineitems: ti })
-    }
 
-    //callback called when resorting ends
+    // Callback called when resorting of section ends
     onSortEnd = ({ oldIndex, newIndex }) => {
         this.setState({
             timelineitems: arrayMove(this.state.timelineitems, oldIndex, newIndex),
         });
     };
 
+    // Event handler that opens the editing modal
     handleOpenModal = (e) => {
         e.preventDefault()
         this.setState({ modalOpen: true, })
     }
 
+    // Event handler that closes the editing modal and clears the inputs
     handleCloseModal = (e) => this.setState({ modalOpen: false, inputText: null, textareabody: "" })
 
+    // Event handler that shows either a TextArea or an input for images
+    // depending on what button is clicked in the editing modal
     showInput = (e) => {
         e.preventDefault()
         this.setState({ inputText: e.target.value })
         console.log(e.target.value)
     }
 
+    // Event handler that triggers when a grid item is edited. The editing modal opens
+    // and loads the text in teh appropriate inputs
     handleEditSection = (e, v) => {
         e.preventDefault()
         this.setState({ modalOpen: true, inputText: "text", textareabody: v.body })
         console.log(v)
     }
 
+    // Event handler that manages the changing of the textarea in the editing modal
     handleEditBody = (e) => this.setState({ textareabody: e.target.value })
 
+    // Event handler that is called when save is clicked in the editing modal.
+    // A POST fetch call is made to submit the new item to the DB
     submitForm = (e) => {
         e.preventDefault()
         fetch(`http://rest.learncode.academy/api/bloom/sections`, {
@@ -99,6 +101,8 @@ class Edit extends Component {
     }
 
     render() {
+        // Renders a Next button depending the length of sections within the story
+        // a single story has exist before it could be rendered.
         let inputText = this.state.inputText;
         let nextbutton = null
         if (this.state.timelineitems.length > 0) {
@@ -131,7 +135,7 @@ class Edit extends Component {
                             }
                             open={this.state.modalOpen}
                             onClose={this.handleCloseModal}
-                            //makes it so that you cant close modal by clicking background
+                            // makes it so that you cant close modal by clicking background
                             closeOnEscape={true}
                             closeOnRootNodeClick={false}
                             size='large'
