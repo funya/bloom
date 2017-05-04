@@ -25,7 +25,7 @@ export const Auth = {
             .then(resp => {
                 f.setState({ loading: false })
 
-                if (resp.status == 200) {
+                if (resp.ok) {
                     localStorage.setItem(storageKey, resp.headers.get("Authorization"))
                     f.props.history.push('/account')
                     return resp.json()
@@ -57,7 +57,7 @@ export const Auth = {
 
         fetch(r)
             .then(resp => {
-                if (resp.status == 200) {
+                if (resp.ok) {
                     p.props.history.push('/')
                     localStorage.removeItem(storageKey)
                 }
@@ -93,7 +93,7 @@ export const Auth = {
             .then(resp => {
                 f.setState({ loading: false })
 
-                if (resp.status == 200) {
+                if (resp.ok) {
                     localStorage.setItem(storageKey, resp.headers.get("Authorization"))
                     f.props.history.push('/account')
                     return resp.json()
