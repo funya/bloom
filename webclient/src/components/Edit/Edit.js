@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Menu, Segment, Icon, Header, Input, Message, Modal, Grid, Sidebar, Image } from 'semantic-ui-react'
-import Vivus from "vivus";
+import { Container, Segment, Icon, Header, Input, Message, Image, Button, Modal, Menu, Popup, Grid, TextArea, Form, Card } from 'semantic-ui-react'
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
-
+import 'whatwg-fetch'
 
 import Timeline from '../Timeline'
 import EditTimeline from './EditTimeline'
-import lotuspath from '../../img/lotus.svg'
 
 import './edit.css';
 
@@ -16,25 +14,30 @@ class Edit extends Component {
     constructor(props) {
         super(props);
 
-        //track three mutable state properties:
-        // titleVisibleInput = a boolean to keep track of focus of input bar
         // title = the title of the timeline
         // timeline = containers the timeline sections
         this.state = {
-            titleVisibleInput: true,
-            title: "",
+            story: {},
             timelineitems: [],
-            visibleReorder: true
+            modalOpen: false,
+            inputText: null,
+            textareabody: ""
         };
     }
 
-
     componentDidMount() {
-        document.title = "Bloom | Edit";
-        new Vivus('lotus', { duration: 80, file: lotuspath })
+        fetch(`http://rest.learncode.academy/api/bloom/stories/590aaa2a68f75b01005ad675`)
+            .then(resp => resp.json())
+            .then(data => {
+                this.setState({ story: data })
+                return fetch(`http://rest.learncode.academy/api/bloom/sections`)
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                this.setState({ timelineitems: data })
+            })
+            .catch(err => console.log(err))
     }
-
-    handleTitleInputFocus = () => this.setState({ titleVisibleInput: !this.state.titleVisibleInput })
 
     handleTimelineTitleChange = (event) => this.setState({ title: event.target.value })
 
@@ -42,158 +45,197 @@ class Edit extends Component {
         console.log("clicked add")
         let t = {
             id: nextid++,
+            title: `item-${nextid}`
         }
         let ti = this.state.timelineitems.slice()
         ti.push(t)
         this.setState({ timelineitems: ti })
-        console.log(this.state.timelineitems)
     }
 
-    toggleReorderVisibility = () => this.setState({ visibleReorder: !this.state.visibleReorder })
+    //callback called when resorting ends
+    onSortEnd = ({ oldIndex, newIndex }) => {
+        this.setState({
+            timelineitems: arrayMove(this.state.timelineitems, oldIndex, newIndex),
+        });
+    };
 
-    handleReorder = () => {
+    handleOpenModal = (e) => {
+        e.preventDefault()
+        this.setState({ modalOpen: true, })
+    }
+
+    handleCloseModal = (e) => this.setState({ modalOpen: false, inputText: null, textareabody: "" })
+
+    showInput = (e) => {
+        e.preventDefault()
+        this.setState({ inputText: e.target.value })
+        console.log(e.target.value)
+    }
+
+    handleEditSection = (e, v) => {
+        e.preventDefault()
+        this.setState({ modalOpen: true, inputText: "text", textareabody: v.body })
+        console.log(v)
+    }
+
+    handleEditBody = (e) => this.setState({ textareabody: e.target.value })
+
+    submitForm = (e) => {
+        e.preventDefault()
+        fetch(`http://rest.learncode.academy/api/bloom/sections`, {
+            method: 'post',
+            headers: new Headers({
+                "Content-Type": "application/json"
+            }),
+            body: JSON.stringify({
+                body:this.state.textareabody,
+                storyid: "590aaa2a68f75b01005ad675"
+            })
+        })
+        .then(resp => resp.json())
+        .then(data => {
+        })
 
     }
 
     render() {
+        let inputText = this.state.inputText;
+        let nextbutton = null
+        if (this.state.timelineitems.length > 0) {
+            nextbutton = <Button color='green'>Next <Icon name='long arrow right' /></Button>
+        }
         return (
             <Container fluid id="editcontainer">
-                <Menu icon='labeled' vertical secondary className='left-menu' fixed='left'>
-                    <Menu.Menu className='left-menu-buttons'>
-                        <Menu.Item name='plus' onClick={this.handleAddSectionButton}>
-                            <Icon name='plus'/>
-                            Add
-                        </Menu.Item>
-                        <Menu.Item name='ordered list' onClick={this.toggleReorderVisibility}>
-                            <Icon name='ordered list' />
-                            Reorder
-                        </Menu.Item>
-                        <Menu.Item name='save'>
-                            <Icon name='save' />
-                            Save
-                        </Menu.Item>
-                        <Menu.Item name='eye'>
-                            <Icon name='eye' />
-                            Preview
-                        </Menu.Item>
-                        <Menu.Item name='send'>
-                            <Icon name='send' />
-                            Submit
-                        </Menu.Item>
-                    </Menu.Menu>
-                </Menu>
-                <Sidebar.Pushable as={Segment} className='edit-view-container'>
-                    <Sidebar as={Segment} animation='overlay' width='wide' visible={this.state.visibleReorder} className='edit-view-sidebar'>
-                        <Header textAlign='center' as='h3'>Reorder</Header>
-                        <SortableComponent />
-                    </Sidebar>
-                    <Sidebar.Pusher>
-                        <Segment basic>
-                            <Container>
-                                <Segment textAlign='center' padded basic>
-                                    <div id='lotus'></div>
-                                    <Input id='timeline-title' size='small' placeholder='Title' value={this.state.title} onChange={event => this.handleTimelineTitleChange(event)} onFocus={this.handleTitleInputFocus} onBlur={this.handleTitleInputFocus} transparent={this.state.titleVisibleInput} />
-                                </Segment>
-                            </Container>
-                            <Container >
-                                <EditTimeline timelineitems={this.state.timelineitems} addsection={this.handleAddSectionButton}>
-                                </EditTimeline>
-                            </Container>
-                        </Segment>
-                    </Sidebar.Pusher>
-                </Sidebar.Pushable>
+                <Container>
+                    <Segment basic textAlign='right'>
+                        <Button>See Demo</Button>
+                        {nextbutton}
+                    </Segment>
+                    <Segment padded='very' basic>
+                        <Input id='timeline-title' fluid
+                            placeholder='Title'
+                            onChange={this.handleTimelineTitleChange}
+                        />
+                    </Segment>
+                    <Segment padded='very' basic className='section-grid-container'>
+                        <Modal
+                            trigger={
+                                <SortableList items={this.state.timelineitems}
+                                    onSortEnd={this.onSortEnd}
+                                    axis='xy'
+                                    helperClass='section-grid-item-wrapper'
+                                    handleAddSectionButton={this.handleOpenModal}
+                                    handleEditSection={this.handleEditSection}
+                                    pressDelay={200}
+                                />
+                            }
+                            open={this.state.modalOpen}
+                            onClose={this.handleCloseModal}
+                            //makes it so that you cant close modal by clicking background
+                            closeOnEscape={true}
+                            closeOnRootNodeClick={false}
+                            size='large'
+                        >
+                            <Modal.Header as='h3'> <Icon name='plus square outline' />Add Section</Modal.Header>
+                            <Modal.Content>
+                                <Grid>
+                                    <Grid.Row>
+                                        <Grid.Column as={Menu} icon vertical tabular className='input-menu'>
+                                            <Menu.Item>
+                                                <Button icon='picture' primary onClick={event => this.showInput(event)} value='picture' />
+                                            </Menu.Item>
+                                            <Menu.Item>
+                                                <Button icon='font' onClick={event => this.showInput(event)} value='text' />
+                                            </Menu.Item>
+                                        </Grid.Column>
+                                        <Grid.Column as={Segment} basic width='14'>
+                                            {!inputText &&
+                                                <Header as='h1' textAlign='center' className='first-prompt-message'>
+                                                    <Icon name='long arrow left' size='huge' />
+                                                    Select a type of input first
+                                                </Header>
+                                            }
+                                            <Segment basic className='input-container'>
+                                                {inputText && (
+                                                    inputText === "picture" ? (
+                                                        <Form>
+                                                            <Form.Input type='file' accept='image/*' />
+                                                            <Form.Input type='text' placeholder='Optional Caption / Description' />
+                                                        </Form>
+                                                    ) : (
+                                                            <TextArea value={this.state.textareabody} onChange={event => this.handleEditBody(event)} placeholder='Tell us your story' />
+                                                        )
+                                                )
+                                                }
+                                            </Segment>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button color='red' onClick={this.handleCloseModal} inverted className='cancel-button'>
+                                    <Icon name='long arrow left' /> Cancel
+                                </Button>
+                                <Button color='green' onClick={this.submitForm} inverted>
+                                    <Icon name='save' /> Save
+                                </Button>
+                            </Modal.Actions>
+                        </Modal>
+                    </Segment>
+                </Container>
             </Container>
         )
     }
 }
 
-/*<div>
-                    <Container fluid id='editcontainer'>
-                        <Menu secondary size='tiny' icon='labeled'>
-                            <Container>
-                                <Menu.Menu position='right'>
-                                    <Menu.Item name='plus' onClick={this.handleAddSectionButton}>
-                                        <Icon inverted name='plus' color='blue' />
-                                        Add Section
-                                </Menu.Item>
 
-                                    <Modal
-                                        trigger={<Menu.Item onClick={this.handleOpen} name='ordered list'><Icon inverted name='ordered list' color='blue' />Reorder</Menu.Item>}
-                                        open={this.state.modalOpen}
-                                        onClose={this.handleClose}
-                                        closeIcon='close'
-                                    >
-                                        <Header icon='ordered list' content='Reorder Sections' />
-                                        <Modal.Content>
-                                            <Message color='blue'>Drag and drop any section to reorder your timeline! It will be automatically saved.</Message>
-                                            <SortableComponent items={this.state.timelineitems} />
-                                        </Modal.Content>
-                                    </Modal>
-
-                                    <Menu.Item name='save'>
-                                        <Icon inverted name='save' color='blue' />
-                                        Save
-                                </Menu.Item>
-                                    <Modal
-                                        trigger={<Menu.Item name='eye'><Icon inverted name='eye' color='blue' />Preview</Menu.Item>}
-                                        open={this.state.modalOpen}
-                                        onClose={this.handleClose}
-                                        closeIcon='close'
-                                    >
-                                        <Header icon='eye' content='Preview Presentable Timeline' />
-                                        <Modal.Content>
-                                            <Timeline timelineitems={this.state.timelineitems} />
-                                        </Modal.Content>
-                                    </Modal>
-                                    <Menu.Item name='send'>
-                                        <Icon inverted name='send' color='blue' />
-                                        Publish
-                                </Menu.Item>
-                                </Menu.Menu>
-                            </Container>
-                        </Menu>
-
-
-
-                        <Container>
-                            <Segment textAlign='center' padded basic>
-                                <div id='lotus'></div>
-                                <Input id='timeline-title' size='small' placeholder='Title' value={this.state.title} onChange={event => this.handleTimelineTitleChange(event)} onFocus={this.handleTitleInputFocus} onBlur={this.handleTitleInputFocus} transparent={this.state.titleVisibleInput} />
-                            </Segment>
-                        </Container>
-                        <Container >
-                            <EditTimeline timelineitems={this.state.timelineitems} addsection={this.handleAddSectionButton}>
-                            </EditTimeline>
-                        </Container>
-                    </Container>
-                </div>*/
-
-const SortableItem = SortableElement(({ value }) =>
-    <div className='reorderitem'>{value}</div>
-);
-
-const SortableList = SortableContainer(({ items }) => {
+const SortableItem = SortableElement(({ value, handleEditSection }) => {
     return (
-        <div id='reorderlist'>
+        <div className='section-grid-item-container'>
+            <Icon name='content' className='reorder-icon' />
+            <Popup
+                style={{
+                        zIndex:1000,
+                        padding: 0,
+                        border: 0
+                    }}
+                trigger={<Icon name='ellipsis vertical' className='edit-icon' color='blue' size='large'/>}
+                content={
+                    <Menu icon='labeled' vertical  widths='3'>
+                        <Menu.Item name='write' onClick={(event) => handleEditSection(event,value)}>
+                        <Icon name='write'/>
+                        Edit
+                        </Menu.Item>
+
+                        <Menu.Item name='trash outline'>
+                        <Icon name='trash outline' color='red'/>
+                        Delete
+                        </Menu.Item>
+                    </Menu>
+                }
+                on='click'
+                basic
+                position='bottom right'
+            />
+            <Card className='section-grid-item-content'>
+                <Card.Content description={value.body} />
+            </Card>
+        </div>
+    )
+});
+
+const SortableList = SortableContainer(({ items, handleAddSectionButton, handleEditSection }) => {
+    return (
+        <div className='section-grid'>
             {items.map((value, index) => (
-                <SortableItem key={`item-${index}`} index={index} value={value} />
+                <SortableItem key={`item-${index}`} index={index} value={value} handleEditSection={handleEditSection}/>
+
             ))}
+            <div className='section-grid-item-container section-grid-item-add' onClick={handleAddSectionButton}>
+                <Icon name='plus square outline' size='massive'></Icon>
+            </div>
         </div>
     );
 });
-
-class SortableComponent extends Component {
-    state = {
-        items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
-    };
-    onSortEnd = ({ oldIndex, newIndex }) => {
-        this.setState({
-            items: arrayMove(this.state.items, oldIndex, newIndex),
-        });
-    };
-    render() {
-        return <SortableList items={this.state.items} onSortEnd={this.onSortEnd} />;
-    }
-}
 
 export default Edit

@@ -49,7 +49,7 @@ class EditTimeline extends Component {
 
     render() {
         return (
-            <ul className='timeline timeline-centered'>
+            <ul className='timeline'>
                 {this.props.timelineitems.map(timelineitem =>
                     <EditTimelineItem
                         {...timelineitem}
@@ -58,8 +58,8 @@ class EditTimeline extends Component {
                 )}
                 <li className='timeline-item'>
 
-                        <Icon circular name='plus' inverted onClick={this.props.addsection} className='add-timeline-item-button'/>
-
+                    <div className="timeline-marker">
+                </div>
                 </li>
             </ul>
         )
@@ -73,3 +73,11 @@ EditTimeline.propTypes = {
 }
 
 export default EditTimeline
+
+//
+//
+//
+//
+//
+//
+//

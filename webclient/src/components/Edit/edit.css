@@ -2,49 +2,12 @@
     min-height: 100vh;
 }
 
-#editcontainer .left-menu {
-    /*background: linear-gradient(168deg, rgba(254, 206, 233, 0.9) 0%, rgba(235, 177, 240, 0.9) 51%, rgba(254, 186, 223, 0.9) 75%, rgba(254, 196, 213, 0.9) 90%);*/
-    background-color: rgba(244, 172, 183, 1);
-    z-index: 1;
-    height: 100%;
-}
-
-#editcontainer .left-menu .left-menu-buttons {
-    position: relative;
-    top: 33vh;
-}
-
-#editcontainer .left-menu .left-menu-buttons .item {
-    padding: 10px 20px;
-    margin: 20px 0px;
-}
-
-#editcontainer .edit-view-container {
-    margin: 0;
-    margin-left: 83px;
-    min-height: 100vh;
-    box-shadow: none;
-    border-radius: none;
-    border: none;
-    z-index: 2;
-}
-
-#editcontainer .edit-view-container .edit-view-sidebar {
-    background-color: rgb(51, 51, 51);
-    padding: 0;
-    border: none;
-    border-radius: 0;
-}
-
-#editcontainer .edit-view-container .edit-view-sidebar h3.header {
-    padding: 20px;
-    background-color: rgb(216, 226, 220);
-    color: rgba(0, 0, 0, 0.5)
-}
-
-
-#timeline-title input {
+#editcontainer #timeline-title input {
     text-align: center;
+    font-size: 2em;
+    font-weight: 400;
+    font-family: "Open Sans";
+    padding: 8px 10px;
 }
 
 .timeline-content .label {
@@ -75,48 +38,124 @@ form .timelineitem-submit-button.button:hover {
     margin: 0 auto;
 }
 
-#submenu {
-    border: none !important;
-    box-shadow: none;
-}
-
-
-
-#submenu .item {
-    padding: 13px 2px;
-}
 
 #editmessage {
     margin: 0 auto;
     width: 95vw;
 }
 
-#reorderlist {
+.section-grid-container {
+    margin: 0 auto;
+}
+
+.section-grid {
+    display: table;
     position: relative;
     z-index: 0;
-    background-color: none;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    outline: none;
-    margin: 10px;
-}
-
-.reorderitem {
+    border: 0;
+    margin: 0 auto;
     width: 100%;
-    padding: 15px 20px;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    box-sizing: border-box;
-    color: rgba(255, 255, 255, 0.5);
 }
 
-.add-timeline-item-button {
+.section-grid-item-container .section-grid-item-content {
+    padding: 2px;
+    overflow-x: scroll;
+    height: 80%;
+}
+
+.section-grid-item-container {
+    color: rgb(67, 72, 76);
+    float: left;
+    height: 315px;
+    width: 327px;
+    background-color: rgb(245, 246, 247);
+    padding: 10px;
+    margin: 10px;
+    border: 0;
+    cursor: grab;
+    box-sizing: border-box;
+    display: -webkit-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .28571429rem;
+    box-shadow: 0 2px 4px 0 rgba(67, 72, 76,0.1);
+    position: relative;
+}
+
+.section-grid-item-container .reorder-icon {
     position: absolute;
-    left: 50%;
-    margin-top: 4px !important;
-    margin-left: -13px !important;
+    top: 13px;
+    left: 13px;
+    color: rgb(151, 159, 167);
+    cursor: grab;
+    display: none;
+}
+
+.section-grid-item-container:hover .reorder-icon {
+    display: block;
+}
+
+.section-grid-item-container .edit-icon {
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    color: rgb(151, 159, 167);
     cursor: pointer;
 }
 
-i.inverted.circular.icon.add-timeline-item-button {
-    background-color: rgba(241, 163, 168, 0.5) !important;
+
+
+.section-grid-item-container:hover {
+    box-shadow: 0 6px 6px 0 rgba(67, 72, 76,0.1);
+}
+
+.section-grid-item-wrapper {
+    cursor: grabbing;
+    animation: border-draw 0.1s linear forwards;
+}
+
+.section-grid-item-add {
+    border: 2px dashed rgba(67, 72, 76,0.2);
+    background-color: rgba(245, 246, 247, 0.5);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.section-grid-item-add:hover {
+    background-color: rgb(245, 246, 247);
+}
+
+@keyframes border-draw {
+    to {
+        border: 2px dashed rgba(67, 72, 76,0.2);
+        width: 330px;
+        height: 330px;
+    }
+}
+
+.actions .cancel-button {
+    float: left;
+}
+
+.actions {
+    clear: both;
+}
+
+.content .first-prompt-message {
+    font-family: "Open Sans";
+    font-weight: 300;
+
+}
+
+.input-container textarea {
+    width: 100%;
+    height: 250px;
+    border: 1px solid rgba(34,36,38,.15);
+    border-radius: .28571429rem;
+
+}
+
+.input-menu button i {
+    pointer-events: none;
 }
