@@ -1,6 +1,8 @@
 package stories
 
 import (
+	"time"
+
 	"github.com/jadiego/bloom/apiserver/models/users"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -52,6 +54,16 @@ func (ms *MongoStore) GetAllStorySections(id StoryID) ([]*Section, error) {
 	return sections, err
 }
 
+//GetSectionByID returns the Story with the given ID
+func (ms *MongoStore) GetSectionByID(id SectionID) (*Section, error) {
+	section := &Section{}
+	err := ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName).FindId(id).One(section)
+	if err == mgo.ErrNotFound {
+		return nil, ErrSectionNotFound
+	}
+	return section, nil
+}
+
 //UpdateStory applies StoryUpdates to the current Story
 func (ms *MongoStore) UpdateStory(updates *StoryUpdates, currentStory *Story) error {
 	col := ms.Session.DB(ms.DatabaseName).C(ms.StoriesCollectionName)
@@ -86,6 +98,7 @@ func (ms *MongoStore) InsertSection(id users.UserID, newSection *NewSection) (*S
 
 //UpdateSection applies the SectionUpdates to the current section
 func (ms *MongoStore) UpdateSection(updates *SectionUpdates, currentSection *Section) error {
+	currentSection.EditedAt = time.Now()
 	col := ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName)
 	sectionupdates := bson.M{"$set": updates}
 	err := col.UpdateId(currentSection.ID, sectionupdates)

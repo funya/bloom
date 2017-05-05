@@ -29,6 +29,9 @@ type Store interface {
 	//GetAllStorySections returns all sections within a story
 	GetAllStorySections(id StoryID) ([]*Section, error)
 
+	//GetStoryByID returns the Story with the given ID
+	GetSectionByID(id SectionID) (*Section, error)
+
 	//UpdateStory applies StoryUpdates to the current Story
 	UpdateStory(updates *StoryUpdates, currentStory *Story) error
 

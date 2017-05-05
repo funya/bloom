@@ -23,15 +23,15 @@ const (
 
 // route paths
 const (
-	apiRoot           = "/v1/"
-	apiUsers          = apiRoot + "users"
-	apiSessions       = apiRoot + "sessions"
-	apiSessionsMine   = apiSessions + "/mine"
-	apiUsersMe        = apiUsers + "/me"
-	apiStories        = apiRoot + "stories"
-	apiStoriesSingle  = apiStories + "/"
-	apiSections       = apiRoot + "sections"
-	apiSectionsSingle = apiSections + "/"
+	apiRoot             = "/v1/"
+	apiUsers            = apiRoot + "users"
+	apiSessions         = apiRoot + "sessions"
+	apiSessionsMine     = apiSessions + "/mine"
+	apiUsersMe          = apiUsers + "/me"
+	apiStories          = apiRoot + "stories"
+	apiSpecificStories  = apiStories + "/"
+	apiSections         = apiRoot + "sections"
+	apiSpecificSections = apiSections + "/"
 )
 
 //main is the main entry point for this program
@@ -110,7 +110,9 @@ func main() {
 	muxLogged.HandleFunc(apiSessionsMine, ctx.SessionsMineHandler)
 	muxLogged.HandleFunc(apiUsersMe, ctx.UsersMeHanlder)
 	muxLogged.HandleFunc(apiStories, ctx.StoriesHandler)
+	muxLogged.HandleFunc(apiSpecificStories, ctx.SpecificStoryhandler)
 	muxLogged.HandleFunc(apiSections, ctx.SectionsHandler)
+	muxLogged.HandleFunc(apiSpecificSections, ctx.SpecificSectionHandler)
 
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	mux.Handle(apiRoot, middleware.Adapt(muxLogged, middleware.CORS("", "", "", ""), middleware.Notify(logger)))
