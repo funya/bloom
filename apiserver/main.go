@@ -22,11 +22,15 @@ const (
 
 // route paths
 const (
-	apiRoot         = "/v1/"
-	apiUsers        = apiRoot + "users"
-	apiSessions     = apiRoot + "sessions"
-	apiSessionsMine = apiSessions + "/mine"
-	apiUsersMe      = apiUsers + "/me"
+	apiRoot           = "/v1/"
+	apiUsers          = apiRoot + "users"
+	apiSessions       = apiRoot + "sessions"
+	apiSessionsMine   = apiSessions + "/mine"
+	apiUsersMe        = apiUsers + "/me"
+	apiStories        = apiRoot + "stories"
+	apiStoriesSingle  = apiStories + "/"
+	apiSections       = apiRoot + "sections"
+	apiSectionsSingle = apiSections + "/"
 )
 
 //main is the main entry point for this program
@@ -68,11 +72,16 @@ func main() {
 		fmt.Println("DB address not set. Defaulting to port: " + defaultMongoPort)
 		dbAddr = defaultMongoPort
 	}
-	dbstore, err := users.NewMongoStore(dbAddr, "bloom", "users")
+	udbstore, err := users.NewMongoStore(dbAddr, "bloom", "users")
 	if err != nil {
 		log.Fatalf("error starting DB: %v", err.Error())
 	}
-	defer dbstore.Session.Close()
+	defer udbstore.Session.Close()
+	sdbstore, err := users.NewMongoStore(dbAddr, "bloom", "stories", "sections")
+	if err != nil {
+		log.Fatalf("error starting DB: %v", err.Error())
+	}
+	defer sdbstore.Session.Close()
 
 	//Get sessionkey
 	sesskey := os.Getenv("SESSIONKEY")
@@ -81,7 +90,7 @@ func main() {
 	ctx := &handlers.Context{
 		SessionKey:   sesskey,
 		SessionStore: rstore,
-		UserStore:    dbstore,
+		UserStore:    udbstore,
 	}
 
 	//get the TLS key and cert paths from environment variables
