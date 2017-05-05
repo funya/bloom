@@ -45,3 +45,16 @@ func (ns *NewSection) Validate() error {
 
 	return nil
 }
+
+//ToSection converts the NewSection to a Section
+func (ns *NewSection) ToSection() *Section {
+	//construct a new Section setting the various fields
+	s := &Section{
+		Body:      ns.Body,
+		StoryID:   ns.StoryID,
+		CreatedAt: time.Now(),
+		EditedAt:  time.Now(),
+	}
+
+	return s
+}
