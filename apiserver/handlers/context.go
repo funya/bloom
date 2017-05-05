@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/jadiego/bloom/apiserver/models/stories"
 	"github.com/jadiego/bloom/apiserver/models/users"
 	"github.com/jadiego/bloom/apiserver/sessions"
 )
@@ -15,4 +16,6 @@ type Context struct {
 	SessionStore sessions.Store
 	//an users.Store that will contain the server's user store
 	UserStore users.Store
+	//a story.Store that will contain the server's story store
+	StoryStore stories.Store
 }
