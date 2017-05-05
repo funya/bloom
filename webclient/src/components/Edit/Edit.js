@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Segment, Icon, Header, Input, Message, Image, Button, Modal, Menu, Popup, Grid, TextArea, Form, Card } from 'semantic-ui-react'
+import { Container, Segment, Icon, Header, Input, Message, Image, Button, Loader, Dimmer, Modal, Menu, Popup, Label, Grid, TextArea, Form, Card } from 'semantic-ui-react'
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import 'whatwg-fetch'
 
@@ -19,13 +19,17 @@ class Edit extends Component {
             timelineitems: [],
             modalOpen: false,
             inputText: null,
-            textareabody: ""
+            textareabody: "",
+            loadingSections: false,
+            loadingForm: false,
+            submitSuccess: false,
         };
     }
 
     // Initialization of DOM nodes goes here. When the edit page is mounted, two fetch calls
     // are made to fetch the story and the sections of the story. 
     componentDidMount() {
+        this.setState({ loadingSections: true })
         // Get the single story information 
         fetch(`http://rest.learncode.academy/api/bloom/stories/590aaa2a68f75b01005ad675`)
             .then(resp => resp.json())
@@ -36,7 +40,7 @@ class Edit extends Component {
             })
             .then(resp => resp.json())
             .then(data => {
-                this.setState({ timelineitems: data })
+                this.setState({ timelineitems: data, loadingSections: false })
             })
             .catch(err => console.log(err))
     }
@@ -83,6 +87,7 @@ class Edit extends Component {
     // Event handler that is called when save is clicked in the editing modal.
     // A POST fetch call is made to submit the new item to the DB
     submitForm = (e) => {
+        this.setState({ loadingForm: true, submitSuccess: false})
         e.preventDefault()
         fetch(`http://rest.learncode.academy/api/bloom/sections`, {
             method: 'post',
@@ -90,20 +95,21 @@ class Edit extends Component {
                 "Content-Type": "application/json"
             }),
             body: JSON.stringify({
-                body:this.state.textareabody,
+                body: this.state.textareabody,
                 storyid: "590aaa2a68f75b01005ad675"
             })
         })
-        .then(resp => resp.json())
-        .then(data => {
-        })
+            .then(resp => resp.json())
+            .then(data => {
+                this.setState({ loadingForm: false, submitSuccess: true})
+            })
 
     }
 
     render() {
+        let inputText = this.state.inputText;
         // Renders a Next button depending the length of sections within the story
         // a single story has exist before it could be rendered.
-        let inputText = this.state.inputText;
         let nextbutton = null
         if (this.state.timelineitems.length > 0) {
             nextbutton = <Button color='green'>Next <Icon name='long arrow right' /></Button>
@@ -122,6 +128,9 @@ class Edit extends Component {
                         />
                     </Segment>
                     <Segment padded='very' basic className='section-grid-container'>
+                        <Dimmer active={this.state.loadingSections} inverted>
+                            <Loader inverted content='Loading Sections'/>
+                        </Dimmer>
                         <Modal
                             trigger={
                                 <SortableList items={this.state.timelineitems}
@@ -163,11 +172,16 @@ class Edit extends Component {
                                                 {inputText && (
                                                     inputText === "picture" ? (
                                                         <Form>
-                                                            <Form.Input type='file' accept='image/*' />
+                                                            <Form.Field>
+                                                                <Form.Input as='input' type='file' accept='image/*' control={Input}/>
+                                                            </Form.Field>
                                                             <Form.Input type='text' placeholder='Optional Caption / Description' />
                                                         </Form>
                                                     ) : (
+                                                        <Form loading={this.state.loadingForm} warning={this.state.submitSuccess}>
                                                             <TextArea value={this.state.textareabody} onChange={event => this.handleEditBody(event)} placeholder='Tell us your story' />
+                                                            <Message warning>Ayyye its up</Message>
+                                                        </Form>
                                                         )
                                                 )
                                                 }
@@ -178,7 +192,7 @@ class Edit extends Component {
                             </Modal.Content>
                             <Modal.Actions>
                                 <Button color='red' onClick={this.handleCloseModal} inverted className='cancel-button'>
-                                    <Icon name='long arrow left' /> Cancel
+                                    <Icon name='long arrow left' /> Exit
                                 </Button>
                                 <Button color='green' onClick={this.submitForm} inverted>
                                     <Icon name='save' /> Save
@@ -196,31 +210,13 @@ class Edit extends Component {
 const SortableItem = SortableElement(({ value, handleEditSection }) => {
     return (
         <div className='section-grid-item-container'>
-            <Icon name='content' className='reorder-icon' />
-            <Popup
-                style={{
-                        zIndex:1000,
-                        padding: 0,
-                        border: 0
-                    }}
-                trigger={<Icon name='ellipsis vertical' className='edit-icon' color='blue' size='large'/>}
-                content={
-                    <Menu icon='labeled' vertical  widths='3'>
-                        <Menu.Item name='write' onClick={(event) => handleEditSection(event,value)}>
-                        <Icon name='write'/>
-                        Edit
-                        </Menu.Item>
-
-                        <Menu.Item name='trash outline'>
-                        <Icon name='trash outline' color='red'/>
-                        Delete
-                        </Menu.Item>
-                    </Menu>
-                }
-                on='click'
-                basic
-                position='bottom right'
-            />
+            <div className='menu-icons'>
+                <Icon name='content' className='reorder-icon' size='large' />
+                <div className='menu-icons-right'>
+                    <Icon name='pencil' className='edit-icon' color='blue' size='large' onClick={(event) => handleEditSection(event, value)} />
+                    <Icon name='trash outline' className='trash-icon' size='large' color='red' />
+                </div>
+            </div>
             <Card className='section-grid-item-content'>
                 <Card.Content description={value.body} />
             </Card>
@@ -232,7 +228,7 @@ const SortableList = SortableContainer(({ items, handleAddSectionButton, handleE
     return (
         <div className='section-grid'>
             {items.map((value, index) => (
-                <SortableItem key={`item-${index}`} index={index} value={value} handleEditSection={handleEditSection}/>
+                <SortableItem key={`item-${index}`} index={index} value={value} handleEditSection={handleEditSection} />
 
             ))}
             <div className='section-grid-item-container section-grid-item-add' onClick={handleAddSectionButton}>
