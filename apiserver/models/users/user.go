@@ -112,3 +112,10 @@ func (u *User) Authenticate(password string) error {
 
 	return nil
 }
+
+//String returns a string representation of the sessionID
+func (id UserID) String() string {
+	//just return the `sid` as a string
+	//HINT: https://tour.golang.org/basics/13
+	return string(id)
+}

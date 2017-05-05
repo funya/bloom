@@ -151,7 +151,11 @@ func (ctx *Context) SessionsMineHandler(w http.ResponseWriter, r *http.Request) 
 func (ctx *Context) UsersMeHanlder(w http.ResponseWriter, r *http.Request) {
 	//get the session state
 	ss := &SessionState{}
-	sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
+	_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
+	if err != nil {
+		http.Error(w, "error getting session: "+err.Error(), http.StatusUnauthorized)
+		return
+	}
 
 	//Respond to the client with the session
 	//state's User field, encoded as a JSON object

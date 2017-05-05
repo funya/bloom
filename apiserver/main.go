@@ -8,6 +8,7 @@ import (
 
 	"github.com/jadiego/bloom/apiserver/handlers"
 	"github.com/jadiego/bloom/apiserver/middleware"
+	"github.com/jadiego/bloom/apiserver/models/stories"
 	"github.com/jadiego/bloom/apiserver/models/users"
 	"github.com/jadiego/bloom/apiserver/sessions"
 	redis "gopkg.in/redis.v5"
@@ -22,11 +23,15 @@ const (
 
 // route paths
 const (
-	apiRoot         = "/v1/"
-	apiUsers        = apiRoot + "users"
-	apiSessions     = apiRoot + "sessions"
-	apiSessionsMine = apiSessions + "/mine"
-	apiUsersMe      = apiUsers + "/me"
+	apiRoot             = "/v1/"
+	apiUsers            = apiRoot + "users"
+	apiSessions         = apiRoot + "sessions"
+	apiSessionsMine     = apiSessions + "/mine"
+	apiUsersMe          = apiUsers + "/me"
+	apiStories          = apiRoot + "stories"
+	apiSpecificStories  = apiStories + "/"
+	apiSections         = apiRoot + "sections"
+	apiSpecificSections = apiSections + "/"
 )
 
 //main is the main entry point for this program
@@ -62,17 +67,23 @@ func main() {
 	})
 	rstore := sessions.NewRedisStore(rclient, -1)
 
-	//Set DB
+	//Set Users DB
 	dbAddr := os.Getenv("DBADDR")
 	if len(dbAddr) == 0 {
 		fmt.Println("DB address not set. Defaulting to port: " + defaultMongoPort)
 		dbAddr = defaultMongoPort
 	}
-	dbstore, err := users.NewMongoStore(dbAddr, "bloom", "users")
+	udbstore, err := users.NewMongoStore(dbAddr, "bloom", "users")
 	if err != nil {
 		log.Fatalf("error starting DB: %v", err.Error())
 	}
-	defer dbstore.Session.Close()
+	defer udbstore.Session.Close()
+	// Set Stories DB
+	sdbstore, err := stories.NewMongoStore(dbAddr, "bloom", "stories", "sections")
+	if err != nil {
+		log.Fatalf("error starting DB: %v", err.Error())
+	}
+	defer sdbstore.Session.Close()
 
 	//Get sessionkey
 	sesskey := os.Getenv("SESSIONKEY")
@@ -81,7 +92,8 @@ func main() {
 	ctx := &handlers.Context{
 		SessionKey:   sesskey,
 		SessionStore: rstore,
-		UserStore:    dbstore,
+		UserStore:    udbstore,
+		StoryStore:   sdbstore,
 	}
 
 	//get the TLS key and cert paths from environment variables
@@ -97,6 +109,10 @@ func main() {
 	muxLogged.HandleFunc(apiSessions, ctx.SessionsHandler)
 	muxLogged.HandleFunc(apiSessionsMine, ctx.SessionsMineHandler)
 	muxLogged.HandleFunc(apiUsersMe, ctx.UsersMeHanlder)
+	muxLogged.HandleFunc(apiStories, ctx.StoriesHandler)
+	muxLogged.HandleFunc(apiSpecificStories, ctx.SpecificStoryhandler)
+	muxLogged.HandleFunc(apiSections, ctx.SectionsHandler)
+	muxLogged.HandleFunc(apiSpecificSections, ctx.SpecificSectionHandler)
 
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	mux.Handle(apiRoot, middleware.Adapt(muxLogged, middleware.CORS("", "", "", ""), middleware.Notify(logger)))
