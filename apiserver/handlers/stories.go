@@ -6,6 +6,8 @@ import (
 
 	"path"
 
+	"strings"
+
 	"github.com/jadiego/bloom/apiserver/models/stories"
 	"github.com/jadiego/bloom/apiserver/sessions"
 )
@@ -201,7 +203,7 @@ func (ctx *Context) SectionsHandler(w http.ResponseWriter, r *http.Request) {
 //of sepcific sections
 // /v1/sections/<section-id>
 func (ctx *Context) SpecificSectionHandler(w http.ResponseWriter, r *http.Request) {
-	//Get the story ID from the request's URL path
+	//Get the section ID from the request's URL path
 	_, id := path.Split(r.URL.String())
 
 	//get section by id from the database
@@ -221,8 +223,8 @@ func (ctx *Context) SpecificSectionHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	//if  the user is not owner of this section
-	if ss.User.ID != s.CreatorID {
-		http.Error(w, "error you are not allowed to access this section: "+err.Error(), http.StatusUnauthorized)
+	if strings.Compare(ss.User.ID.String(), s.CreatorID.String()) != 0 {
+		http.Error(w, "error you are not allowed to access this section", http.StatusUnauthorized)
 		return
 	}
 
