@@ -36,7 +36,7 @@ type SectionUpdates struct {
 func (ns *NewSection) Validate() error {
 	//ensure the name is not empty
 	if len(ns.StoryID) < 1 {
-		return fmt.Errorf("error storyID cant be empty, no context on which story to add this section to")
+		return fmt.Errorf("storyID cant be empty, no context on which story to add this section to")
 	}
 
 	if len(ns.Body) < 1 {

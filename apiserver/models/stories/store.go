@@ -37,7 +37,7 @@ type Store interface {
 
 	//InsertSection inserts a new section into the Store
 	//and returns a new Section with a newly assigned ID
-	InsertSection(storyid StoryID, userid users.UserID, newSection *NewSection) (*Section, error)
+	InsertSection(id users.UserID, newSection *NewSection) (*Section, error)
 
 	//UpdateSection applies the SectionUpdates to the current section
 	UpdateSection(updates *SectionUpdates, currentSection *Section) error

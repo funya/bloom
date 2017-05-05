@@ -76,7 +76,7 @@ func (ms *MongoStore) DeleteStory(id StoryID) error {
 
 //InsertSection inserts a new section into the Store
 //and returns a new Section with a newly assigned ID
-func (ms *MongoStore) InsertSection(newSection *NewSection, id users.UserID) (*Section, error) {
+func (ms *MongoStore) InsertSection(id users.UserID, newSection *NewSection) (*Section, error) {
 	s := newSection.ToSection()
 	s.CreatorID = id
 	s.ID = SectionID(bson.NewObjectId().Hex())

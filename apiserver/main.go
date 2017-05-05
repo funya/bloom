@@ -8,6 +8,7 @@ import (
 
 	"github.com/jadiego/bloom/apiserver/handlers"
 	"github.com/jadiego/bloom/apiserver/middleware"
+	"github.com/jadiego/bloom/apiserver/models/stories"
 	"github.com/jadiego/bloom/apiserver/models/users"
 	"github.com/jadiego/bloom/apiserver/sessions"
 	redis "gopkg.in/redis.v5"
@@ -66,7 +67,7 @@ func main() {
 	})
 	rstore := sessions.NewRedisStore(rclient, -1)
 
-	//Set DB
+	//Set Users DB
 	dbAddr := os.Getenv("DBADDR")
 	if len(dbAddr) == 0 {
 		fmt.Println("DB address not set. Defaulting to port: " + defaultMongoPort)
@@ -77,7 +78,8 @@ func main() {
 		log.Fatalf("error starting DB: %v", err.Error())
 	}
 	defer udbstore.Session.Close()
-	sdbstore, err := users.NewMongoStore(dbAddr, "bloom", "stories", "sections")
+	// Set Stories DB
+	sdbstore, err := stories.NewMongoStore(dbAddr, "bloom", "stories", "sections")
 	if err != nil {
 		log.Fatalf("error starting DB: %v", err.Error())
 	}
@@ -91,6 +93,7 @@ func main() {
 		SessionKey:   sesskey,
 		SessionStore: rstore,
 		UserStore:    udbstore,
+		StoryStore:   sdbstore,
 	}
 
 	//get the TLS key and cert paths from environment variables
@@ -106,6 +109,8 @@ func main() {
 	muxLogged.HandleFunc(apiSessions, ctx.SessionsHandler)
 	muxLogged.HandleFunc(apiSessionsMine, ctx.SessionsMineHandler)
 	muxLogged.HandleFunc(apiUsersMe, ctx.UsersMeHanlder)
+	muxLogged.HandleFunc(apiStories, ctx.StoriesHandler)
+	muxLogged.HandleFunc(apiSections, ctx.SectionsHandler)
 
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	mux.Handle(apiRoot, middleware.Adapt(muxLogged, middleware.CORS("", "", "", ""), middleware.Notify(logger)))
