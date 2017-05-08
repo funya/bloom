@@ -3,9 +3,6 @@ import { Container, Segment, Icon, Header, Input, Message, Image, Button, Loader
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import 'whatwg-fetch'
 
-import Timeline from '../Timeline'
-import EditTimeline from './EditTimeline'
-
 import './edit.css';
 
 let nextid = 1

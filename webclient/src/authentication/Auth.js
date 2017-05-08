@@ -98,13 +98,13 @@ export const Auth = {
                     f.props.history.push('/account')
                     return resp.json()
                 } else {
-                    f.setState({ error: true})
+                    f.setState({ error: true })
 
                     return resp.text()
                 }
             })
             .then(data => {
-                f.setState({ errmsg: data})
+                f.setState({ errmsg: data })
                 this.user = data
                 console.log(this.user)
             })
@@ -112,8 +112,5 @@ export const Auth = {
                 f.setState({ loading: false, error: true, errmsg: "Oops! It looks like the internal server is down. Try again later." })
                 console.log(err)
             })
-    },
-    isAuthenticated() {
-        return !!localStorage.getItem(storageKey)
     }
 }

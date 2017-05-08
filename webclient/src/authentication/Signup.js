@@ -33,12 +33,12 @@ class Signup extends Component {
     render() {
         return (
             <Container>
-                <Header id="title" size='huge' textAlign='center'>
+                <Header id="title" textAlign='center' as='h1'>
                     <img src={image} alt='logo' />
                     Bloom
                 </Header>
                 <Form id='signup' onSubmit={event => this.handleNewUserSubmit(event)} loading={this.state.loading} warning={this.state.error}>
-                    <Header textAlign='center' size='large'> Sign Up</Header>
+                    <Header textAlign='center' as='h2'> Sign Up</Header>
                     <Form.Field required>
                         <input placeholder='Email address*' type='email' value={this.state.emailaddr} onChange={event => this.handleEmailChange(event)}/>
                     </Form.Field>

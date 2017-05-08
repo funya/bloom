@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
 import { Container, Message, Segment, Header, Icon, List } from 'semantic-ui-react'
 
-class Account2 extends Component {
-    state = {
-        user: {email: "bloom@bloom.com", userName: "bloom"}
-    }
-
+class Account extends Component {
     render() {
-        console.log(this.state)
-        let welcomemessage = <Message color='green'>{`Welcome ${this.state.user.userName}`}</Message>
-
+        console.log(this.props)
         return (
             <Container fluid id='accountcontainer'>
                 <Container>
-                    {welcomemessage}
                     <Segment padded secondary>
                         <Header as='h2' icon textAlign='center'>
                             <Icon name='user' circular />
-                            <Header.Content>@{this.state.user.userName}</Header.Content>
-                            <Header.Subheader>{this.state.user.email}</Header.Subheader>
+                            <Header.Content>@{this.props.user.userName}</Header.Content>
+                            <Header.Subheader>{this.props.user.email}</Header.Subheader>
                         </Header>
                     </Segment>
                     <Segment padded>
@@ -53,4 +46,4 @@ class Account2 extends Component {
     }
 }
 
-export default Account2
+export default Account
