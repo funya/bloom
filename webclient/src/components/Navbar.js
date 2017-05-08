@@ -5,7 +5,7 @@ import { Menu, Container, Image } from 'semantic-ui-react'
 import { Link, withRouter } from 'react-router-dom';
 
 import image from '../img/lotus.svg';
-import { Auth } from '../authentication/Auth'
+import { Auth, isAuthenticated } from '../authentication/Auth'
 
 class TopNavBar extends Component {
 
@@ -14,7 +14,7 @@ class TopNavBar extends Component {
 	}
 
 	render() {
-		if (this.props.authenticated) {
+		if (localStorage.getItem("u") && localStorage.getItem("auth")) {
 			return (
 				<Menu fixed='top'>
 					<Container>
