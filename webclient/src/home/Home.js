@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Container, Header, Image, Grid } from 'semantic-ui-react'
 
-import image from '../img/image.png';
+import image from '../img/lotus.svg';
 import mediaparagraph from '../img/mediaparagraph.png';
 import paragraph from '../img/paragraph.png';
 
@@ -57,7 +57,7 @@ class Home extends Component {
 		return (
 			<Container fluid className='body'>
 				<Container id="jumbo" textAlign='center'>
-					<Image centered={true} src={image} size='small' />
+					<Image centered={true} src={image} size='large' />
 					<Header size='huge'>You have the power to own your story</Header>
 						
 						<Btn path='/story' content='Submit Your Own' />
