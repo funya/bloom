@@ -1,15 +1,198 @@
 import React, { Component } from 'react';
-
+import 'whatwg-fetch'
+import { arrayMove } from 'react-sortable-hoc';
+import { apiRoot, storageKey } from '../authentication/Auth'
+import './edit.css';
 import Edit from './Edit'
 
 class EditContainer extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            story: this.props.location.state,
+            timelineitems: [],
+            modalOpen: false,
+            inputText: null,
+            textareabody: "",
+            loadingSections: false,
+            loadingForm: false,
+            submitSuccess: false,
+            deleteModalOpen: false
+        };
+    }
+
+    //Fetch Sections
+    fetchSections() {
+        this.setState({ loadingSections: true })
+        // Get the single story information 
+        fetch(`${apiRoot}/stories/${this.state.story.id}`, {
+            mode: "cors",
+            headers: new Headers({
+                "Authorization": localStorage.getItem(storageKey)
+            })
+        })
+            .then(resp => {
+                if (resp.ok) {
+                    return resp.json()
+                } else {
+                    return Promise.reject({
+                        status: resp.status,
+                        statusText: resp.statusText,
+                        statusMessage: resp.text()
+                    })
+                }
+            })
+            .then(data => {
+                this.setState({ timelineitems: data, loadingSections: false })
+            })
+            .catch(err => {
+                this.setState({ loadingSections: false })
+                console.log(err)
+                return null
+            })
+    }
+
+    // Initialization of DOM nodes goes here. When the edit page is mounted, a fetch 
+    // call is made to get the sections of the story. 
+    componentDidMount() {
+        this.fetchSections()
+    }
+
+
+    // Event handler that manages the changing of the story title
+    handleTimelineTitleChange = (event) => this.setState({ title: event.target.value })
+
+
+    // Callback called when resorting of section ends
+    onSortEnd = ({ oldIndex, newIndex }) => {
+        // console.log("Oldindex",oldIndex, this.state.timelineitems)
+        // console.log("Newindex",newIndex, this.state.timelineitems)
+        this.setState({
+            timelineitems: arrayMove(this.state.timelineitems, oldIndex, newIndex),
+        });
+    };
+
+    // Event handler that opens the editing modal
+    handleOpenModal = (e) => {
+        e.preventDefault()
+        this.setState({ modalOpen: true, })
+    }
+
+    // Event handler that closes the editing modal and clears the inputs
+    handleCloseModal = (e) => this.setState({ modalOpen: false, inputText: null, textareabody: "" })
+
+    // Event handler that shows either a TextArea or an input for images
+    // depending on what button is clicked in the editing modal
+    showInput = (e) => {
+        e.preventDefault()
+        this.setState({ inputText: e.target.value })
+        console.log(e.target.value)
+    }
+
+    // Event handler that triggers when a grid item is edited. The editing modal opens
+    // and loads the text in teh appropriate inputs
+    handleEditSection = (e, v) => {
+        e.preventDefault()
+        this.setState({ modalOpen: true, inputText: "text", textareabody: v.body })
+    }
+
+    // Event handler that triggers when delete butotn is clicked on delete prompt window
+    // deletes the section 
+    handleDeleteSection = () => {
+        fetch(`${apiRoot}/sections/${this.state.selectedsectionid}`, {
+            mode: "cors",
+            method: "DELETE",
+            headers: new Headers({
+                "Authorization": localStorage.getItem(storageKey)
+            })
+        })
+            .then(resp => {
+                if (resp.ok) {
+                    return resp.json()
+                } else {
+                    return Promise.reject({
+                        status: resp.status,
+                        statusText: resp.statusText,
+                        statusMessage: resp.text()
+                    })
+                }
+            })
+            .then(data => {
+                console.log(data)
+            })
+            .catch(err => {
+                console.log(err)
+                return null
+            })
+        this.setState({ deleteModalOpen: false })
+        this.fetchSections()
+    }
+
+    // Event handler that open/close the delete prompt modal
+    showDeleteModal = (selectedsectionid) => () => this.setState({ selectedsectionid, deleteModalOpen: true })
+    closeDeleteModal = () => this.setState({ deleteModalOpen: false })
+
+    // Event handler that manages the changing of the textarea in the editing modal
+    handleEditBody = (e) => this.setState({ textareabody: e.target.value })
+
+    // Event handler that is called when save is clicked in the editing modal.
+    // A POST fetch call is made to submit the new item to the DB
+    submitForm = (e) => {
+        this.setState({ loadingForm: true, submitSuccess: false })
+        e.preventDefault()
+        fetch(`${apiRoot}/sections`, {
+            method: 'post',
+            mode: "cors",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem(storageKey)
+            }),
+            body: JSON.stringify({
+                body: this.state.textareabody,
+                storyid: this.state.story.id
+            })
+        })
+            .then(resp => {
+                if (resp.ok) {
+                    return resp.json()
+                } else {
+                    return Promise.reject({
+                        status: resp.status,
+                        statusText: resp.statusText,
+                        statusMessage: resp.text()
+                    })
+                }
+            })
+            .then(data => {
+                console.log(data)
+                this.setState({ loadingForm: false, submitSuccess: true })
+            })
+            .catch(err => {
+                this.setState({ loadingForm: false, submitSuccess: true })
+                console.log(err)
+                return null
+            })
+
     }
 
     render() {
+        console.log("Rendering Edit comp. State: ", this.state)
         return (
-            <Edit />
+            <Edit
+                {...this.state}
+                handleTimelineTitleChange={this.handleTimelineTitleChange}
+                onSortEnd={this.onSortEnd}
+                handleOpenModal={this.handleOpenModal}
+                handleCloseModal={this.handleCloseModal}
+                showInput={this.showInput}
+                handleEditSection={this.handleEditSection}
+                handleEditBody={this.handleEditBody}
+                submitForm={this.submitForm}
+                showDeleteModal={this.showDeleteModal}
+                closeDeleteModal={this.closeDeleteModal}
+                handleDeleteSection={this.handleDeleteSection}
+            />
         )
     }
 }
