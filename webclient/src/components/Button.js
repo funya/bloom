@@ -7,7 +7,7 @@ class Btn extends Component {
     
     render() {
         return (
-            <Link className='btn' to={this.props.path}>{this.props.content}</Link>
+            <Link className='btn' to={this.props.path} {...this.props}>{this.props.content}</Link>
         )
     }
 }
