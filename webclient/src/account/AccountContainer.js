@@ -11,9 +11,10 @@ class AccountContainer extends Component {
             user: JSON.parse(localStorage.getItem("u")),
             stories: [],
             loading: false,
-            openModal: false,
-            loadingform: false,
-            deleteModalOpen: false,
+            visibleNewModal: false,
+            newStoryLoading: false,
+            newstorydescription: "",
+            newstoryname: "",
         }
     }
 
@@ -47,20 +48,70 @@ class AccountContainer extends Component {
             })
     }
 
-    showmodal = (dimmer) => () => this.setState({ dimmer, openModal: true })
-    closemodal = () => this.setState({ openModal: false })
+    showNewModal = (dimmer) => () => this.setState({ dimmer, visibleNewModal: true })
+    hideNewModal = () => this.setState({ visibleNewModal: false })
 
     componentDidMount = () => {
         this.fetchStories()
+    }
+
+    submitStory = (e) => {
+        e.preventDefault()
+        this.setState({ newStoryLoading: true })
+        fetch(`${apiRoot}/stories`, {
+            mode: "cors",
+            method: "POST",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem(storageKey)
+            }),
+            body: JSON.stringify({
+                name: this.state.newstoryname,
+                description: this.state.newstorydescription
+            })
+        })
+            .then(resp => {
+                if (resp.ok) {
+                    this.setState({ newStoryLoading: false })
+                    return resp.json()
+                } else {
+                    return Promise.reject({
+                        status: resp.status,
+                        statusText: resp.statusText,
+                        statusMessage: resp.text()
+                    })
+                }
+            })
+            .then(data => {
+                this.setState({ newstorydescription: "", newstoryname: "" })
+                console.log(data)
+            })
+            .catch(err => {
+                console.log(err)
+                return null
+            })
+        this.setState({ visibleNewModal: false })
+        this.fetchStories()
+    }
+
+    handleNameInput = (e) => {
+        this.setState({ newstoryname: e.target.value, })
+    }
+
+    handleDescriptionInput = (e) => {
+        this.setState({ newstorydescription: e.target.value, })
     }
 
     render() {
         console.log("Rendering Account comp. State: ", this.state)
         return <Account
             {...this.state}
-            showmodal={this.showmodal}
-            closemodal={this.closemodal}
+            showNewModal={this.showNewModal}
+            hideNewModal={this.hideNewModal}
             fetchStories={this.fetchStories}
+            handleDescriptionInput={this.handleDescriptionInput}
+            handleNameInput={this.handleNameInput}
+            submitStory={this.submitStory}
         />
     }
 }

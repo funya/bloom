@@ -44,8 +44,8 @@ class Account extends Component {
                                 <li>Add thoughts and feelings.</li>
                                 <li>Dig deeper.</li>
                             </ol>
-                            <Button onClick={this.props.showmodal('inverted')} id='add-story-button'>Ready to tell your story?</Button>
-                            <Modal dimmer={this.props.dimmer} open={this.props.openModal} onClose={this.props.closemodal}>
+                            <Button onClick={this.props.showNewModal('inverted')} id='add-story-button'>Ready to tell your story?</Button>
+                            <Modal dimmer={this.props.dimmer} open={this.props.visibleNewModal} onClose={this.props.hideNewModal}>
                                 <Modal.Header as='h1'>Add New Story</Modal.Header>
                                 <Modal.Content>
                                     <Modal.Description>
@@ -54,18 +54,18 @@ class Account extends Component {
                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates laboriosam voluptatem perspiciatis dolorem ratione consequuntur obcaecati est, facere, voluptatum culpa sed. Molestias explicabo aspernatur corporis quo consequatur, autem numquam, ipsum.</p>
                                         <Header>Story Information</Header>
                                         <Segment>
-                                            <Form loading={this.props.loadingForm}>
-                                                <Form.Input type='text' placeholder='Name' />
-                                                <Form.Input type='text' placeholder='Description (Optional)' />
+                                            <Form loading={this.props.newStoryLoading} onSubmit={event => this.props.submitStory(event)}>
+                                                <Form.Input type='text' placeholder='Name' value={this.props.newstoryname} onChange={event => this.props.handleNameInput(event)}/>
+                                                <Form.Input type='text' placeholder='Description (Optional)' value={this.props.newstorydescription} onChange={event => this.props.handleDescriptionInput(event)}/>
                                             </Form>
                                         </Segment>
                                     </Modal.Description>
                                 </Modal.Content>
                                 <Modal.Actions>
-                                    <Button color='red' onClick={this.props.closemodal}>
+                                    <Button color='red' onClick={this.props.hideNewModal}>
                                         Cancel
                                     </Button>
-                                    <Button positive icon='checkmark' labelPosition='right' content="Create" onClick={this.close} />
+                                    <Button positive icon='checkmark' labelPosition='right' content="Create" onClick={this.props.submitStory} />
                                 </Modal.Actions>
                             </Modal>
                         </Segment>
