@@ -41,7 +41,7 @@ class StoryItem extends Component {
                 console.log(err)
                 return null
             })
-        this.setState({ deleteModalOpen: false })
+        this.setState({ visibleDeleteModal: false })
         this.props.fetchStories()
     }
 
@@ -70,7 +70,7 @@ class StoryItem extends Component {
                         </Item.Content>
                     </Item>
                 }
-                open={this.visibleDeleteModal}
+                open={this.state.visibleDeleteModal}
                 onClose={this.hideDeleteModal}
                 basic
             >
