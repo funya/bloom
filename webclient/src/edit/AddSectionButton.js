@@ -40,7 +40,7 @@ class AddSectionButton extends Component {
             })
             .then(data => {
                 console.log(data)
-                this.setState({ loading: false, visibleAddModal: false, textareabody: "" })
+                this.setState({ loading: false, visibleAddModal: false, textareabody: "", inputType: null })
             })
             .catch(err => {
                 this.setState({ loading: false })
