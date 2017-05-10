@@ -14,7 +14,7 @@ import Home from '../home/Home'
 import About from '../about/About'
 import Account from '../account/AccountContainer'
 import Story from './Story'
-import Edit from '../edit/Edit'
+import Edit from '../edit/EditContainer'
 import Signup from '../authentication/Signup'
 import Login from '../authentication/Login'
 
@@ -54,13 +54,15 @@ class App extends Component {
             .catch(err => {
                 console.log(err)
                 localStorage.removeItem("u")
+                localStorage.removeItem("auth")
+                this.forceUpdate()
                 return null
             })
     }
 
 
     render() {
-        console.log("App comp state: ", this.state)
+        console.log("Rendering App comp. State: ", this.state)
         const AuthRoute = ({ component: Component, ...rest }) => (
             <Route {...rest} render={props => (
                 localStorage.getItem("u") && localStorage.getItem("auth") ? (
@@ -83,6 +85,7 @@ class App extends Component {
                         <Route exact path="/about" component={About} />
                         <AuthRoute exact path="/account" component={Account} />
                         <Route exact path="/story" component={Story} />
+                        <AuthRoute exact path="/story/:id/edit" component={Edit} />
                         <Route exact path="/edit" component={Edit} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/signup" component={Signup} />
