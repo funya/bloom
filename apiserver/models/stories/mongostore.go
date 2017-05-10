@@ -36,6 +36,14 @@ func (ms *MongoStore) GetStoryByID(id StoryID) (*Story, error) {
 	return story, nil
 }
 
+//GetStoryByCreator gets all the stories created by the author
+func (ms *MongoStore) GetStoryByCreator(id users.UserID) ([]*Story, error) {
+	stories := []*Story{}
+	query := bson.M{"creator_id": id}
+	err := ms.Session.DB(ms.DatabaseName).C(ms.StoriesCollectionName).Find(query).All(&stories)
+	return stories, err
+}
+
 //InsertStory inserts a new story into the store
 //and returns a Story with a newly assigned ID
 func (ms *MongoStore) InsertStory(id users.UserID, newStory *NewStory) (*Story, error) {

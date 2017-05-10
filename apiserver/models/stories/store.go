@@ -22,6 +22,9 @@ type Store interface {
 	//GetStoryByID returns the Story with the given ID
 	GetStoryByID(id StoryID) (*Story, error)
 
+	//GetStoryByCreator returns a list of stories created by the author
+	GetStoryByCreator(id users.UserID) ([]*Story, error)
+
 	//InsertStory inserts a new story into the store
 	//and returns a Story with a newly assigned ID
 	InsertStory(id users.UserID, newStory *NewStory) (*Story, error)
