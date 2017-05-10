@@ -1,55 +1,57 @@
 import React, { Component } from 'react';
-import { storageKey, apiRoot } from '../authentication/Auth'
+import { apiRoot, storageKey } from '../authentication/Auth'
 import Account from './Account'
-import { Redirect } from 'react-router-dom';
+import './account.css'
 
 class AccountContainer extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            user: {},
-            authenticated: false
+            user: JSON.parse(localStorage.getItem("u")),
+            stories: [],
+            loading: false,
+            openModal: false,
+            loadingform: false
         }
     }
 
+    showmodal = (dimmer) => () => this.setState({ dimmer, openModal: true })
+    closemodal = () => this.setState({ openModal: false })
+
     componentDidMount = () => {
-        console.log(this)
-        fetch(`${apiRoot}/users/me`, {
+        this.setState({loading: true})
+        fetch(`${apiRoot}/stories?author=${this.state.user.id}`, {
             mode: "cors",
             headers: new Headers({
                 "Authorization": localStorage.getItem(storageKey)
             })
         })
-            .then(resp => {
+             .then(resp => {
                 if (resp.ok) {
                     return resp.json()
                 } else {
                     return Promise.reject({
                         status: resp.status,
                         statusText: resp.statusText,
-                        statusMessage: resp.text().then(errmsg => { return errmsg })
+                        statusMessage: resp.text()
                     })
                 }
             })
             .then(data => {
-                this.setState({ user: data, authenticated: true })
-                console.log(this.state)
+                this.setState({stories: data, loading: false})
                 return data
             })
             .catch(err => {
+                this.setState({loading: false})
                 console.log(err)
+                return null
             })
     }
 
-
-
     render() {
-        if (this.state.authenticated) {
-            return <Account {...this.state} />
-        } else {
-            return  <Redirect to={{ pathname: '/login', state: { from: this.props.location } }} />
-        }
+        console.log("Rendering Account comp. State: ", this.state)
+        return <Account {...this.state} showmodal={this.showmodal} closemodal={this.closemodal} />
     }
 }
 

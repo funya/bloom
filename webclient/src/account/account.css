@@ -1,0 +1,15 @@
+a.edit-story-button {
+    float: right;
+    background-color: #D8E2DC !important;
+}
+
+#add-story-button {
+    display: block;
+    margin: 0 auto;
+    width: 225px;
+    background-color: #D8E2DC !important;
+}
+
+.delete-story-button {
+    float: right;
+}
