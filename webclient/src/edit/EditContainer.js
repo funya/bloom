@@ -18,12 +18,13 @@ class EditContainer extends Component {
             loadingSections: false,
             loadingForm: false,
             submitSuccess: false,
-            deleteModalOpen: false
+            deleteModalOpen: false,
+            visibleAddModal: false
         };
     }
 
     //Fetch Sections
-    fetchSections() {
+    fetchSections = () => {
         this.setState({ loadingSections: true })
         // Get the single story information 
         fetch(`${apiRoot}/stories/${this.state.story.id}`, {
@@ -136,62 +137,12 @@ class EditContainer extends Component {
     // Event handler that manages the changing of the textarea in the editing modal
     handleEditBody = (e) => this.setState({ textareabody: e.target.value })
 
-    // Event handler that is called when save is clicked in the editing modal.
-    // A POST fetch call is made to submit the new item to the DB
-    submitForm = (e) => {
-        this.setState({ loadingForm: true, submitSuccess: false })
-        e.preventDefault()
-        fetch(`${apiRoot}/sections`, {
-            method: 'post',
-            mode: "cors",
-            headers: new Headers({
-                "Content-Type": "application/json",
-                "Authorization": localStorage.getItem(storageKey)
-            }),
-            body: JSON.stringify({
-                body: this.state.textareabody,
-                storyid: this.state.story.id
-            })
-        })
-            .then(resp => {
-                if (resp.ok) {
-                    return resp.json()
-                } else {
-                    return Promise.reject({
-                        status: resp.status,
-                        statusText: resp.statusText,
-                        statusMessage: resp.text()
-                    })
-                }
-            })
-            .then(data => {
-                console.log(data)
-                this.setState({ loadingForm: false, submitSuccess: true })
-            })
-            .catch(err => {
-                this.setState({ loadingForm: false, submitSuccess: true })
-                console.log(err)
-                return null
-            })
-
-    }
-
     render() {
         console.log("Rendering Edit comp. State: ", this.state)
         return (
             <Edit
                 {...this.state}
-                handleTimelineTitleChange={this.handleTimelineTitleChange}
-                onSortEnd={this.onSortEnd}
-                handleOpenModal={this.handleOpenModal}
-                handleCloseModal={this.handleCloseModal}
-                showInput={this.showInput}
-                handleEditSection={this.handleEditSection}
-                handleEditBody={this.handleEditBody}
-                submitForm={this.submitForm}
-                showDeleteModal={this.showDeleteModal}
-                closeDeleteModal={this.closeDeleteModal}
-                handleDeleteSection={this.handleDeleteSection}
+                fetchSections={this.fetchSections}
             />
         )
     }
