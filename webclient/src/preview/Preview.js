@@ -8,7 +8,7 @@ class Preview extends Component {
 
     render() {
         return (
-            <Container fluid>
+            <Container>
                 <Segment basic padded>
                     <Link className='ui button' to={{ pathname: `/story/${this.props.story.id}/edit`, state: { id: this.props.story.id, name: this.props.story.name } }}>
                         <Icon name='long arrow left' />
