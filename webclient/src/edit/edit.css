@@ -11,11 +11,11 @@
 }
 
 .timeline-content .label {
-    background-color: rgba(241, 163, 168, 0.9);
+    background-color: rgba(220, 112, 131, 0.9);
 }
 
 form .timelineitem-submit-button.button {
-    background-color: rgba(241, 163, 168, 0.9);
+    background-color: rgba(220, 112, 131, 0.9);
     color: rgba(0,0,0,.5);
     border-radius: 0;
 }
@@ -168,7 +168,10 @@ form .timelineitem-submit-button.button:hover {
 
 }
 
-
 .input-menu button i {
     pointer-events: none;
+}
+
+.preview-story-button {
+    background-color: rgba(220, 112, 131, 0.1) !important;
 }

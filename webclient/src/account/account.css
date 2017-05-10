@@ -1,13 +1,13 @@
 a.edit-story-button {
     float: right;
-    background-color: #D8E2DC !important;
+    background-color: rgba(220, 112, 131, 0.1) !important;
 }
 
 #add-story-button {
     display: block;
     margin: 0 auto;
     width: 225px;
-    background-color: #D8E2DC !important;
+    background-color: rgba(220, 112, 131, 0.1) !important;
 }
 
 .delete-story-button {
