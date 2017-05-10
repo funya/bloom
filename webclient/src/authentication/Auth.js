@@ -25,9 +25,11 @@ export const Auth = {
                     localStorage.setItem(storageKey, resp.headers.get("Authorization"))
                     return resp.json()
                 } else {
-                    f.setState({ error: true, errmsg: "Invalid username or password." })
-
-                    return null
+                    return Promise.reject({
+                        status: resp.status,
+                        statusText: resp.statusText,
+                        statusMessage: resp.text()
+                    })
                 }
             })
             .then(data => {
@@ -35,8 +37,12 @@ export const Auth = {
                 f.props.history.push('/account')
             })
             .catch(err => {
-                f.setState({ loading: false, error: true, errmsg: "Oops! It looks like the internal server is down. Try again later." })
                 console.log(err)
+                if (err.status === 401) {
+                    f.setState({ error: true, errmsg: "Invalid username or password." })
+                } else {
+                    f.setState({ loading: false, error: true, errmsg: "Oops! It looks like the internal server is down. Try again later." })
+                }
             })
 
     },
