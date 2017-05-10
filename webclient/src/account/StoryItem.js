@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 class StoryItem extends Component {
     
     render() {
+        console.log(this.props)
         let { createdAt } = this.props
         return (
             <Item>
@@ -16,11 +17,11 @@ class StoryItem extends Component {
                     </Item.Meta>
                     <Item.Description>{this.props.description}</Item.Description>
                     <Item.Extra>
-                        <Link className='ui button edit-story-button' to={{ pathname: `/story/${this.props.id}/edit`, state: this.props}}>
+                        <Link className='ui button edit-story-button' to={{ pathname: `/story/${this.props.id}/edit`, state: {id: this.props.id, name: this.props.name}}}>
                             Edit story
                             <Icon name='chevron right'/>
                         </Link>
-                        <Button className='delete-story-button' color='red' icon='delete' labelPosition='right' content="Delete" />
+                        <Button className='delete-story-button' color='red' icon='delete' labelPosition='right' content="Delete" onClick={this.props.showDeleteModal(this.props.id)}/>
                         <Label icon='calendar' content={moment(createdAt).format("YYYY-MM-DD")} />
                         <Label icon='unlock' content={this.props.private.toString()}/>
                     </Item.Extra>
