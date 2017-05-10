@@ -1,7 +1,4 @@
 import React, {Component } from 'react';
-import PropTypes from 'prop-types';
-
-
 
 class TimelineItem extends Component {
     handleItemMouseEnter = () => {
@@ -21,13 +18,6 @@ class TimelineItem extends Component {
             </li>
         )
     }
-}
-
-TimelineItem.propTypes = {
-    date: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    body: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired
 }
 
 export default TimelineItem

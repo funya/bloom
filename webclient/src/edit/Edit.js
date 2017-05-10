@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Container, Segment, Icon, Input, Button, Loader, Dimmer, Modal, Card } from 'semantic-ui-react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import AddSectionButton from './AddSectionButton'
+import EditableSectionItem from './EditableSectionItem'
+import { Link } from 'react-router-dom';
 
 class Edit extends Component {
 
@@ -10,7 +12,10 @@ class Edit extends Component {
         // a single story has exist before it could be rendered.
         let nextbutton = null
         if (this.props.timelineitems.length > 0) {
-            nextbutton = <Button color='green'>Next <Icon name='long arrow right' /></Button>
+            nextbutton = <Link className='ui button preview-story-button' to={{ pathname: `/story/${this.props.story.id}/preview`, state: { id: this.props.story.id, name: this.props.story.name } }}>
+                Next
+                <Icon name='long arrow right' />
+            </Link>
         }
         return (
             <Container fluid id="editcontainer">
@@ -40,39 +45,14 @@ class Edit extends Component {
                         />
                     </Segment>
                 </Container>
-                <Modal open={this.props.deleteModalOpen} onClose={this.props.closeDeleteModal} basic>
-                    <Modal.Header as='h3'> <Icon name='warning' color='red' />Delete Section</Modal.Header>
-                    <Modal.Content>
-                        <p>Are you sure you want to delete this section? Once it's deleted, it will be gone <strong>forever</strong>.</p>
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Button basic color='green' inverted onClick={this.props.closeDeleteModal}>
-                            <Icon name='long arrow left' /> Cancel
-                        </Button>
-                        <Button color='red' inverted onClick={this.props.handleDeleteSection}>
-                            <Icon name='trash outline' /> Delete
-                        </Button>
-                    </Modal.Actions>
-                </Modal>
             </Container>
         )
     }
 }
 
-const SortableItem = SortableElement(({ value }) => {
+const SortableItem = SortableElement(({ value, fetchSections }) => {
     return (
-        <div className='section-grid-item-container'>
-            <div className='menu-icons'>
-                <Icon name='content' className='reorder-icon' size='large' />
-                <div className='menu-icons-right'>
-                    <Icon name='pencil' className='edit-icon' color='blue' size='large' />
-                    <Icon name='trash outline' className='trash-icon' size='large' color='red' />
-                </div>
-            </div>
-            <Card className='section-grid-item-content'>
-                <Card.Content description={value.body} />
-            </Card>
-        </div>
+        <EditableSectionItem value={value} fetchSections={fetchSections} />
     )
 });
 
@@ -83,9 +63,10 @@ const SortableList = SortableContainer(({ items, storyid, fetchSections }) => {
                 <SortableItem
                     key={`item-${index}`}
                     index={index} value={value}
+                    fetchSections={fetchSections}
                 />
             ))}
-            <AddSectionButton storyid={storyid} fetchSections={fetchSections}/>
+            <AddSectionButton storyid={storyid} fetchSections={fetchSections} />
         </div>
     );
 });

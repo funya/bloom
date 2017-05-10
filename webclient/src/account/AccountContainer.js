@@ -47,45 +47,8 @@ class AccountContainer extends Component {
             })
     }
 
-
     showmodal = (dimmer) => () => this.setState({ dimmer, openModal: true })
     closemodal = () => this.setState({ openModal: false })
-
-    // Event handler that triggers when delete butotn is clicked on delete prompt window
-    // deletes the section 
-    handleDeleteStory = () => {
-        fetch(`${apiRoot}/stories/${this.state.selectedstoryid}`, {
-            mode: "cors",
-            method: "DELETE",
-            headers: new Headers({
-                "Authorization": localStorage.getItem(storageKey)
-            })
-        })
-            .then(resp => {
-                if (resp.ok) {
-                    return resp.json()
-                } else {
-                    return Promise.reject({
-                        status: resp.status,
-                        statusText: resp.statusText,
-                        statusMessage: resp.text()
-                    })
-                }
-            })
-            .then(data => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.log(err)
-                return null
-            })
-        this.setState({ deleteModalOpen: false })
-        this.fetchStories()
-    }
-
-    // Event handler that open/close the delete prompt modal
-    showDeleteModal = () => () => this.setState({ deleteModalOpen: true })
-    closeDeleteModal = () => this.setState({ deleteModalOpen: false })
 
     componentDidMount = () => {
         this.fetchStories()
@@ -97,9 +60,7 @@ class AccountContainer extends Component {
             {...this.state}
             showmodal={this.showmodal}
             closemodal={this.closemodal}
-            showDeleteModal={this.showDeleteModal}
-            closeDeleteModal={this.closeDeleteModal}
-            handleDeleteStory={this.handleDeleteStory}
+            fetchStories={this.fetchStories}
         />
     }
 }

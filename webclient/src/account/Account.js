@@ -28,7 +28,7 @@ class Account extends Component {
                                         <StoryItem
                                             {...story}
                                             key={story.id}
-                                            showDeleteModal={this.props.showDeleteModal}
+                                            fetchStories={this.props.fetchStories}
                                         />
                                     )}
                                 </Item.Group>
@@ -71,20 +71,6 @@ class Account extends Component {
                         </Segment>
                     </Segment>
                 </Container>
-                 <Modal open={this.props.deleteModalOpen} onClose={this.props.closeDeleteModal} basic>
-                    <Modal.Header as='h3'> <Icon name='warning' color='red'/>Delete Story</Modal.Header>
-                    <Modal.Content>
-                        <p>Are you sure you want to delete this story? Once it's deleted, <strong>all</strong> the content contained within this story, including all the text and pictures will be gone <strong>forever</strong>.</p>
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Button basic color='green' inverted onClick={this.props.closeDeleteModal}>
-                            <Icon name='long arrow left' /> Cancel
-                        </Button>
-                        <Button color='red' inverted onClick={this.props.handleDeleteStory}>
-                            <Icon name='trash outline' /> Delete
-                        </Button>
-                    </Modal.Actions>
-                </Modal>
             </Container>
         )
     }

@@ -12,14 +12,6 @@ class EditContainer extends Component {
         this.state = {
             story: this.props.location.state,
             timelineitems: [],
-            modalOpen: false,
-            inputText: null,
-            textareabody: "",
-            loadingSections: false,
-            loadingForm: false,
-            submitSuccess: false,
-            deleteModalOpen: false,
-            visibleAddModal: false
         };
     }
 
@@ -73,69 +65,6 @@ class EditContainer extends Component {
             timelineitems: arrayMove(this.state.timelineitems, oldIndex, newIndex),
         });
     };
-
-    // Event handler that opens the editing modal
-    handleOpenModal = (e) => {
-        e.preventDefault()
-        this.setState({ modalOpen: true, })
-    }
-
-    // Event handler that closes the editing modal and clears the inputs
-    handleCloseModal = (e) => this.setState({ modalOpen: false, inputText: null, textareabody: "" })
-
-    // Event handler that shows either a TextArea or an input for images
-    // depending on what button is clicked in the editing modal
-    showInput = (e) => {
-        e.preventDefault()
-        this.setState({ inputText: e.target.value })
-        console.log(e.target.value)
-    }
-
-    // Event handler that triggers when a grid item is edited. The editing modal opens
-    // and loads the text in teh appropriate inputs
-    handleEditSection = (e, v) => {
-        e.preventDefault()
-        this.setState({ modalOpen: true, inputText: "text", textareabody: v.body })
-    }
-
-    // Event handler that triggers when delete butotn is clicked on delete prompt window
-    // deletes the section 
-    handleDeleteSection = () => {
-        fetch(`${apiRoot}/sections/${this.state.selectedsectionid}`, {
-            mode: "cors",
-            method: "DELETE",
-            headers: new Headers({
-                "Authorization": localStorage.getItem(storageKey)
-            })
-        })
-            .then(resp => {
-                if (resp.ok) {
-                    return resp.json()
-                } else {
-                    return Promise.reject({
-                        status: resp.status,
-                        statusText: resp.statusText,
-                        statusMessage: resp.text()
-                    })
-                }
-            })
-            .then(data => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.log(err)
-                return null
-            })
-        this.setState({ deleteModalOpen: false })
-        this.fetchSections()
-    }
-
-    // Event handler that open/close the delete prompt modal
-    showDeleteModal = (selectedsectionid) => () => this.setState({ selectedsectionid, deleteModalOpen: true })
-    closeDeleteModal = () => this.setState({ deleteModalOpen: false })
-
-    // Event handler that manages the changing of the textarea in the editing modal
-    handleEditBody = (e) => this.setState({ textareabody: e.target.value })
 
     render() {
         console.log("Rendering Edit comp. State: ", this.state)
