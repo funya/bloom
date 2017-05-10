@@ -38,7 +38,7 @@ class Login extends Component {
         }
 
         let warningmessage = null
-        if (from.pathname === "/account") {
+        if (!redirectToReferrer) {
             warningmessage = <Segment basic padded><Message error content='You need to sign in to access this page.' /></Segment>
         }
 
