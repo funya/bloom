@@ -18,7 +18,7 @@ class TopNavBar extends Component {
 			return (
 				<Menu fixed='top'>
 					<Container>
-						<Menu.Item header as={Link} to='/'>
+						<Menu.Item header as={Link} to='/' className='nav-main-item'>
 							<Image size='mini' src={image} id='nav-logo'></Image>
 							Bloom
 						</Menu.Item>
@@ -43,7 +43,7 @@ class TopNavBar extends Component {
 			return (
 				<Menu fixed='top'>
 					<Container>
-						<Menu.Item header as={Link} to='/'>
+						<Menu.Item header as={Link} to='/' className='nav-main-item'>
 							<Image size='mini' src={image} id='nav-logo'></Image>
 							Bloom
 						</Menu.Item>
