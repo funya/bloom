@@ -85,13 +85,13 @@ class AccountContainer extends Component {
             .then(data => {
                 this.setState({ newstorydescription: "", newstoryname: "" })
                 console.log(data)
+                this.fetchStories()
             })
             .catch(err => {
                 console.log(err)
                 return null
             })
         this.setState({ visibleNewModal: false })
-        this.fetchStories()
     }
 
     handleNameInput = (e) => {
