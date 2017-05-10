@@ -8,7 +8,7 @@ import lotus from '../img/lotus.svg'
 class About extends Component {
     render() {
         return ( 
-            <div className = "about">
+            <div className="about">
                 <FontAwesome name='rocket' spin/>,
                 <br/>
                 <h1 id='title'><img id="lotuslogo" src={lotus} alt='logo'/> &nbsp; About Bloom</h1>

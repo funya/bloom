@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Header, Container, Button, Image, Message } from 'semantic-ui-react'
+import { Form, Header, Container, Button, Image, Message, Segment } from 'semantic-ui-react'
 import { Link, Redirect } from 'react-router-dom';
 
 import './Login_Signup.css'
@@ -38,8 +38,8 @@ class Login extends Component {
         }
 
         let warningmessage = null
-        if (from.pathname === "/account") {
-            warningmessage = <Message error content='You need to sign in for access to this page.' />
+        if (!redirectToReferrer) {
+            warningmessage = <Segment basic padded><Message error content='You need to sign in to access this page.' /></Segment>
         }
 
         return (
@@ -50,7 +50,7 @@ class Login extends Component {
                     Bloom
                 </Header>
                 <Form id='signup' onSubmit={event => this.handleSignInSubmit(event)} loading={this.state.loading} warning={this.state.error}>
-                    <Header textAlign='center' size='large'> Sign In</Header>
+                    <Header textAlign='center' as='h2'> Sign In</Header>
                     <Form.Field>
                         <input placeholder='Username' required type='text' value={this.state.username} onChange={event => this.handleUsernameChange(event)} />
                     </Form.Field>
@@ -64,7 +64,7 @@ class Login extends Component {
                     </p>
                 </Form>
                 <p className='center-text'>Don't have an account?
-                    <Link to='/signup'>Sign Up</Link>
+                    <Link to='/signup'> Sign Up</Link>
                 </p>
                 <br />
             </Container>

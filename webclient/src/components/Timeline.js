@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 
 import TimelineItem from './TimelineItem'
@@ -20,12 +19,6 @@ class Timeline extends Component {
             </ul>
         )
     }
-}
-
-Timeline.propTypes = {
-    timelineitems: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-    }).isRequired).isRequired
 }
 
 export default Timeline

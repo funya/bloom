@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/jadiego/bloom/apiserver/models/stories"
+	"github.com/jadiego/bloom/apiserver/models/users"
 	"github.com/jadiego/bloom/apiserver/sessions"
 )
 
@@ -51,20 +52,47 @@ func (ctx *Context) StoriesHandler(w http.ResponseWriter, r *http.Request) {
 		encoder.Encode(s)
 
 	case "GET":
-		//Get all stories from the StoryStore and write them
-		//to the response as a JSON-encoded array
-		stories, err := ctx.StoryStore.GetAllStories()
-		if err != nil {
-			http.Error(w, "error getting all stories: "+err.Error(), http.StatusInternalServerError)
-			return
+		url := r.URL.Query().Get("author")
+		if len(url) != 0 {
+			//get the session state
+			ss := &SessionState{}
+			_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
+			if err != nil {
+				http.Error(w, "error getting session: "+err.Error(), http.StatusUnauthorized)
+				return
+			}
+
+			stories, err := ctx.StoryStore.GetStoryByCreator(users.UserID(url))
+
+			if users.UserID(url) != ss.User.ID {
+				http.Error(w, "You are not the author to all these stories", http.StatusUnauthorized)
+				return
+			}
+
+			if err != nil {
+				http.Error(w, "error getting author stories: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			w.Header().Add(headerContentType, contentTypeJSONUTF8)
+			encoder := json.NewEncoder(w)
+			encoder.Encode(stories)
+		} else {
+			//Get all stories from the StoryStore and write them
+			//to the response as a JSON-encoded array
+			stories, err := ctx.StoryStore.GetAllStories()
+			if err != nil {
+				http.Error(w, "error getting all stories: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
+			w.Header().Add(headerContentType, contentTypeJSONUTF8)
+			encoder := json.NewEncoder(w)
+			encoder.Encode(stories)
 		}
-		w.Header().Add(headerContentType, contentTypeJSONUTF8)
-		encoder := json.NewEncoder(w)
-		encoder.Encode(stories)
 	}
 }
 
-//SpecificStoryhandler allows fro getting the sections of a story, updating a story's title or description
+//SpecificStoryhandler allows for getting the sections of a story, updating a story's title or description
 //or delete the story. It all depends on the request method
 // /v1/stories/<story-id>
 func (ctx *Context) SpecificStoryhandler(w http.ResponseWriter, r *http.Request) {
