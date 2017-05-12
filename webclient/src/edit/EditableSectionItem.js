@@ -47,7 +47,7 @@ class EditableSectionItem extends Component {
                 console.log(err)
                 return null
             })
-        this.setState({ deleteModalOpen: false })
+        this.setState({ visibleDeleteModal: false })
         this.props.fetchSections()
     }
 

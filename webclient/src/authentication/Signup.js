@@ -32,7 +32,7 @@ class Signup extends Component {
 
     render() {
         return (
-            <Container>
+            <Container className='logincontainer'>
                 <Header id="title" textAlign='center' as='h1'>
                     <img src={image} alt='logo' />
                     Bloom

@@ -38,12 +38,12 @@ class Login extends Component {
         }
 
         let warningmessage = null
-        if (!redirectToReferrer) {
+        if (this.props.location.state) {
             warningmessage = <Segment basic padded><Message error content='You need to sign in to access this page.' /></Segment>
         }
 
         return (
-            <Container>
+            <Container className='logincontainer'>
                 {warningmessage}
                 <Header id="title" textAlign='center' as='h1'>
                     <Image src={image} alt='logo' />

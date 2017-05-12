@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import 'whatwg-fetch'
-import Preview from './Preview'
-import { apiRoot, storageKey } from '../authentication/Auth'
-
+import 'whatwg-fetch';
+import Preview from './Preview';
+import { apiRoot, storageKey } from '../authentication/Auth';
+import './preview.css'
 
 
 class PreviewContainer extends Component {

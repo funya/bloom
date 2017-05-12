@@ -23,9 +23,6 @@ class TopNavBar extends Component {
 							Bloom
 						</Menu.Item>
 						<Menu.Menu position='right'>
-							<Menu.Item name='home' as={Link} to='/'>
-								Home
-							</Menu.Item>
 							<Menu.Item name='about' as={Link} to='/about'>
 								About
 							</Menu.Item>
@@ -48,17 +45,11 @@ class TopNavBar extends Component {
 							Bloom
 						</Menu.Item>
 						<Menu.Menu position='right'>
-							<Menu.Item name='home' as={Link} to='/'>
-								Home
-							</Menu.Item>
 							<Menu.Item name='about' as={Link} to='/about'>
 								About
 							</Menu.Item>
 							<Menu.Item name='login' as={Link} to='/login'>
-								Log in
-							</Menu.Item>
-							<Menu.Item name='signup' as={Link} to='/signup'>
-								Sign Up
+								Sign in
 							</Menu.Item>
 						</Menu.Menu>
 					</Container>

@@ -64,8 +64,7 @@ class StoryItem extends Component {
                                     <Icon name='chevron right' />
                                 </Link>
                                 <Button className='delete-story-button' color='red' icon='delete' labelPosition='right' content="Delete" onClick={this.showDeleteModal} />
-                                <Label icon='calendar' content={moment(createdAt).format("YYYY-MM-DD")} />
-                                <Label icon='unlock' content={this.props.private.toString()} />
+                                <p>Created: {moment(createdAt).format("YYYY-MM-DD")}</p>
                             </Item.Extra>
                         </Item.Content>
                     </Item>

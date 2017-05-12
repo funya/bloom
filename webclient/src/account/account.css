@@ -1,3 +1,7 @@
+#accountcontainer {
+    min-height: 100vh;
+}
+
 a.edit-story-button {
     float: right;
     background-color: rgba(220, 112, 131, 0.1) !important;

@@ -78,7 +78,7 @@ class App extends Component {
         )
 
         return (
-            <BrowserRouter forceRefresh={!('pushState' in window.history)} >
+            <BrowserRouter forceRefresh>
                 <Container fluid id='app'>
                     <Navbar {...this.state}/>
                     <div>
@@ -91,6 +91,7 @@ class App extends Component {
                         <Route exact path="/edit" component={Edit} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/signup" component={Signup} />
+                        <Route exact path="/story/:id" component={Story} />
                     </div>
                     <Footer />
                 </Container>

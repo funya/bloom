@@ -1,46 +1,56 @@
 import React, { Component } from 'react';
-
-import { Container, Grid, Header } from 'semantic-ui-react'
-import classNames from 'classnames';
-
-import sections from '../data/sections.json'
+import { Container, Segment, Image, Header } from 'semantic-ui-react';
+import image from '../img/lotus.svg';
+import 'whatwg-fetch';
+import Timeline from '../components/Timeline';
+import { apiRoot, storageKey } from '../authentication/Auth';
+import './story.css'
 
 class Story extends Component {
+    state={
+        story: this.props.location.state,
+        loading: false,
+        items: []
+    }
+
     componentDidMount() {
-            document.title = "Bloom | " + this.props.path;
+        this.setState({ loading: true })
+        // Get the single story information 
+        fetch(`${apiRoot}/stories/${this.state.story.id}`, {
+            mode: "cors",
+        })
+            .then(resp => {
+                if (resp.ok) {
+                    return resp.json()
+                } else {
+                    return Promise.reject({
+                        status: resp.status,
+                        statusText: resp.statusText,
+                        statusMessage: resp.text()
+                    })
+                }
+            })
+            .then(data => {
+                this.setState({ items: data, loading: false })
+            })
+            .catch(err => {
+                this.setState({ loading: false })
+                console.log(err)
+                return null
+            })
     }
 
     render() {
-
-        let timelineitems = sections.map((item, index) =>
-            <li key={index} className="timeline-item">
-                <div className="timeline-info"><span>{item.date}</span></div>
-                <div className="timeline-marker">
-                </div>
-                <div className="timeline-content">
-                    <h3 className="timeline-title">{item.title}</h3>
-                    <p>{item.text}</p>
-                </div>
-            </li>
-        );
-        console.log(timelineitems);
+        console.log("Rendering Story comp.: ", this.state)
         return (
-            <Container fluid={true}>
-                <Grid centered>
-                    <Grid.Row>
-                        <Grid.Column width={13}>
-                            <Container className='timeline-heading' textAlign='center'>
-                                <Header size='huge'>Point of No Return</Header>
-                                <p>Queer / Filipina / Woman / 42 years old</p>
-                            </Container>
-                            <Container >
-                                <ul className={classNames('timeline-centered', 'timeline')}>
-                                    {timelineitems}
-                                </ul>
-                            </Container>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+            <Container>
+                <Segment basic padded>
+                    <Header as='h1' textAlign='center' id='story-title'>{this.state.story.name}</Header>
+                </Segment>
+                <Segment basic padded>
+                    <Image src={image} size='medium' centered/>
+                    <Timeline timelineitems={this.state.items} />
+                </Segment>
             </Container>
         )
     }
