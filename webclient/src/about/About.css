@@ -1,8 +1,3 @@
-body {
-  margin: 0px;
-  font-family: 'Open Sans',"Helvetica Neue", Helvetica, sans-serif;;
-}
-
 #title {
     color: #9D8189;
     margin-left: -25px;
@@ -10,8 +5,8 @@ body {
     font: "Open Sans";
 }
 
-.about {
-    margin: 25px;
+.aboutcontainer {
+    min-height: 100vh;
 }
 
 #lotuslogo {
