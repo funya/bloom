@@ -15,7 +15,7 @@ class StoryItem extends Component {
 
     // Event handler that triggers when delete butotn is clicked on delete prompt window
     // deletes the section 
-    deleteStory = () => {
+    deleteStory = (e) => {
         fetch(`${apiRoot}/stories/${this.props.id}`, {
             mode: "cors",
             method: "DELETE",

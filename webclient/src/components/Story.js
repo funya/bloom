@@ -43,9 +43,10 @@ class Story extends Component {
     render() {
         console.log("Rendering Story comp.: ", this.state)
         return (
-            <Container>
+            <Container id='storycontainer'>
                 <Segment basic padded>
                     <Header as='h1' textAlign='center' id='story-title'>{this.state.story.name}</Header>
+                    <Header as='h3' textAlign='center' id='story-description'>{this.state.story.description}</Header>
                 </Segment>
                 <Segment basic padded>
                     <Image src={image} size='medium' centered/>

@@ -1,4 +1,14 @@
+#storycontainer{
+    min-height: 100vh;
+}
+
 #story-title {
     font-size: 4em;
     color: #9D8189;
+    margin-bottom: 0px;
+}
+
+#story-description{
+    margin-top: 5px;
+    color: #979fa7;
 }
