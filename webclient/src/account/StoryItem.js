@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Item, Button, Icon, Label, Modal } from 'semantic-ui-react'
+import { Item, Button, Icon, Label, Modal, Checkbox } from 'semantic-ui-react'
 import moment from "moment";
 import { Link } from 'react-router-dom';
 import 'whatwg-fetch'
@@ -8,6 +8,7 @@ import { apiRoot, storageKey } from '../authentication/Auth'
 class StoryItem extends Component {
     state = {
         visibleDeleteModal: false,
+        checked: this.props.private,
     }
 
     showDeleteModal = (e) => this.setState({ visibleDeleteModal: true, })
@@ -45,6 +46,43 @@ class StoryItem extends Component {
         this.props.fetchStories()
     }
 
+    toggleStoryPrivacy(e, d) {
+        e.preventDefault()
+        this.setState({ checked: !this.state.checked })
+        console.log(d)
+        fetch(`${apiRoot}/stories/${this.props.id}`, {
+            mode: "cors",
+            method: "PATCH",
+            headers: new Headers({
+                "Authorization": localStorage.getItem(storageKey)
+            }),
+            body: JSON.stringify({
+                name: this.props.name,
+                description: this.props.description,
+                private: !this.props.private
+            })
+        })
+            .then(resp => {
+                if (resp.ok) {
+                    return resp.json()
+                } else {
+                    return Promise.reject({
+                        status: resp.status,
+                        statusText: resp.statusText,
+                        statusMessage: resp.text()
+                    })
+                }
+            })
+            .then(data => {
+                console.log(data)
+            })
+            .catch(err => {
+                console.log(err)
+                return null
+            })
+        this.props.fetchStories()
+    }
+
     render() {
         console.log("Rendering StoryItem: ", this.state)
         let { createdAt } = this.props
@@ -55,7 +93,7 @@ class StoryItem extends Component {
                         <Item.Content>
                             <Item.Header as='h3'>{this.props.name}</Item.Header>
                             <Item.Meta>
-                                <span>ID: {this.props.id}</span>
+                                <span>Created: {moment(createdAt).format("LLL")}</span>
                             </Item.Meta>
                             <Item.Description>{this.props.description}</Item.Description>
                             <Item.Extra>
@@ -64,7 +102,7 @@ class StoryItem extends Component {
                                     <Icon name='chevron right' />
                                 </Link>
                                 <Button className='delete-story-button' color='red' icon='delete' labelPosition='right' content="Delete" onClick={this.showDeleteModal} />
-                                <p>Created: {moment(createdAt).format("YYYY-MM-DD")}</p>
+                                <Checkbox toggle label="Private" onChange={(event, data) => this.toggleStoryPrivacy(event, data)} checked={this.state.checked} />
                             </Item.Extra>
                         </Item.Content>
                     </Item>
