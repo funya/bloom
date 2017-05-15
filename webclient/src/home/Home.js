@@ -57,18 +57,14 @@ class Home extends Component {
 					<Dimmer inverted active={this.state.loading}>
 						<Loader>Loading Stories</Loader>
 					</Dimmer>
-					<Segment basic padded='very'>
-						<Grid columns='four'>
-							<Grid.Row stretched centered>
-								{this.state.stories.map(story =>
-									<Grid.Column key={story.id} style={{marginBottom:"30px"}}>
-										<StoryItem
-											{...story}
-										/>
-									</Grid.Column>
-								)}
-							</Grid.Row>
-						</Grid>
+					<Segment basic padded className='stories-grid-container'>
+							{this.state.stories.map(story =>
+								<div key={story.id} style={{ marginBottom: "30px", width: Math.floor(Math.random() * 450) + 280 , minHeight: "100%"}} className='story-item-container'>
+									<StoryItem
+										{...story}
+									/>
+								</div>
+							)}
 					</Segment>
 				</Container>
 			</Container>

@@ -36,14 +36,15 @@ class StoryItem extends Component {
                 }
             })
             .then(data => {
+                this.props.fetchStories()
                 console.log(data)
             })
             .catch(err => {
+                this.props.fetchStories()
                 console.log(err)
                 return null
             })
         this.setState({ visibleDeleteModal: false })
-        this.props.fetchStories()
     }
 
     toggleStoryPrivacy(e, d) {
@@ -74,13 +75,14 @@ class StoryItem extends Component {
                 }
             })
             .then(data => {
+                this.props.fetchStories()
                 console.log(data)
             })
             .catch(err => {
+                this.props.fetchStories()
                 console.log(err)
                 return null
             })
-        this.props.fetchStories()
     }
 
     render() {
