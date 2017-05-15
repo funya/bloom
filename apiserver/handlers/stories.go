@@ -134,12 +134,12 @@ func (ctx *Context) SpecificStoryhandler(w http.ResponseWriter, r *http.Request)
 		//get the session state
 		ss := &SessionState{}
 		_, err = sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
-		if err != nil {
+		if err != nil && s.Private {
 			http.Error(w, "error getting current session : "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		if s.Private && (err != nil || ss.User.ID == s.CreatorID) {
+		if s.Private && ss.User.ID != s.CreatorID {
 			http.Error(w, "error you are not allowed to access this story: "+err.Error(), http.StatusUnauthorized)
 			return
 		}
