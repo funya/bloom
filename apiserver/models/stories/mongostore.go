@@ -19,7 +19,7 @@ type MongoStore struct {
 //GetAllStories returns all public stories
 func (ms *MongoStore) GetAllStories() ([]*Story, error) {
 	stories := []*Story{}
-	err := ms.Session.DB(ms.DatabaseName).C(ms.StoriesCollectionName).Find(nil).All(&stories)
+	err := ms.Session.DB(ms.DatabaseName).C(ms.StoriesCollectionName).Find(bson.M{"private": false}).All(&stories)
 	if err != nil {
 		return nil, err
 	}

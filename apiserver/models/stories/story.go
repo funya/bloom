@@ -31,6 +31,7 @@ type NewStory struct {
 type StoryUpdates struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
+	Private     bool   `json:"private"`
 }
 
 //Validate validates the new story

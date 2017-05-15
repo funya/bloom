@@ -134,6 +134,10 @@ func (ctx *Context) SpecificStoryhandler(w http.ResponseWriter, r *http.Request)
 		//get the session state
 		ss := &SessionState{}
 		_, err = sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
+		if err != nil {
+			http.Error(w, "error getting current session : "+err.Error(), http.StatusInternalServerError)
+			return
+		}
 
 		if s.Private && (err != nil || ss.User.ID == s.CreatorID) {
 			http.Error(w, "error you are not allowed to access this story: "+err.Error(), http.StatusUnauthorized)
@@ -153,21 +157,29 @@ func (ctx *Context) SpecificStoryhandler(w http.ResponseWriter, r *http.Request)
 	case "PATCH":
 		//if the current user is the creator of story, update the specified story's name and description and write the
 		//updated story object to the response
+		ss := &SessionState{}
+		_, err = sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
+		if err != nil {
+			http.Error(w, "error getting current session : "+err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-		//Decode the request body into a models.NewUser struct
+		if err != nil && ss.User.ID != s.CreatorID {
+			http.Error(w, "error you are not allowed to access this story: "+err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		//if  the user is not owner of this section
+		if strings.Compare(ss.User.ID.String(), s.CreatorID.String()) != 0 {
+			http.Error(w, "error you are not allowed to access this story", http.StatusUnauthorized)
+			return
+		}
+
+		//Decode the request body into a models.NewStory struct
 		d := json.NewDecoder(r.Body)
 		storyupdates := &stories.StoryUpdates{}
 		if err := d.Decode(storyupdates); err != nil {
 			http.Error(w, "invalid JSON: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		//get the session state
-		ss := &SessionState{}
-		_, err = sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
-
-		if err != nil && ss.User.ID != s.CreatorID {
-			http.Error(w, "error you are not allowed to access this story: "+err.Error(), http.StatusUnauthorized)
 			return
 		}
 
