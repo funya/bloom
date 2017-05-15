@@ -51,8 +51,8 @@ class Signup extends Component {
                     <Form.Field required>
                         <input placeholder='Confirm Password' type='password' value={this.state.passwordconf} onChange={event => this.handlePasswordConfChange(event)}/>
                     </Form.Field>
-                    <Button className="submit-button" fluid={true} onClick={event => this.handleNewUserSubmit(event)}>Submit</Button>
                     <Message warning>{this.state.errmsg}</Message>
+                    <Button className="submit-button" fluid={true} onClick={event => this.handleNewUserSubmit(event)}>Submit</Button>
                     <p className='center-text'>
                         By signing up, you agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>
                     </p><br/>
