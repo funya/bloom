@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Header, Image, Grid, Card, Dimmer, Loader } from 'semantic-ui-react'
+import { Container, Header, Image, Grid, Card, Dimmer, Loader, Segment } from 'semantic-ui-react'
 import { apiRoot } from '../authentication/Auth';
 import image from '../img/lotus.svg';
 import Btn from '../components/Button.js';
-import StackGrid, { transitions } from "react-stack-grid";
 import './home.css'
 import StoryItem from './StoryItem'
 
@@ -43,26 +42,34 @@ class Home extends Component {
 	render() {
 		console.log("Rendering Home comp.: ", this.state)
 		return (
-			<Container id='homecontainer'>
-				<Container id="jumbo" textAlign='center'>
-					<Image centered src={image} size='large' />
-					<Header as='h1' size='huge'>You have the power to own your story</Header>
+			<Container id='homecontainer' fluid>
+				<Container id='hero-container' fluid>
+					<Segment textAlign='center' basic padded>
+						<Image centered src={image} size='medium' />
+						<Header as='h2' textAlign='center' className='hero-title'>We are API Chaya and we are collecting stories on</Header>
+						<Header as='h1' textAlign='center' className='hero-title'>sexual assault, domestic violence, and human trafficking</Header>
 
-					<Btn path='/story' content='Submit Your Own' />
+						<Btn path='/signup' content='Do you have a story?' id='action-button' />
 
+					</Segment>
 				</Container>
-				<Container fluid>
+				<Container fluid id='stories-container'>
 					<Dimmer inverted active={this.state.loading}>
 						<Loader>Loading Stories</Loader>
 					</Dimmer>
-					<StackGrid columnWidth='33.33%' gutterWidth={12} gutterHeight={12} duration={0}>
-						{this.state.stories.map(story =>
-							<StoryItem
-								{...story}
-								key={story.id}
-							/>
-						)}
-					</StackGrid>
+					<Segment basic padded='very'>
+						<Grid columns='four'>
+							<Grid.Row stretched centered>
+								{this.state.stories.map(story =>
+									<Grid.Column key={story.id} style={{marginBottom:"30px"}}>
+										<StoryItem
+											{...story}
+										/>
+									</Grid.Column>
+								)}
+							</Grid.Row>
+						</Grid>
+					</Segment>
 				</Container>
 			</Container>
 		)

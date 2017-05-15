@@ -78,7 +78,7 @@ class App extends Component {
         )
 
         return (
-            <BrowserRouter forceRefresh>
+            <BrowserRouter forceRefresh={!('pushState' in window.history)}>
                 <Container fluid id='app'>
                     <Navbar {...this.state}/>
                     <div>

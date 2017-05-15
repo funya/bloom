@@ -7,6 +7,7 @@ body {
 }
 
 h1,h2,h3,h4,h5,h6 {
+  font-family: "Open Sans","Helvetica Neue", Helvetica, sans-serif;
   font-weight: 400 !important;
 }
 
@@ -67,13 +68,6 @@ h1,h2,h3,h4,h5,h6 {
   margin-top: 50px;
   border-radius: 0;
 
-}
-
-
-#jumbo {
-  min-height: 30vh;
-  padding-top: 100px;
-  padding-bottom: 100px;
 }
 
 .add-timeline-item-button {
@@ -179,6 +173,7 @@ h1,h2,h3,h4,h5,h6 {
 
 /*----- TIMELINE CONTENT -----*/
 .timeline-content {
+  font-size: 1.2em;
   padding-bottom: 40px; }
   .timeline-content p:last-child {
     margin-bottom: 0; }
