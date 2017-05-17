@@ -18,6 +18,7 @@ type Section struct {
 	Body      string       `json:"body"`
 	CreatedAt time.Time    `json:"createdAt"`
 	EditedAt  time.Time    `json:"editedAt"`
+	Image     string       `json:"image"`
 }
 
 //NewSection represents the fields a new section the client wants
@@ -25,11 +26,13 @@ type Section struct {
 type NewSection struct {
 	StoryID StoryID `json:"storyid" bson:"story_id"`
 	Body    string  `json:"body"`
+	Image   string  `json:"image"`
 }
 
 //SectionUpdates represents updates one can make to a section
 type SectionUpdates struct {
-	Body string `json:"body"`
+	Body  string `json:"body"`
+	Image string `json:"image"`
 }
 
 //Validate validates the new section
@@ -39,8 +42,8 @@ func (ns *NewSection) Validate() error {
 		return fmt.Errorf("storyID cant be empty, no context on which story to add this section to")
 	}
 
-	if len(ns.Body) < 1 {
-		return fmt.Errorf("error invalid body, body can't be empty")
+	if len(ns.Image) < 1 && len(ns.Body) < 1 {
+		return fmt.Errorf("error invalid body, body text and image can't be both empty")
 	}
 
 	return nil
@@ -51,6 +54,7 @@ func (ns *NewSection) ToSection() *Section {
 	//construct a new Section setting the various fields
 	s := &Section{
 		Body:      ns.Body,
+		Image:     ns.Image,
 		StoryID:   ns.StoryID,
 		CreatedAt: time.Now(),
 		EditedAt:  time.Now(),

@@ -1,4 +1,5 @@
-import React, {Component } from 'react';
+import React, { Component } from 'react';
+import { Image, Segment } from 'semantic-ui-react';
 
 class TimelineItem extends Component {
     handleItemMouseEnter = () => {
@@ -13,7 +14,15 @@ class TimelineItem extends Component {
                 </div>
                 <div className="timeline-content">
                     <h3 className="timeline-title">{this.props.title}</h3>
-                    <p>{this.props.body}</p>
+                    {this.props.image.length > 0 ? (
+                        <div>
+                            <Image src={this.props.image} className='timeline-image'/>
+                            <Segment basic textAlign='center'>{this.props.body} </Segment>
+                        </div>
+                    ) : (
+                            <p>{this.props.body} </p>
+                        )
+                    }
                 </div>
             </li>
         )

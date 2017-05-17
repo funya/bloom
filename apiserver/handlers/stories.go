@@ -18,6 +18,14 @@ import (
 func (ctx *Context) StoriesHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
+		//get the session state
+		ss := &SessionState{}
+		_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
+		if err != nil {
+			http.Error(w, "error getting session: "+err.Error(), http.StatusUnauthorized)
+			return
+		}
+
 		//Decode the request body into a models.NewUser struct
 		d := json.NewDecoder(r.Body)
 		ns := &stories.NewStory{}
@@ -29,14 +37,6 @@ func (ctx *Context) StoriesHandler(w http.ResponseWriter, r *http.Request) {
 		//Validate the models.NewStory
 		if err := ns.Validate(); err != nil {
 			http.Error(w, "error validating story: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		//get the session state
-		ss := &SessionState{}
-		_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
-		if err != nil {
-			http.Error(w, "error getting session: "+err.Error(), http.StatusUnauthorized)
 			return
 		}
 
@@ -204,25 +204,25 @@ func (ctx *Context) SectionsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		//Insert the new section, and respond by writing the newly inserted section to the response
 
+		//get the session state
+		ss := &SessionState{}
+		_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
+		if err != nil {
+			http.Error(w, "error getting session: "+err.Error(), http.StatusUnauthorized)
+			return
+		}
+
 		//Decode the request body into a models.NewSection struct
 		d := json.NewDecoder(r.Body)
 		ns := &stories.NewSection{}
 		if err := d.Decode(ns); err != nil {
-			http.Error(w, "invalid JSON", http.StatusBadRequest)
+			http.Error(w, "invalid JSON "+err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		//Validate the models.NewSection
 		if err := ns.Validate(); err != nil {
 			http.Error(w, "error invalid section: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		//get the session state
-		ss := &SessionState{}
-		_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
-		if err != nil {
-			http.Error(w, "error getting session: "+err.Error(), http.StatusUnauthorized)
 			return
 		}
 
