@@ -11,13 +11,7 @@ class StoryItem extends Component {
         return (
             <Card fluid color='pink' as='div' centered className='story-item'>
                     <Card.Content>
-                        {
-                            this.props.name.length > 20 ? (
-                                <Divider horizontal style={{whiteSpace:"normal"}}><Card.Header as='h1' className='story-item-header'>{this.props.name}</Card.Header></Divider>
-                            ) : (
-                                <Divider horizontal style={{whiteSpace:"wrap"}}><Card.Header as='h1' className='story-item-header'>{this.props.name}</Card.Header></Divider>
-                            )
-                        }
+                        <Divider horizontal style={{whiteSpace:"normal"}}><Card.Header as='h1' className='story-item-header'>{this.props.name}</Card.Header></Divider>
                         {this.props.description != "" && (
                             <Card.Description className='text-container'>{this.props.description}</Card.Description>)
                         }
