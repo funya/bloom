@@ -2,9 +2,9 @@ import 'whatwg-fetch'
 
 export const storageKey = 'auth'
 
-export var apiRoot = "https://api.chayabloom.me/v1/";
+export var apiRoot = "https://api.chayabloom.me/v1";
 if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-  apiRoot = "https://localhost:4000/v1/"
+  apiRoot = "https://localhost:4000/v1"
 };
 
 export const Auth = {
