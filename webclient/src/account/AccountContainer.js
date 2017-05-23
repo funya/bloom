@@ -67,7 +67,9 @@ class AccountContainer extends Component {
             }),
             body: JSON.stringify({
                 name: this.state.newstoryname,
-                description: this.state.newstorydescription
+                description: this.state.newstorydescription,
+                private: true
+                
             })
         })
             .then(resp => {

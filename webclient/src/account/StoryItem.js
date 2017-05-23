@@ -50,7 +50,6 @@ class StoryItem extends Component {
     toggleStoryPrivacy(e, d) {
         e.preventDefault()
         this.setState({ checked: !this.state.checked })
-        console.log(d)
         fetch(`${apiRoot}/stories/${this.props.id}`, {
             mode: "cors",
             method: "PATCH",
@@ -86,12 +85,11 @@ class StoryItem extends Component {
     }
 
     render() {
-        console.log("Rendering StoryItem: ", this.state)
         let { createdAt } = this.props
         return (
             <Modal
                 trigger={
-                    <Item>
+                    <Item className='story-item'>
                         <Item.Content>
                             <Item.Header as='h3'>{this.props.name}</Item.Header>
                             <Item.Meta>
@@ -99,11 +97,13 @@ class StoryItem extends Component {
                             </Item.Meta>
                             <Item.Description>{this.props.description}</Item.Description>
                             <Item.Extra>
-                                <Link className='ui button edit-story-button' to={{ pathname: `/story/${this.props.id}/edit`, state: { id: this.props.id, name: this.props.name } }}>
-                                    Edit story
+                                <div className='story-buttons'>
+                                    <Link className='ui button edit-story-button' to={{ pathname: `/story/${this.props.id}/edit`, state: { id: this.props.id, name: this.props.name } }}>
+                                        Edit story
                                     <Icon name='chevron right' />
-                                </Link>
-                                <Button className='delete-story-button' color='red' icon='delete' labelPosition='right' content="Delete" onClick={this.showDeleteModal} />
+                                    </Link>
+                                    <Button className='delete-story-button' color='red' icon='delete' labelPosition='right' content="Delete" onClick={this.showDeleteModal} />
+                                </div>
                                 <Checkbox toggle label="Private" onChange={(event, data) => this.toggleStoryPrivacy(event, data)} checked={this.state.checked} />
                             </Item.Extra>
                         </Item.Content>

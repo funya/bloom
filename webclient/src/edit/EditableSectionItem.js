@@ -144,7 +144,6 @@ class EditableSectionItem extends Component {
         this.setState({ imageUrl: URL.createObjectURL(e.target.files[0]), image: e.target.files[0] })
     }
     render() {
-        console.log("Rendering EditableSectionItem: ", this.state, this.props)
         let haspicture = this.props.value.image.length > 0
         return (
             <Modal

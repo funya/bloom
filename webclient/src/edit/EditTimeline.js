@@ -73,11 +73,3 @@ EditTimeline.propTypes = {
 }
 
 export default EditTimeline
-
-//
-//
-//
-//
-//
-//
-//

@@ -46,7 +46,6 @@ class PreviewContainer extends Component {
     }
 
     render() {
-        console.log("Rendering Preview: ", this.state)
         return (
             <Preview {...this.state}/>
         )

@@ -18,6 +18,7 @@ import Edit from '../edit/EditContainer'
 import Signup from '../authentication/Signup'
 import Login from '../authentication/Login'
 import Preview from '../preview/PreviewContainer'
+import Confirmation from '../preview/Confirmation'
 
 class App extends Component {
     constructor(props) {
@@ -88,6 +89,7 @@ class App extends Component {
                         <Route exact path="/story" component={Story} />
                         <AuthRoute exact path="/story/:id/preview" component={Preview}/>
                         <AuthRoute exact path="/story/:id/edit" component={Edit} />
+                        <AuthRoute path="/story/:id/confirmation" component={Confirmation} />
                         <Route exact path="/edit" component={Edit} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/signup" component={Signup} />

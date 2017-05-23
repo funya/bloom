@@ -25,6 +25,7 @@ type Story struct {
 type NewStory struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
+	Private     bool   `json:"private"`
 }
 
 //StoryUpdates represents updates one can make to a story
@@ -51,7 +52,7 @@ func (ns *NewStory) ToStory() *Story {
 		Name:        ns.Name,
 		Description: ns.Description,
 		CreatedAt:   time.Now(),
-		Private:     false,
+		Private:     ns.Private,
 	}
 
 	return s

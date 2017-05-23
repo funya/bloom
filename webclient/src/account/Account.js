@@ -32,7 +32,7 @@ class Account extends Component {
                                         />
                                     )}
                                     <Item>
-                                        <Button onClick={this.props.showNewModal('inverted')} id='add-story-button'>Add new story</Button>
+                                        <Button onClick={this.props.showNewModal('inverted')} id='add-story-button' color='green'>Add new story</Button>
                                     </Item>
                                 </Item.Group>
                             </Segment>
@@ -55,7 +55,7 @@ class Account extends Component {
                                     <Segment basic padded>
                                         <Header as='h3' textAlign='center'>Story Information</Header>
                                         <Form loading={this.props.newStoryLoading} onSubmit={event => this.props.submitStory(event)}>
-                                            <Form.Input type='text' placeholder='Name' value={this.props.newstoryname} onChange={event => this.props.handleNameInput(event)} />
+                                            <Form.Input type='text' placeholder='Story Title' value={this.props.newstoryname} onChange={event => this.props.handleNameInput(event)} />
                                             <Form.Input type='text' placeholder='Description (Optional)' value={this.props.newstorydescription} onChange={event => this.props.handleDescriptionInput(event)} />
                                         </Form>
                                     </Segment>
