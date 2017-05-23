@@ -16,7 +16,7 @@ let fetching = (state = {}, action) => {
 let fetchError = (state = "", action) => {
     switch (action.type) {
         case "FETCH END":
-            return action.error
+            return action.message
         default:
             return state
     }
