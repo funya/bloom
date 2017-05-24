@@ -100,6 +100,7 @@ func (ms *MongoStore) InsertSection(id users.UserID, newSection *NewSection) (*S
 	s := newSection.ToSection()
 	s.CreatorID = id
 	s.ID = SectionID(bson.NewObjectId().Hex())
+	s.Index, _ = ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName).Find(bson.M{"story_id": newSection.StoryID}).Count()
 	err := ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName).Insert(s)
 	return s, err
 }
