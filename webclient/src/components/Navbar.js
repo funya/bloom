@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
-
 import { Menu, Container, Image } from 'semantic-ui-react'
-
 import { Link, withRouter } from 'react-router-dom';
-
 import image from '../img/lotus.svg';
-import { Auth, isAuthenticated } from '../authentication/Auth'
+import { isEmpty } from 'lodash';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { signOut } from '../redux/actions';
+
 
 class TopNavBar extends Component {
-
-	handleSignOut = () => {
-		Auth.signout(this)
-	}
-
 	render() {
-		if (localStorage.getItem("u") && localStorage.getItem("auth")) {
+		const { signOut, currentUser } = this.props
+
+		if (!isEmpty(currentUser) && localStorage.getItem("auth")) {
 			return (
 				<Menu fixed='top'>
 					<Container>
@@ -29,7 +28,7 @@ class TopNavBar extends Component {
 							<Menu.Item name='account' as={Link} to='/account'>
 								Account
 							</Menu.Item>
-							<Menu.Item name='signout' as='a' onClick={this.handleSignOut}>
+							<Menu.Item name='signout' as='a' onClick={signOut}>
 								Sign out
 							</Menu.Item>
 						</Menu.Menu>
@@ -59,4 +58,16 @@ class TopNavBar extends Component {
 	}
 }
 
-export default withRouter(TopNavBar);
+const mapStateToProps = (state) => {
+    return {
+        currentUser: state.currentUser,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        signOut,
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopNavBar);
