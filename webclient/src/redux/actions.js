@@ -58,11 +58,9 @@ export const handleTextResponse = (response) => {
 		})
 }
 
-export const signUp = (event, e, u, p1, p2) => {
-	event.preventDefault()
-
+export const signUp = (e, u, p1, p2) => {
 	return dispatch => {
-		dispatch({ type: 'FETCH START' })
+		dispatch({ type: 'FETCH START', fetch: "sign up" })
 
 		return fetch(`${apiRoot}users`, {
 			method: "POST",
@@ -82,12 +80,280 @@ export const signUp = (event, e, u, p1, p2) => {
 				return handleResponse(resp)
 			})
 			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
 				dispatch({ type: 'SET CURRENT USER', data })
-				dispatch({ type: 'FETCH END', message: "" })
+			})
+			.catch(error => { dispatch({ type: 'FETCH END', message: error.message, fetch: "sign up" }) })
+	}
+}
+
+export const signIn = (u, p) => {
+	return dispatch => {
+		dispatch({ type: 'FETCH START', fetch: "sign in" })
+
+		return fetch(`${apiRoot}sessions`, {
+			method: "POST",
+			mode: "cors",
+			headers: new Headers({
+				"Content-Type": contentTypeJSONUTF8
+			}),
+			body: JSON.stringify({
+				userName: u,
+				password: p
+			})
+		})
+			.then(resp => {
+				localStorage.setItem(storageKey, resp.headers.get("Authorization"))
+				return handleResponse(resp)
+			})
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'SET CURRENT USER', data })
+			})
+			.catch(error => { dispatch({ type: 'FETCH END', message: error.message, fetch: "sign in" }) })
+	}
+}
+
+export const signOut = () => {
+	return dispatch => {
+		dispatch({ type: 'FETCH START', fetch: "sign out" })
+
+		return fetch(`${apiRoot}sessions/mine`, {
+			method: "DELETE",
+			mode: "cors",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				localStorage.removeItem(storageKey)
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'SET CURRENT USER', data: {} })
+			})
+			.catch(error => { dispatch({ type: 'FETCH END', message: error.message, fetch: "sign out" }) })
+	}
+}
+
+export const checkSession = () => {
+	return dispatch => {
+		dispatch({ type: 'FETCH START', fetch: "check session" })
+
+		return fetch(`${apiRoot}users/me`, {
+			mode: "cors",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'SET CURRENT USER', data })
 			})
 			.catch(error => {
-				dispatch({ type: 'FETCH END', message: error.message })
+				localStorage.removeItem(storageKey)
+				dispatch({ type: 'FETCH END', message: "", fetch: "check session" })
+				dispatch({ type: 'SET CURRENT USER', data: {} })
 			})
 	}
 }
 
+export const createStory = (title, description) => {
+	return dispatch => {
+		dispatch({ type: 'FETCH START', fetch: "create new story" })
+
+		return fetch(`${apiRoot}stories`, {
+			mode: "cors",
+			method: "POST",
+			headers: new Headers({
+				"Content-Type": contentTypeJSONUTF8,
+				"Authorization": localStorage.getItem(storageKey)
+			}),
+			body: JSON.stringify({
+				name: title,
+				description: description,
+				private: true
+
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'ADD STORY', data })
+				return data.id
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "create new story" })
+				return ""
+			})
+	}
+}
+
+export const deleteStory = (storyid) => {
+	return dispatch => {
+		dispatch({ type: 'FETCH START', fetch: "delete story" })
+
+		return fetch(`${apiRoot}stories/${storyid}`, {
+			mode: "cors",
+			method: "DELETE",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'DELETE STORY', storyid })
+				return true
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "delete story" })
+				return false
+			})
+	}
+}
+
+export const getMyStories = () => {
+	return (dispatch, getState) => {
+		const { currentUser } = getState()
+		dispatch({ type: 'FETCH START', fetch: "get my stories" })
+
+		return fetch(`${apiRoot}stories?author=${currentUser.id}`, {
+			mode: "cors",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'SET MY STORIES', data })
+			})
+			.catch(error => { dispatch({ type: 'FETCH END', message: error.message, fetch: "get my stories" }) })
+	}
+}
+
+export const togglePrivacy = (privacy, story) => {
+	return dispatch => {
+		dispatch({ type: 'FETCH START', fetch: "update privacy" })
+		return fetch(`${apiRoot}stories/${story.id}`, {
+			mode: "cors",
+			method: "PATCH",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			}),
+			body: JSON.stringify({
+				name: story.name,
+				description: story.description,
+				private: privacy
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'UPDATE PRIVACY', storyid: story.id, data })
+				return true
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "update privacy" })
+				return false
+			})
+	}
+}
+
+export const getSections = (storyid) => {
+	return dispatch => {
+		dispatch({ type: 'FETCH START', fetch: "get sections" })
+
+		return fetch(`${apiRoot}stories/${storyid}`, {
+			mode: "cors",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'SET SECTIONS', data, storyid })
+				return true
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "get sections" })
+				return false
+			})
+	}
+}
+
+export const setCurrentStory = (storyid) => {
+	return (dispatch, getState) => {
+		const { myStories } = getState()
+		let story = find(myStories, (s => { return s.id === storyid }))
+		return dispatch({ type: "SET CURRENT STORY", data: story })
+	}
+}
+
+export const createSection = (modal, text) => {
+	return (dispatch, getState) => {
+		dispatch({ type: 'FETCH START', fetch: "create section" })
+		const { currentStory } = getState()
+
+		return fetch(`${apiRoot}sections`, {
+			method: 'POST',
+			mode: "cors",
+			headers: new Headers({
+				"Content-Type": contentTypeJSONUTF8,
+				"Authorization": localStorage.getItem(storageKey)
+			}),
+			body: JSON.stringify({
+				body: text,
+				storyid: currentStory.id
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'ADD SECTION', data, storyid:currentStory.id })
+				modal.setState({ visible: false, text: ""})
+				return true
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "create section" })
+				return false
+			})
+	}
+}
+
+export const createImageSection = (modal, image, text) => {
+	return (dispatch, getState) => {
+		dispatch({ type: 'FETCH START', fetch: "create section" })
+		const { currentStory } = getState()
+
+		var img64 = new FileReader()
+		img64.readAsDataURL(image)
+		return img64.onload = () => {
+			return fetch(`${apiRoot}sections`, {
+				method: 'POST',
+				mode: "cors",
+				headers: new Headers({
+					"Content-Type": contentTypeJSONUTF8,
+					"Authorization": localStorage.getItem(storageKey)
+				}),
+				body: JSON.stringify({
+					body: text,
+					storyid: currentStory.id,
+					image: img64.result,
+				})
+			})
+				.then(handleResponse)
+				.then(data => {
+					dispatch({ type: 'FETCH END', message: "", fetch: "" })
+					modal.setState({ visible: false, text: "", image: {}, imageUrl: ""})
+					dispatch({ type: 'ADD SECTION', data, storyid:currentStory.id })
+				})
+				.catch(error => {
+					dispatch({ type: 'FETCH END', message: error.message, fetch: "create section" })
+					return false
+				})
+		}
+	}
+}
