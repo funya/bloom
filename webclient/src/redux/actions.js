@@ -395,7 +395,6 @@ export const editSection = (modal) => {
 	return (dispatch, getState) => {
 		dispatch({ type: 'FETCH START', fetch: "edit section" })
 		const { currentSection } = getState()
-		console.log(currentSection)
 		return fetch(`${apiRoot}sections/${currentSection.id}`, {
 			method: 'PATCH',
 			mode: "cors",
@@ -411,13 +410,13 @@ export const editSection = (modal) => {
 		})
 			.then(handleResponse)
 			.then(data => {
-				console.log(data)
 				dispatch({ type: 'FETCH END', message: "", fetch: "" })
-				dispatch({ type: 'EDIT SECTION', data, storyid: currentSection.id })
+				dispatch({ type: 'EDIT SECTION', data, storyid: currentSection.storyid })
 				modal.setState({ visible: false })
 			})
 			.catch(error => {
-				dispatch({ type: 'FETCH END', message: error.message, fetch: "edit section" })
+				console.log(error)
+				//dispatch({ type: 'FETCH END', message: error.message, fetch: "edit section" })
 			})
 	}
 }

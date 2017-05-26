@@ -93,6 +93,7 @@ class EditMessageModal extends Component {
                                             ) : (
                                                     <Form onSubmit={this.update} loading={fetching.count !== 0} warning={fetchError.length > 0}>
                                                         <TextArea value={currentSection.body} onChange={this.handleTextSection} placeholder='Tell us your story' />
+                                                        <Message warning>{fetchError}</Message>
                                                     </Form>
                                                 )
                                         )

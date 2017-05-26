@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 
 
 let fetching = (state = { fetch: "", count: 0 }, action) => {
-    console.log(state, action)
     switch (action.type) {
         case "FETCH START":
             return { count: state.count + 1, fetch: action.fetch }
