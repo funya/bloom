@@ -1,4 +1,4 @@
-import { find, isEqual, includes } from 'lodash';
+import { find, isEqual, includes, sortBy } from 'lodash';
 
 const headerContentType = "Content-Type"
 const charsetUTF8 = "charset=utf-8"
@@ -83,7 +83,7 @@ export const signUp = (e, u, p1, p2) => {
 				dispatch({ type: 'FETCH END', message: "", fetch: "" })
 				dispatch({ type: 'SET CURRENT USER', data })
 			})
-			.catch(error => { dispatch({ type: 'FETCH END', message: error.message, fetch: "sign up" }) })
+			.catch(error => { console.log(error);dispatch({ type: 'FETCH END', message: error.message, fetch: "sign up" }) })
 	}
 }
 
@@ -274,7 +274,7 @@ export const getSections = (storyid) => {
 			.then(handleResponse)
 			.then(data => {
 				dispatch({ type: 'FETCH END', message: "", fetch: "" })
-				dispatch({ type: 'SET SECTIONS', data, storyid })
+				dispatch({ type: 'SET SECTIONS', data: sortBy(data, (s) => { return s.index }), storyid })
 				return true
 			})
 			.catch(error => {
@@ -312,8 +312,8 @@ export const createSection = (modal, text) => {
 			.then(handleResponse)
 			.then(data => {
 				dispatch({ type: 'FETCH END', message: "", fetch: "" })
-				dispatch({ type: 'ADD SECTION', data, storyid:currentStory.id })
-				modal.setState({ visible: false, text: ""})
+				dispatch({ type: 'ADD SECTION', data, storyid: currentStory.id })
+				modal.setState({ visible: false, text: "" })
 				return true
 			})
 			.catch(error => {
@@ -347,13 +347,197 @@ export const createImageSection = (modal, image, text) => {
 				.then(handleResponse)
 				.then(data => {
 					dispatch({ type: 'FETCH END', message: "", fetch: "" })
-					modal.setState({ visible: false, text: "", image: {}, imageUrl: ""})
-					dispatch({ type: 'ADD SECTION', data, storyid:currentStory.id })
+					modal.setState({ visible: false, text: "", image: {}, imageUrl: "" })
+					dispatch({ type: 'ADD SECTION', data, storyid: currentStory.id })
 				})
 				.catch(error => {
 					dispatch({ type: 'FETCH END', message: error.message, fetch: "create section" })
-					return false
 				})
 		}
+	}
+}
+
+export const editImageSection = (modal, image, text, section) => {
+	return (dispatch, getState) => {
+		dispatch({ type: 'FETCH START', fetch: "edit image section" })
+		const { currentStory } = getState()
+
+		var img64 = new FileReader()
+		img64.readAsDataURL(image)
+		return img64.onload = () => {
+			return fetch(`${apiRoot}sections/${section.id}`, {
+				method: 'PATCH',
+				mode: "cors",
+				headers: new Headers({
+					"Content-Type": contentTypeJSONUTF8,
+					"Authorization": localStorage.getItem(storageKey)
+				}),
+				body: JSON.stringify({
+					body: text,
+					image: img64.result,
+					index: section.index
+				})
+			})
+				.then(handleResponse)
+				.then(data => {
+					dispatch({ type: 'FETCH END', message: "", fetch: "" })
+					modal.setState({ visible: false, text: data.text, image: undefined })
+					dispatch({ type: 'EDIT SECTION', data, storyid: currentStory.id })
+				})
+				.catch(error => {
+					dispatch({ type: 'FETCH END', message: error.message, fetch: "edit image section" })
+				})
+		}
+	}
+}
+
+export const editSection = (modal) => {
+	return (dispatch, getState) => {
+		dispatch({ type: 'FETCH START', fetch: "edit section" })
+		const { currentSection } = getState()
+		console.log(currentSection)
+		return fetch(`${apiRoot}sections/${currentSection.id}`, {
+			method: 'PATCH',
+			mode: "cors",
+			headers: new Headers({
+				"Content-Type": contentTypeJSONUTF8,
+				"Authorization": localStorage.getItem(storageKey)
+			}),
+			body: JSON.stringify({
+				body: currentSection.body,
+				image: currentSection.image,
+				index: currentSection.index
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				console.log(data)
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'EDIT SECTION', data, storyid: currentSection.id })
+				modal.setState({ visible: false })
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "edit section" })
+			})
+	}
+}
+
+export const arrangeSections = (sections, oldIndex, newIndex) => {
+	let storyid = sections[oldIndex].storyid
+	let section1 = sections[oldIndex]
+	let section2 = sections[newIndex]
+
+	return dispatch => {
+		dispatch({ type: 'FETCH START', fetch: "rearrange sections" })
+
+		return fetch(`${apiRoot}sections/${section1.id}`, {
+			mode: "cors",
+			method: "PATCH",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			}),
+			body: JSON.stringify({
+				body: section1.body,
+				image: section1.image,
+				index: section1.index
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				return fetch(`${apiRoot}sections/${section2.id}`, {
+					mode: "cors",
+					method: "PATCH",
+					headers: new Headers({
+						"Authorization": localStorage.getItem(storageKey)
+					}),
+					body: JSON.stringify({
+						body: section2.body,
+						image: section2.image,
+						index: section2.index
+					})
+				})
+			})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: "REARRANGE SECTION", data: sections, storyid })
+
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "rearrange sections" })
+			})
+	}
+}
+
+export const deleteSection = (modal, sectionid, storyid) => {
+	return (dispatch, getState) => {
+		dispatch({ type: 'FETCH START', fetch: "delete section" })
+
+		return fetch(`${apiRoot}sections/${sectionid}`, {
+			method: 'DELETE',
+			mode: "cors",
+			headers: {
+				"Authorization": localStorage.getItem(storageKey)
+			},
+		})
+			.then(handleResponse)
+			.then(data => {
+				modal.setState({ visible: false })
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				sortSections(data, dispatch, storyid)
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "delete section" })
+			})
+	}
+}
+
+const sortSections = (sections, dispatch, storyid) => {
+	sections = sortBy(sections, (s) => { return s.index })
+	Promise.all(
+		sections.map((ele, index) => {
+			dispatch({ type: 'FETCH ARRANGE START', fetch: "rearrange sections after delete" })
+			return fetch(`${apiRoot}sections/${ele.id}`, {
+				mode: "cors",
+				method: "PATCH",
+				headers: new Headers({
+					"Authorization": localStorage.getItem(storageKey)
+				}),
+				body: JSON.stringify({
+					body: ele.body,
+					image: ele.image,
+					index: index
+				})
+			})
+				.then(handleResponse)
+				.then(data => {
+					dispatch({ type: 'FETCH ARRANGE END', message: "", fetch: "" })
+					return data
+				})
+		})
+	)
+		.then(data => {
+			dispatch({ type: 'REARRANGE SECTION', data, storyid })
+		})
+		.catch(error => {
+			dispatch({ type: 'FETCH END', message: error.message, fetch: "rearrange sections after delete" })
+		})
+}
+
+export const setCurrentEditSection = (section) => {
+	return dispatch => {
+		dispatch({ type: "SET CURRENT SECTION", data: section })
+	}
+}
+
+export const handleTextSection = (text) => {
+	return dispatch => {
+		dispatch({ type: "UPDATE NEW SECTION TEXT", data: text })
+	}
+}
+
+export const handleImage = (newImageBlob, newImageFile) => {
+	return dispatch => {
+		dispatch({ type: "UPDATE NEW SECTION IMAGE", data: { newImageBlob, newImageFile } })
 	}
 }

@@ -10,7 +10,7 @@ import { isEqual } from 'lodash';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getSections, getMyStories, setCurrentStory } from '../redux/actions';
+import { getSections, getMyStories, setCurrentStory, arrangeSections } from '../redux/actions';
 
 
 class EditContainer extends Component {
@@ -32,20 +32,16 @@ class EditContainer extends Component {
     // Callback called when resorting of section ends
     onSortEnd = ({ oldIndex, newIndex }) => {
         let items = this.props.sections[this.props.currentStory.id]
-        console.log(items)
         let itemsnew = arrayMove(items, oldIndex, newIndex)
         itemsnew.map((ele, index) => {
             ele.index = index
         })
-        console.log(itemsnew)
-        //MAKE THIS items move store in the DB by making fetch call
+        this.props.arrangeSections(itemsnew, oldIndex, newIndex)
     };
 
     render() {
         const { fetching, fetchError, currentStory, sections } = this.props
-
         let items = sections[currentStory.id]
-
 
         // Renders a Next button depending the length of sections within the story
         // a single story has exist before it could be rendered.
@@ -94,7 +90,7 @@ class EditContainer extends Component {
 
     const SortableItem = SortableElement(({ value }) => {
         return (
-            <EditableSectionItem value={value} />
+            <EditableSectionItem section={{...value}} />
         )
     });
 
@@ -125,7 +121,8 @@ class EditContainer extends Component {
         return bindActionCreators({
             getSections,
             getMyStories,
-            setCurrentStory
+            setCurrentStory,
+            arrangeSections
         }, dispatch)
     }
 

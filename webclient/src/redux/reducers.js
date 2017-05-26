@@ -3,10 +3,15 @@ import { combineReducers } from 'redux';
 
 
 let fetching = (state = { fetch: "", count: 0 }, action) => {
+    console.log(state, action)
     switch (action.type) {
         case "FETCH START":
             return { count: state.count + 1, fetch: action.fetch }
         case "FETCH END":
+            return { count: state.count - 1, fetch: action.fetch }
+        case "FETCH ARRANGE START":
+            return { count: state.count + 1, fetch: action.fetch }
+        case "FETCH ARRANGE END":
             return { count: state.count - 1, fetch: action.fetch }
         default:
             return state
@@ -78,12 +83,34 @@ let sections = (state = {}, action) => {
             return x
         case "ADD SECTION":
             return { ...state, ...state[action.data.storyid].push(action.data) }
+        case "REARRANGE SECTION":
+            var x = { ...state }
+            x[action.storyid] = action.data
+            return x
+        case "EDIT SECTION":
+            var x = { ...state }
+            var sections = x[action.storyid]
+            var i = findIndex(sections, (s) => { return s.id === action.data.id })
+            sections[i] = action.data
+            x[action.storyid] = sections
+            return x
         case "DELETE SECTION":
             var x = { ...state }
-            var messages = x[action.storyid]
-            var newmessages = remove(messages, m => { return m.id !== action.messageid })
-            x[action.storyid] = newmessages
+            var sections = x[action.storyid]
+            var newsection = remove(sections, s => { return s.id !== action.sectionid })
+            x[action.storyid] = newsection
             return x
+        default:
+            return state
+    }
+}
+
+let currentSection = (state = {}, action) => {
+    switch (action.type) {
+        case "SET CURRENT SECTION":
+            return action.data;
+        case "UPDATE NEW SECTION TEXT":
+            return { ...state, body: action.data}
         default:
             return state
     }
@@ -97,6 +124,7 @@ const rootReducer = combineReducers({
     myStories,
     currentStory,
     sections,
+    currentSection,
 })
 
 export default rootReducer
