@@ -8,11 +8,20 @@ body {
   margin: 0px;
   padding: 0px;
   font-family: "Open Sans","Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  font-size: 2em;
 }
 
 h1,h2,h3,h4,h5,h6 {
   font-family: "Open Sans","Helvetica Neue", Helvetica, sans-serif;
   font-weight: 400 !important;
+}
+
+button {
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  letter-spacing: 1.5px !important;
 }
 
 .center-text {
@@ -69,7 +78,8 @@ h1,h2,h3,h4,h5,h6 {
 #footer {
   position: relative;
   bottom: 100%;
-  margin-top: 50px;
+  padding-top: 60px;
+  margin-top: 0px;
   border-radius: 0;
 
 }

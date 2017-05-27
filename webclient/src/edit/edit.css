@@ -156,6 +156,8 @@ form .timelineitem-submit-button.button:hover {
 
 .actions .cancel-button {
     float: left;
+    color: rgba(0,0,0,.6) !important;
+    font-weight: 600 !important;
 }
 
 .actions {

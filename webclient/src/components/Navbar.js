@@ -3,6 +3,7 @@ import { Menu, Container, Image } from 'semantic-ui-react'
 import { Link, withRouter } from 'react-router-dom';
 import image from '../img/lotus.svg';
 import { isEmpty } from 'lodash';
+import './navbar.css'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -15,7 +16,7 @@ class TopNavBar extends Component {
 
 		if (!isEmpty(currentUser) && localStorage.getItem("auth")) {
 			return (
-				<Menu fixed='top'>
+				<Menu fixed='top' className='navbar'>
 					<Container>
 						<Menu.Item header as={Link} to='/' className='nav-main-item'>
 							<Image size='mini' src={image} id='nav-logo'></Image>
@@ -37,7 +38,7 @@ class TopNavBar extends Component {
 			)
 		} else {
 			return (
-				<Menu fixed='top'>
+				<Menu fixed='top' className='navbar'>
 					<Container>
 						<Menu.Item header as={Link} to='/' className='nav-main-item'>
 							<Image size='mini' src={image} id='nav-logo'></Image>

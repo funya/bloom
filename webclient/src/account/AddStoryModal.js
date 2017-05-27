@@ -41,7 +41,7 @@ class AddStorymodal extends Component {
         return (
             <Modal
                 trigger={
-                    <Button onClick={this.showModal} id='add-story-button' color='green'>Add new story</Button>
+                    <Button fluid size='large' onClick={this.showModal} id='add-story-button' color='green'>Add new story</Button>
                 }
                 open={visible}
                 onClose={this.hideModal}
