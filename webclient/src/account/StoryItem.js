@@ -19,7 +19,7 @@ class StoryItem extends Component {
     render() {
         let { name, id, description, createdAt, togglePrivacy } = this.props
         return (
-            <Segment className='story-item' padded='extra'>
+            <Segment className='story-item' padded>
                 <Checkbox toggle label="Privacy Type" onChange={this.toggle} checked={this.props.private} className='story-toggle' />
                 <span className='story-privacy-string'>{
                     this.props.private ? " PRIVATE" : " PUBLIC"
@@ -32,7 +32,7 @@ class StoryItem extends Component {
                     basic
                     hideOnScroll
                     style={{zIndex: 900}}
-                    position='left'
+                    position='left center'
                     >
                     <DeleteStoryModal storyid={id} />
                 </Popup>
@@ -41,7 +41,7 @@ class StoryItem extends Component {
                     <div className='story-description'>{description}</div>
                     <div className='story-buttons'>
                         <div className='story-date'><span style={{ color: "rgb(141, 149, 157)" }}>Created On</span> {moment(createdAt).format("LLL")}</div>
-                        <Link className='ui button edit-story-button' to={`/story/${id}/edit`}>
+                        <Link className='ui button edit-story-button green' to={`/story/${id}/edit`}>
                             <Icon name='pencil' />
                             Edit
                             </Link>

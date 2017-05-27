@@ -30,17 +30,17 @@ class DeleteStorymodal extends Component {
         }
         open={visible}
         onClose={this.hideModal}
-        basic
+        dimmer="blurring"
       >
-        <Modal.Header as='h3'> <Icon name='trash outline' color='red' />Delete Story</Modal.Header>
+        <Modal.Header as='h2' className="modal-header"> <Icon name='trash outline' color='red' />Delete Story</Modal.Header>
         <Modal.Content>
           <p>Are you sure you want to delete this story? Once it's deleted, <strong>all</strong> the content contained within this story, including all the text and pictures will be gone <strong>forever</strong>.</p>
         </Modal.Content>
         <Modal.Actions>
-          <Button basic inverted onClick={this.hideModal} style={{float:"left"}}>
+          <Button onClick={this.hideModal} style={{float:"left"}}>
             Cancel
           </Button>
-          <Button color='red' inverted onClick={this.delete}>
+          <Button color='red' onClick={this.delete}>
             <Icon name='trash outline' /> Delete
           </Button>
         </Modal.Actions>

@@ -14,6 +14,7 @@
     font-weight: 400;
     letter-spacing: 2.5px;
     font-size: 2.5em;
+    color: rgb(67, 72, 76);
 }
 
 #accountcontainer .story-container {
@@ -36,10 +37,6 @@
     letter-spacing: 0.5px;
 }
 
-#accountcontainer .story-container .story-item .story-toggle input:checked~label:before{
-    background-color: rgb(38, 168, 255) !important;
-}
-
 #accountcontainer .story-container .story-item .story-description{
     color: rgb(141, 149, 157);
     letter-spacing: 0.7px;
@@ -50,11 +47,11 @@
 }
 
 #accountcontainer .story-container .story-item .story-toggle input:checked~label:before{
-    background-color: rgb(38, 168, 255) !important;
+    background-color: rgb(102, 228, 182) !important;
 }
 
 #accountcontainer .story-container .story-item .story-toggle input:checked~label:hover:before{
-    background-color: rgba(38, 168, 255, 0.8) !important;
+    background-color: rgba(102, 228, 182, 0.8) !important;
 }
 
 #accountcontainer .story-container .story-item .story-buttons {
@@ -70,27 +67,18 @@
     font-weight: 300;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    background-color: rgb(139, 234, 134);
+    background-color: rgb(172, 222, 173);
     color: white;
     float: right;
 }
 
 #accountcontainer .story-container .story-item a.edit-story-button:hover {
-    background-color: rgba(139, 234, 134, 0.8);
+    background-color: rgba(172, 222, 173, 0.8);
 }
 
 #add-story-button {
-    padding: 15px 0px;
-    color: white;
-    font-weight: 300;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    background-color: rgb(57, 175, 255);
+    padding: 18px 0px;
     box-shadow: 0 3px 5px 0 rgba(34,36,38,.15);
-}
-
-#add-story-button:hover {
-    background-color: rgba(57, 175, 255, 0.8);
 }
 
 .delete-story-button {

@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 
 
 let fetching = (state = { fetch: "", count: 0 }, action) => {
-    console.log(state, action)
     switch (action.type) {
         case "FETCH START":
             return { count: state.count + 1, fetch: action.fetch }
@@ -116,6 +115,15 @@ let currentSection = (state = {}, action) => {
     }
 }
 
+let gridWidth = (state= "317px", action) => {
+    switch (action.type) {
+        case "SET GRID WIDTH":
+            return action.data;
+        default:
+            return state;
+    }
+}
+
 const rootReducer = combineReducers({
     fetching,
     fetchError,
@@ -125,6 +133,7 @@ const rootReducer = combineReducers({
     currentStory,
     sections,
     currentSection,
+    gridWidth,
 })
 
 export default rootReducer

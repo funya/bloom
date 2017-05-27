@@ -284,10 +284,11 @@ export const getSections = (storyid) => {
 	}
 }
 
-export const setCurrentStory = (storyid) => {
+export const setCurrentStory = (editpage, storyid) => {
 	return (dispatch, getState) => {
 		const { myStories } = getState()
 		let story = find(myStories, (s => { return s.id === storyid }))
+		editpage.setState({ title: story.name, description: story.description })
 		return dispatch({ type: "SET CURRENT STORY", data: story })
 	}
 }
@@ -395,7 +396,6 @@ export const editSection = (modal) => {
 	return (dispatch, getState) => {
 		dispatch({ type: 'FETCH START', fetch: "edit section" })
 		const { currentSection } = getState()
-		console.log(currentSection)
 		return fetch(`${apiRoot}sections/${currentSection.id}`, {
 			method: 'PATCH',
 			mode: "cors",
@@ -411,9 +411,8 @@ export const editSection = (modal) => {
 		})
 			.then(handleResponse)
 			.then(data => {
-				console.log(data)
 				dispatch({ type: 'FETCH END', message: "", fetch: "" })
-				dispatch({ type: 'EDIT SECTION', data, storyid: currentSection.id })
+				dispatch({ type: 'EDIT SECTION', data, storyid: currentSection.storyid })
 				modal.setState({ visible: false })
 			})
 			.catch(error => {
@@ -539,5 +538,11 @@ export const handleTextSection = (text) => {
 export const handleImage = (newImageBlob, newImageFile) => {
 	return dispatch => {
 		dispatch({ type: "UPDATE NEW SECTION IMAGE", data: { newImageBlob, newImageFile } })
+	}
+}
+
+export const setGridWidth = (event) => {
+	return dispatch => {
+		dispatch({ type: "SET GRID WIDTH", data: event.target.value})
 	}
 }
