@@ -60,10 +60,16 @@ class AddSectionButton extends Component {
                         <Grid.Row>
                             <Grid.Column as={Menu} icon vertical tabular className='input-menu'>
                                 <Menu.Item>
-                                    <Button icon='picture' primary onClick={this.showPictureInput} />
+                                    {
+                                        (inputType === "text") ? (<Button icon='picture' onClick={this.showPictureInput} />) 
+                                        : (<Button icon='picture' primary onClick={this.showPictureInput} />)
+                                    }
                                 </Menu.Item>
                                 <Menu.Item>
-                                    <Button icon='font' onClick={this.showTextInput} />
+                                    {
+                                        (inputType === "text") ? (<Button icon='font' primary onClick={this.showTextInput} />) 
+                                        : (<Button icon='font' onClick={this.showTextInput} />)
+                                    }
                                 </Menu.Item>
                             </Grid.Column>
                             <Grid.Column as={Segment} basic width='14'>

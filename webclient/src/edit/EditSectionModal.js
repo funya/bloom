@@ -68,10 +68,16 @@ class EditMessageModal extends Component {
                         <Grid.Row>
                             <Grid.Column as={Menu} icon vertical tabular className='input-menu'>
                                 <Menu.Item>
-                                    <Button icon='picture' primary disabled={section.image.length <= 0} />
+                                    {
+                                        (section.image.length > 0) ? (<Button icon='picture' primary />) 
+                                        : (<Button icon='picture' disabled />)
+                                    }
                                 </Menu.Item>
                                 <Menu.Item>
-                                    <Button icon='font' disabled={section.image.length > 0} />
+                                    {
+                                        (section.image.length > 0) ? (<Button icon='font' disabled />) 
+                                        : (<Button icon='font' primary  />)
+                                    }
                                 </Menu.Item>
                             </Grid.Column>
                             <Grid.Column as={Segment} basic width='14'>
