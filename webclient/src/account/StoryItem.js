@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Item, Button, Icon, Label, Modal, Checkbox } from 'semantic-ui-react'
+import { Button, Icon, Label, Checkbox, Segment, Header, Container, Popup } from 'semantic-ui-react'
 import moment from "moment";
 import { Link } from 'react-router-dom';
 import DeleteStoryModal from './DeleteStoryModal';
@@ -19,25 +19,36 @@ class StoryItem extends Component {
     render() {
         let { name, id, description, createdAt, togglePrivacy } = this.props
         return (
-            <Item className='story-item'>
-                <Item.Content>
-                    <Item.Header as='h3'>{name}</Item.Header>
-                    <Item.Meta>
-                        <span>Created: {moment(createdAt).format("LLL")}</span>
-                    </Item.Meta>
-                    <Item.Description>{description}</Item.Description>
-                    <Item.Extra>
-                        <div className='story-buttons'>
-                            <Link className='ui button edit-story-button' to={`/story/${id}/edit`}>
-                                Edit story
-                                    <Icon name='chevron right' />
+            <Segment className='story-item' padded>
+                <Checkbox toggle label="Privacy Type" onChange={this.toggle} checked={this.props.private} className='story-toggle' />
+                <span className='story-privacy-string'>{
+                    this.props.private ? " PRIVATE" : " PUBLIC"
+                }</span>
+                <Popup
+                    trigger={
+                        <Icon name='ellipsis vertical' style={{ float: "right", fontSize: "16px", cursor:"pointer" }} />
+                    }
+                    on='click'
+                    basic
+                    hideOnScroll
+                    style={{zIndex: 900}}
+                    position='left center'
+                    >
+                    <DeleteStoryModal storyid={id} />
+                </Popup>
+                <Header as='h1' className='story-name'>{name}</Header>
+                <Container>
+                    <div className='story-description'>{description}</div>
+                    <div className='story-buttons'>
+                        <div className='story-date'><span style={{ color: "rgb(141, 149, 157)" }}>Created On</span> {moment(createdAt).format("LLL")}</div>
+                        <Link className='ui button edit-story-button green' to={`/story/${id}/edit`}>
+                            <Icon name='pencil' />
+                            Edit
                             </Link>
-                            <DeleteStoryModal storyid={id} />
-                        </div>
-                        <Checkbox toggle label="Private" onChange={this.toggle} checked={this.props.private} />
-                    </Item.Extra>
-                </Item.Content>
-            </Item>
+                        <div style={{ clear: "both" }}></div>
+                    </div>
+                </Container>
+            </Segment>
         )
     }
 }

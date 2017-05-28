@@ -8,11 +8,20 @@ body {
   margin: 0px;
   padding: 0px;
   font-family: "Open Sans","Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  font-size: 2em;
 }
 
 h1,h2,h3,h4,h5,h6 {
   font-family: "Open Sans","Helvetica Neue", Helvetica, sans-serif;
   font-weight: 400 !important;
+}
+
+button {
+  text-transform: uppercase !important;
+  font-weight: 400 !important;
+  letter-spacing: 1.5px !important;
 }
 
 .center-text {
@@ -69,8 +78,10 @@ h1,h2,h3,h4,h5,h6 {
 #footer {
   position: relative;
   bottom: 100%;
-  margin-top: 50px;
+  padding-top: 60px;
+  margin-top: 0px;
   border-radius: 0;
+  background-color: rgb(67, 72, 76);
 
 }
 
@@ -302,3 +313,52 @@ h1,h2,h3,h4,h5,h6 {
 
 .row {
   margin: 0 !important; }
+
+/*----------------------------------------------
+        CUSTOM
+    ----------------------------------------------*/
+
+.ui.red.button {
+  font-weight: 300 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  background-color: rgb(255, 69, 90) !important; 
+}
+
+.ui.red.button:hover {
+  background-color: rgba(255, 69, 90, 0.8) !important; 
+}
+
+.ui.green.button {
+  font-weight: 300 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  background-color: rgb(172, 222, 173) !important; 
+}
+
+.ui.green.button:hover {
+  background-color: rgba(172, 222, 173, 0.8) !important; 
+}
+
+.ui.blue.button {
+  font-weight: 300 !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  background-color: rgb(97, 175, 255) !important; 
+}
+
+.ui.blue.button:hover {
+  background-color: rgba(97, 175, 255, 0.8) !important; 
+}
+
+.modal .modal-header{
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 2.5px;
+  font-size: 1.8em !important;
+  text-align: center;
+}
+
+.modal .modal-content-container .subtext{
+  color: rgb(141, 149, 157) !important;
+}

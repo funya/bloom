@@ -1,0 +1,11 @@
+.navbar .menu a.item {
+    text-transform: uppercase;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.navbar .nav-main-item{
+    text-transform: uppercase !important;
+    font-weight: 600 !important;
+    letter-spacing: 1px;
+}

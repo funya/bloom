@@ -26,21 +26,21 @@ class DeleteStorymodal extends Component {
     return (
       <Modal
         trigger={
-          <Button className='delete-story-button' color='red' icon='delete' labelPosition='right' content="Delete" onClick={this.showModal} />
+          <Button className='delete-story-button' color='red' content="Delete" onClick={this.showModal} />
         }
         open={visible}
         onClose={this.hideModal}
-        basic
+        dimmer="blurring"
       >
-        <Modal.Header as='h3'> <Icon name='warning' color='red' />Delete Story</Modal.Header>
+        <Modal.Header as='h2' className="modal-header"> <Icon name='trash outline' color='red' />Delete Story</Modal.Header>
         <Modal.Content>
           <p>Are you sure you want to delete this story? Once it's deleted, <strong>all</strong> the content contained within this story, including all the text and pictures will be gone <strong>forever</strong>.</p>
         </Modal.Content>
         <Modal.Actions>
-          <Button basic color='green' inverted onClick={this.hideModal}>
-            <Icon name='long arrow left' /> Cancel
+          <Button onClick={this.hideModal} style={{float:"left"}}>
+            Cancel
           </Button>
-          <Button color='red' inverted onClick={this.delete}>
+          <Button color='red' onClick={this.delete}>
             <Icon name='trash outline' /> Delete
           </Button>
         </Modal.Actions>

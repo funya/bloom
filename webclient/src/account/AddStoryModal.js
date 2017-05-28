@@ -41,17 +41,18 @@ class AddStorymodal extends Component {
         return (
             <Modal
                 trigger={
-                    <Button onClick={this.showModal} id='add-story-button' color='green'>Add new story</Button>
+                    <Button fluid size='large' onClick={this.showModal} color='blue' id='add-story-button'>Add new story</Button>
                 }
                 open={visible}
                 onClose={this.hideModal}
+                dimmer="blurring"
             >
-                <Modal.Header as='h2'>Add New Story</Modal.Header>
-                <Modal.Content>
+                <Modal.Header as='h2' className="modal-header"> <Icon name='plus square outline' color='blue'/>Add New Story</Modal.Header>
+                <Modal.Content className='modal-content-container'>
                     <Modal.Description>
                         <Segment basic padded>
                             <Header as='h3' textAlign='center'>Starting is the hardest part. Here are some suggestions to guide you.</Header>
-                            <ul>
+                            <ul className='subtext'>
                                 <li>Start with facts. Focus on the facts of what happened. Who, what, when, and where?</li>
                                 <li>Add thoughts and feelings. How did you feel? How do you feel now?</li>
                                 <li>Dig deeper. Add as much detail as you’re comfortable with. </li>
@@ -59,7 +60,6 @@ class AddStorymodal extends Component {
                             <Header as='h4' textAlign='center'>These are only suggestions. This is your story to tell. Thank you for your courageous voice. </Header>
                         </Segment>
                         <Segment basic padded>
-                            <Header as='h3' textAlign='center'>Story Information</Header>
                             <Form loading={fetching.count !== 0} warning={fetchError.length > 0} onSubmit={this.add}>
                                 <Form.Input type='text' placeholder='Story Title' value={title} onChange={this.handleNameInput} />
                                 <Form.Input type='text' placeholder='Description (Optional)' value={description} onChange={this.handleDescriptionInput} />
@@ -69,8 +69,8 @@ class AddStorymodal extends Component {
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='red' onClick={this.hideModal}> Cancel </Button>
-                    <Button positive icon='checkmark' labelPosition='right' content="Create" onClick={this.add} />
+                    <Button color='red' onClick={this.hideModal} style={{float:"left"}}> Cancel </Button>
+                    <Button color='green' content="Create" onClick={this.add} />
                 </Modal.Actions>
             </Modal>
         )

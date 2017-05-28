@@ -1,5 +1,12 @@
 #editcontainer {
     min-height: 100vh;
+    background-color: rgb(247, 247, 248);
+}
+
+#editcontainer .button-container {
+    margin-bottom: 0px;
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
 
 #editcontainer #timeline-title input {
@@ -10,38 +17,10 @@
     padding: 8px 10px;
 }
 
-.timeline-content .label {
-    background-color: rgba(220, 112, 131, 0.9);
-}
-
-form .timelineitem-submit-button.button {
-    background-color: rgba(220, 112, 131, 0.9);
-    color: rgba(0,0,0,.5);
-    border-radius: 0;
-}
-
-form .timelineitem-submit-button.button:hover {
-    background-color: rgba(241, 163, 168, 0.7);
-}
-
-.timeline-content form label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin: 0 0 .5em 0;
-    text-transform: uppercase;
-}
-
 #lotus {
     width: 200px;
     height: 200px;
     margin: 0 auto;
-}
-
-
-#editmessage {
-    margin: 0 auto;
-    width: 95vw;
 }
 
 .section-grid-container {
@@ -68,7 +47,7 @@ form .timelineitem-submit-button.button:hover {
     flex-grow: 1;
     height: 305px;
     width: 317px;
-    background-color: rgb(245, 246, 247);
+    background-color: white;
     padding: 5px;
     margin: 5px;
     border: 0;
@@ -78,7 +57,8 @@ form .timelineitem-submit-button.button:hover {
     align-items: center;
     justify-content: center;
     border-radius: .28571429rem;
-    box-shadow: 0 2px 4px 0 rgba(67, 72, 76,0.1);
+    box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+    border: 1px solid rgba(34,36,38,.15);
     position: relative;
 }
 
@@ -118,13 +98,10 @@ form .timelineitem-submit-button.button:hover {
 }
 
 .section-grid-item-container .menu-icons-right .trash-icon {
- 
     color: rgb(151, 159, 167);
     cursor: pointer;
     padding: 5px;
 }
-
-
 
 .section-grid-item-container:hover {
     box-shadow: 0 6px 6px 0 rgba(67, 72, 76,0.1);
@@ -136,8 +113,8 @@ form .timelineitem-submit-button.button:hover {
 }
 
 .section-grid-item-add {
-    border: 2px dashed rgba(67, 72, 76,0.2);
-    background-color: rgba(245, 246, 247, 0.5);
+    box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+    border: 1px solid rgba(34,36,38,.15);
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -145,7 +122,8 @@ form .timelineitem-submit-button.button:hover {
 }
 
 .section-grid-item-add:hover {
-    background-color: rgb(245, 246, 247);
+    background-color: rgb(253, 254, 253);
+    box-shadow: 0 6px 6px 0 rgba(67, 72, 76,0.1);
 }
 
 @keyframes border-draw {
@@ -156,6 +134,8 @@ form .timelineitem-submit-button.button:hover {
 
 .actions .cancel-button {
     float: left;
+    color: rgba(0,0,0,.6) !important;
+    font-weight: 600 !important;
 }
 
 .actions {
@@ -168,11 +148,24 @@ form .timelineitem-submit-button.button:hover {
 
 }
 
-.input-menu button i {
+.input-menu button i, button.ui.icon.button i {
     pointer-events: none;
 }
 
 .preview-story-button {
-    background-color: rgba(27, 179, 47, 0.8) !important;
+    background-color: rgba(172, 222, 173, 0.8) !important;
     color: white !important;
+}
+
+#editcontainer  a.preview-story-button {
+    font-weight: 300;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background-color: rgb(172, 222, 173) !important;
+    color: white;
+    float: right;
+}
+
+#editcontainer  a.preview-story-button:hover {
+    background-color: rgba(139, 234, 134, 0.8) !important;
 }

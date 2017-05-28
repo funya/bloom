@@ -1,27 +1,89 @@
 #accountcontainer {
-    min-height: 100vh;
+    min-height: 95vh;
+    background-color: rgb(247, 247, 248);
 }
 
-a.edit-story-button {
+#accountcontainer #user-info{
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    font-size: 2em;
+}
+
+#accountcontainer .story-container-header{
+    text-transform: uppercase;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    font-size: 2.5em;
+    color: rgb(67, 72, 76);
+}
+
+#accountcontainer .story-container {
+    letter-spacing: 0.9px;
+}
+
+#accountcontainer .story-container .story-item:hover{
+    box-shadow: 1px 2px 4px 1px rgba(34,36,38,.2);
+}
+
+#accountcontainer .story-container .story-item .story-privacy-string{
+    font-size: 16px;
+    font-weight: 400;
+    vertical-align: bottom;
+    letter-spacing: 1.3px;
+}
+
+#accountcontainer .story-container .story-item .story-toggle label{
+    color: rgb(141, 149, 157) !important;
+    letter-spacing: 0.5px;
+}
+
+#accountcontainer .story-container .story-item .story-description{
+    color: rgb(141, 149, 157);
+    letter-spacing: 0.7px;
+    line-height: 142%;
+    font-size: 16px;
+    padding-bottom: 15px;
+    clear: both;
+}
+
+#accountcontainer .story-container .story-item .story-toggle input:checked~label:before{
+    background-color: rgb(102, 228, 182) !important;
+}
+
+#accountcontainer .story-container .story-item .story-toggle input:checked~label:hover:before{
+    background-color: rgba(102, 228, 182, 0.8) !important;
+}
+
+#accountcontainer .story-container .story-item .story-buttons {
+    position: relative;
+}
+
+#accountcontainer .story-container .story-item .story-date {
+    position: absolute;
+    bottom: 0;
+}
+
+#accountcontainer .story-container .story-item a.edit-story-button {
+    font-weight: 300;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background-color: rgb(172, 222, 173);
+    color: white;
     float: right;
-    background-color: rgba(27, 179, 47, 0.8) !important;
-    color: white !important;
 }
 
-.story-item  .story-buttons {
-    opacity: 0;
-}
-
-.story-item:hover  .story-buttons {
-    opacity: 1;
+#accountcontainer .story-container .story-item a.edit-story-button:hover {
+    background-color: rgba(172, 222, 173, 0.8);
 }
 
 #add-story-button {
-    display: block;
-    margin: 0 auto;
-    width: 225px;
+    padding: 18px 0px;
+    box-shadow: 0 3px 5px 0 rgba(34,36,38,.15);
 }
 
 .delete-story-button {
-    float: right;
+    font-weight: 300 !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    background-color: rgb(255, 69, 90) !important; 
 }

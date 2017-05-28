@@ -115,6 +115,15 @@ let currentSection = (state = {}, action) => {
     }
 }
 
+let gridWidth = (state= "317px", action) => {
+    switch (action.type) {
+        case "SET GRID WIDTH":
+            return action.data;
+        default:
+            return state;
+    }
+}
+
 const rootReducer = combineReducers({
     fetching,
     fetchError,
@@ -124,6 +133,7 @@ const rootReducer = combineReducers({
     currentStory,
     sections,
     currentSection,
+    gridWidth,
 })
 
 export default rootReducer

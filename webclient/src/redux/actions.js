@@ -284,10 +284,11 @@ export const getSections = (storyid) => {
 	}
 }
 
-export const setCurrentStory = (storyid) => {
+export const setCurrentStory = (editpage, storyid) => {
 	return (dispatch, getState) => {
 		const { myStories } = getState()
 		let story = find(myStories, (s => { return s.id === storyid }))
+		editpage.setState({ title: story.name, description: story.description })
 		return dispatch({ type: "SET CURRENT STORY", data: story })
 	}
 }
@@ -538,5 +539,11 @@ export const handleTextSection = (text) => {
 export const handleImage = (newImageBlob, newImageFile) => {
 	return dispatch => {
 		dispatch({ type: "UPDATE NEW SECTION IMAGE", data: { newImageBlob, newImageFile } })
+	}
+}
+
+export const setGridWidth = (event) => {
+	return dispatch => {
+		dispatch({ type: "SET GRID WIDTH", data: event.target.value})
 	}
 }

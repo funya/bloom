@@ -93,8 +93,8 @@ class AddSectionButton extends Component {
                     </Grid>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='red' onClick={this.hideModal} inverted className='cancel-button'>
-                        <Icon name='long arrow left' /> Exit
+                    <Button color='grey' onClick={this.hideModal} inverted className='cancel-button'>
+                        Exit
                     </Button>
                     <Button color='green' inverted onClick={this.submit}>
                         <Icon name='save' /> Submit
