@@ -58,6 +58,23 @@ export const handleTextResponse = (response) => {
 		})
 }
 
+export const getStories = () => {
+	return (dispatch, getState) => {
+		const { currentUser } = getState()
+		dispatch({ type: 'FETCH START', fetch: "get stories" })
+
+		return fetch(`${apiRoot}stories`, {
+			mode: "cors"
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'SET STORIES', data })
+			})
+			.catch(error => { dispatch({ type: 'FETCH END', message: error.message, fetch: "get stories" }) })
+	}
+}
+
 export const signUp = (e, u, p1, p2) => {
 	return dispatch => {
 		dispatch({ type: 'FETCH START', fetch: "sign up" })
@@ -83,7 +100,7 @@ export const signUp = (e, u, p1, p2) => {
 				dispatch({ type: 'FETCH END', message: "", fetch: "" })
 				dispatch({ type: 'SET CURRENT USER', data })
 			})
-			.catch(error => { console.log(error);dispatch({ type: 'FETCH END', message: error.message, fetch: "sign up" }) })
+			.catch(error => { console.log(error); dispatch({ type: 'FETCH END', message: error.message, fetch: "sign up" }) })
 	}
 }
 
@@ -158,7 +175,7 @@ export const checkSession = () => {
 	}
 }
 
-export const createStory = (title, description) => {
+export const createStory = (modal, title, description) => {
 	return dispatch => {
 		dispatch({ type: 'FETCH START', fetch: "create new story" })
 
@@ -180,6 +197,8 @@ export const createStory = (title, description) => {
 			.then(data => {
 				dispatch({ type: 'FETCH END', message: "", fetch: "" })
 				dispatch({ type: 'ADD STORY', data })
+				modal.setState({ visible: false, title: "", description: "" })
+				modal.props.history.replace(`story/${data.id}/edit`)
 				return data.id
 			})
 			.catch(error => {
@@ -281,6 +300,14 @@ export const getSections = (storyid) => {
 				dispatch({ type: 'FETCH END', message: error.message, fetch: "get sections" })
 				return false
 			})
+	}
+}
+
+export const setCurrentPublicStory = (storyid) => {
+	return (dispatch, getState) => {
+		const { stories } = getState()
+		let story = find(stories, (s => { return s.id === storyid }))
+		return dispatch({ type: "SET CURRENT STORY", data: story })
 	}
 }
 
@@ -544,6 +571,64 @@ export const handleImage = (newImageBlob, newImageFile) => {
 
 export const setGridWidth = (event) => {
 	return dispatch => {
-		dispatch({ type: "SET GRID WIDTH", data: event.target.value})
+		dispatch({ type: "SET GRID WIDTH", data: event.target.value })
+	}
+}
+
+export const updateTitle = (editpage, title) => {
+	return (dispatch, getState) => {
+		const { currentStory } = getState()
+
+		dispatch({ type: 'FETCH START', fetch: "update story title" })
+		return fetch(`${apiRoot}stories/${currentStory.id}`, {
+			mode: "cors",
+			method: "PATCH",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			}),
+			body: JSON.stringify({
+				name: title,
+				description: currentStory.description,
+				private: currentStory.private
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'UPDATE TITLE', data })
+				editpage.setState({ disabledTitle: true })
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "update story title" })
+			})
+	}
+}
+
+export const updateDescription = (editpage, description) => {
+	return (dispatch, getState) => {
+		const { currentStory } = getState()
+
+		dispatch({ type: 'FETCH START', fetch: "update story description" })
+		return fetch(`${apiRoot}stories/${currentStory.id}`, {
+			mode: "cors",
+			method: "PATCH",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			}),
+			body: JSON.stringify({
+				name: currentStory.name,
+				description: description,
+				private: currentStory.private
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				dispatch({ type: 'UPDATE DESCRIPTION', data })
+				editpage.setState({ disabledDescription: true })
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "update story description" })
+			})
 	}
 }

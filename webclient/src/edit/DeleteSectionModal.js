@@ -34,19 +34,19 @@ class DeleteSectionModal extends Component {
                     />
                 }
                 open={visible}
+                dimmer="blurring"
                 onClose={this.hideModal}
                 closeIcon='close'
-                basic
             >
-                <Modal.Header as='h2'> <Icon name='trash' color='red' />Delete Section</Modal.Header>
-                <Modal.Content>
+                <Modal.Header as='h2' className="modal-header">  <Icon name='trash' color='red' />Delete Section</Modal.Header>
+                <Modal.Content className='modal-content-container'>
                     <p>Are you sure you want to delete this section? Once it's deleted, it will be gone <strong>forever</strong>.</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button basic color='green' inverted onClick={this.hideModal} style={{ float: "left" }}>
-                        <Icon name='long arrow left' /> Cancel
+                    <Button onClick={this.hideModal} className='cancel-button'>
+                        Cancel
                         </Button>
-                    <Button inverted color='red' onClick={this.delete}>
+                    <Button color='red' onClick={this.delete}>
                         <Icon name='trash outline' /> Delete
                         </Button>
                 </Modal.Actions>

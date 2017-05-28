@@ -1,60 +1,66 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Container, Segment, Image, Header } from 'semantic-ui-react';
 import image from '../img/lotus.svg';
-import 'whatwg-fetch';
 import Timeline from '../components/Timeline';
-import { apiRoot, storageKey } from '../authentication/Auth';
-import './story.css'
+import  ScrollToTop from '../components/ScrollToTop';
+import './story.css';
+import { find } from 'lodash';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { getSections, getStories, setCurrentPublicStory } from '../redux/actions';
+
 
 class Story extends Component {
-    state={
-        story: this.props.location.state,
-        loading: false,
-        items: []
-    }
 
     componentDidMount() {
-        this.setState({ loading: true })
-        // Get the single story information 
-        fetch(`${apiRoot}/stories/${this.state.story.id}`, {
-            mode: "cors",
-        })
-            .then(resp => {
-                if (resp.ok) {
-                    return resp.json()
-                } else {
-                    return Promise.reject({
-                        status: resp.status,
-                        statusText: resp.statusText,
-                        statusMessage: resp.text()
-                    })
-                }
-            })
-            .then(data => {
-                this.setState({ items: data, loading: false })
-            })
-            .catch(err => {
-                this.setState({ loading: false })
-                console.log(err)
-                return null
-            })
+        let storyid = this.props.match.params.id
+
+        if (this.props.stories.length === 0) {
+            this.props.getStories()
+                .then(data => {
+                    this.props.setCurrentPublicStory(storyid)
+                    this.props.getSections(storyid)
+                })
+        } else {
+            this.props.setCurrentPublicStory(storyid)
+            this.props.getSections(storyid)
+        }
     }
 
     render() {
-        console.log("Rendering Story comp.: ", this.state)
+        const { currentStory } = this.props
+
         return (
             <Container id='storycontainer'>
-                <Segment basic padded>
-                    <Header as='h1' textAlign='center' id='story-title'>{this.state.story.name}</Header>
-                    <Header as='h3' textAlign='center' id='story-description'>{this.state.story.description}</Header>
+                <ScrollToTop />
+                <Segment basic padded='very'>
+                    <Header as='h1' textAlign='center' id='story-title'>{currentStory.name}</Header>
+                    <Header as='h3' textAlign='center' id='story-description'>{currentStory.description}</Header>
                 </Segment>
                 <Segment basic padded>
-                    <Image src={image} size='medium' centered/>
-                    <Timeline timelineitems={this.state.items} />
+                    <Image src={image} size='medium' centered />
+                    <Timeline storyid={currentStory.id}/>
                 </Segment>
             </Container>
         )
     }
 }
 
-export default Story
+const mapStateToProps = (state) => {
+    return {
+        stories: state.stories,
+        currentStory: state.currentStory
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        getSections,
+        getStories,
+        setCurrentPublicStory
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Story)

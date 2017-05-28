@@ -37,7 +37,7 @@ class DeleteStorymodal extends Component {
           <p>Are you sure you want to delete this story? Once it's deleted, <strong>all</strong> the content contained within this story, including all the text and pictures will be gone <strong>forever</strong>.</p>
         </Modal.Content>
         <Modal.Actions>
-          <Button onClick={this.hideModal} style={{float:"left"}}>
+          <Button onClick={this.hideModal} className='cancel-button'>
             Cancel
           </Button>
           <Button color='red' onClick={this.delete}>

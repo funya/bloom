@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Header, Container, Button, Image, Message, Segment } from 'semantic-ui-react';
 import { Link, Redirect } from 'react-router-dom';
 import { isEmpty } from 'lodash';
+import  ScrollToTop from '../components/ScrollToTop';
 
 import './Login_Signup.css';
 import image from '../img/lotus.svg';
@@ -37,8 +38,8 @@ class Login extends Component {
 
         return (
             <Container className='logincontainer'>
-
-                <Header id="title" textAlign='center' as='h1'>
+                <ScrollToTop />
+                <Header id="title" textAlign='center' as='h1' style={{marginTop:"50px"}}>
                     <Image src={image} alt='logo' />
                     Bloom
                 </Header>
@@ -51,10 +52,7 @@ class Login extends Component {
                         <input placeholder='Password' required type='password' value={password} onChange={this.handlePasswordChange} />
                     </Form.Field>
                     <Message warning>{fetchError}</Message>
-                    <Button className="submit-button" fluid={true} onClick={this.login}>Submit</Button>
-                    <p className='center-text'>
-                        <Link to='/login'>Forgot password?</Link>
-                    </p>
+                    <Button className="submit-button" color='green' fluid={true} onClick={this.login}>Submit</Button>
                 </Form>
                 <p className='center-text'>Don't have an account?
                     <Link to='/signup'> Sign Up</Link>

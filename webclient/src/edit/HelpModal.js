@@ -1,32 +1,14 @@
 import React, { Component } from 'react';
 import { Segment, Modal, Icon, Popup, Button, Form, Header, Message } from 'semantic-ui-react';
-import { withRouter } from 'react-router-dom';
 
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { createStory } from '../redux/actions';
-
-
-class AddStorymodal extends Component {
+class HelpModal extends Component {
     state = {
         visible: false,
-        title: "",
-        description: ""
     }
 
     hideModal = (e) => this.setState({ visible: false })
 
     showModal = (e) => this.setState({ visible: true })
-
-    handleNameInput = (e) => { this.setState({ title: e.target.value, }) }
-
-    handleDescriptionInput = (e) => { this.setState({ description: e.target.value, }) }
-
-    add = (event) => {
-        event.preventDefault()
-        const { title, description } = this.state
-        this.props.createStory(this, title, description)
-    }
 
     render() {
         const { visible, title, description } = this.state
@@ -34,13 +16,13 @@ class AddStorymodal extends Component {
         return (
             <Modal
                 trigger={
-                    <Button fluid size='large' onClick={this.showModal} color='blue' id='add-story-button'>Add new story</Button>
+                    <Button color='blue' onClick={this.showModal}>Help</Button>
                 }
                 open={visible}
                 onClose={this.hideModal}
                 dimmer="blurring"
             >
-                <Modal.Header as='h2' className="modal-header"> <Icon name='plus square outline' color='blue' />Add New Story</Modal.Header>
+                <Modal.Header as='h2' className="modal-header">Help</Modal.Header>
                 <Modal.Content className='modal-content-container'>
                     <Modal.Description>
                         <Segment basic padded>
@@ -59,35 +41,15 @@ class AddStorymodal extends Component {
                             </ul>
                             <Header as='h4' textAlign='center'>These are only suggestions. This is your story to tell. Thank you for being a part of this project. </Header>
                         </Segment>
-                        <Segment basic padded>
-                            <Form loading={fetching.count !== 0} warning={fetchError.length > 0} onSubmit={this.add}>
-                                <Form.Input type='text' placeholder='Story Title' value={title} onChange={this.handleNameInput} />
-                                <Form.Input type='text' placeholder='Description (Optional)' value={description} onChange={this.handleDescriptionInput} />
-                                <Message warning>{fetchError}</Message>
-                            </Form>
-                        </Segment>
                     </Modal.Description>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={this.hideModal} className='cancel-button'> Cancel </Button>
-                    <Button color='green' content="Create" onClick={this.add} />
+                    <Button onClick={this.hideModal} className='cancel-button'> Exit </Button>
+                    <div style={{clear:"both"}}></div>
                 </Modal.Actions>
             </Modal>
         )
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        fetching: state.fetching,
-        fetchError: state.fetchError
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        createStory
-    }, dispatch)
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddStorymodal))
+export default HelpModal

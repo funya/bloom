@@ -5,19 +5,22 @@ import './edit.css';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import AddSectionButton from './AddSectionButton';
 import EditableSectionItem from './EditableSectionItem';
+import  ScrollToTop from '../components/ScrollToTop';
 import { Link } from 'react-router-dom';
 import { isEqual } from 'lodash';
+import HelpModal from './HelpModal';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { getSections, getMyStories, setCurrentStory, arrangeSections, setGridWidth } from '../redux/actions';
+import { getSections, getMyStories, setCurrentStory, arrangeSections, setGridWidth, updateTitle, updateDescription } from '../redux/actions';
 
 
 class EditContainer extends Component {
     state = {
         title: "",
         description: "",
-        disabled: true,
+        disabledTitle: true,
+        disabledDescription: true,
         width: "317px"
     }
 
@@ -26,19 +29,27 @@ class EditContainer extends Component {
     // call is made to get the sections of the story. 
     componentDidMount() {
         let storyid = this.props.match.params.id
-
         this.props.setCurrentStory(this, storyid)
         this.props.getSections(storyid)
-
     }
 
     // Event handler that manages the changing of the story title
     handleTitle = (e) => this.setState({ title: e.target.value })
 
-    handleTitleDisable = (e) => this.setState({ disabled: false })
+    handleDescription = (e) => this.setState({ description: e.target.value })
+
+    handleTitleDisable = (e) => this.setState({ disabledTitle: false })
+
+    handleDescriptionDisable = (e) => this.setState({ disabledDescription: false })
 
     updateTitle = (e) => {
-        this.setState({ disabled: true })
+        e.preventDefault()
+        this.props.updateTitle(this, this.state.title)
+    }
+
+    updateDescription = (e) => {
+        e.preventDefault()
+        this.props.updateDescription(this, this.state.description)
     }
 
     // Callback called when resorting of section ends
@@ -53,7 +64,7 @@ class EditContainer extends Component {
 
     render() {
         const { fetching, fetchError, currentStory, sections, setGridWidth } = this.props
-        const { description, title, disabled } = this.state
+        const { description, title, disabledDescription, disabledTitle } = this.state
 
         let items = sections[currentStory.id]
 
@@ -63,50 +74,70 @@ class EditContainer extends Component {
         items !== undefined && (
             items.length > 0 && (
                 nextbutton = <Link className='ui button preview-story-button' to={`/story/${currentStory.id}/preview`}>
-                    Next
+                    Preview
                 <Icon name='long arrow right' />
                 </Link>
             )
         )
         return (
             <Container fluid id="editcontainer">
+                <ScrollToTop />
                 <Container>
-
                     <Segment basic padded='very' className='button-container'>
-                        <Button color='blue'>See Demo</Button>
+                        <HelpModal />
                         <Popup
                             trigger={<Button icon='grid layout' onClick={setGridWidth} value={"317px"} />}
                             content='Grid Layout'
                             position={'bottom center'}
                             basic
                             inverted
-                            />
+                        />
                         <Popup
                             trigger={<Button icon='list layout' onClick={setGridWidth} value={"100%"} />}
                             content='List Layout'
                             position={'bottom center'}
                             basic
                             inverted
-                            />
+                        />
                         {nextbutton}
                         <div style={{ clear: "both" }}></div>
                     </Segment>
 
-                    <Segment padded='very' basic>
-                        <Input id='timeline-title' fluid
-                            placeholder='Title'
-                            onChange={this.handleTitle}
-                            value={title}
-                            transparent={disabled}
-                            onClick={this.handleTitleDisable}
-                            onBlur={this.updateTitle}
+                    <div className='story-input-container'>
+                        <div className='little-label'>Story Title <Icon name='pencil' color='blue' /></div>
+                        <Segment padded='very' basic className='story-input'>
+                            <Input id='timeline-title' fluid
+                                loading={fetching.count !== 0}
+                                placeholder='Blank Title'
+                                onChange={this.handleTitle}
+                                value={title}
+                                transparent={disabledTitle}
+                                onClick={this.handleTitleDisable}
+                                onBlur={this.updateTitle}
                             />
-                    </Segment>
+                        </Segment>
+                    </div>
 
-                    <Segment padded='very' basic className='section-grid-container'>
-                        <Dimmer active={fetching.count !== 0} inverted>
-                            <Loader inverted content='Loading Sections' />
+                    <div className='story-input-container'>
+                        <div className='little-label'>Story Description <Icon name='pencil' color='blue' /></div>
+                        <Segment padded='very' basic className='story-input'>
+                            <Input id='timeline-description' fluid
+                                placeholder='Blank Description'
+                                loading={fetching.count !== 0}
+                                onChange={this.handleDescription}
+                                value={description}
+                                transparent={disabledDescription}
+                                onClick={this.handleDescriptionDisable}
+                                onBlur={this.updateDescription}
+                            />
+                        </Segment>
+                    </div>
+
+                    <Dimmer.Dimmable as={Segment} blurring dimmed={fetching.count !== 0} padded='very' basic className='section-grid-container'>
+                        <Dimmer active={fetching.count !== 0 && (fetching.fetch.includes("sections") || fetching.fetch.includes("section"))} inverted style={{ backgroundColor: "rgba(0,0,0,0)" }}>
+                            <Loader inverted content='Loading' />
                         </Dimmer>
+
                         {items !== undefined && (
                             <SortableList
                                 items={items}
@@ -114,10 +145,10 @@ class EditContainer extends Component {
                                 axis='xy'
                                 helperClass='section-grid-item-wrapper'
                                 pressDelay={200}
-                                />
+                            />
                         )
                         }
-                    </Segment>
+                    </Dimmer.Dimmable>
 
                 </Container>
             </Container>
@@ -127,9 +158,9 @@ class EditContainer extends Component {
 
 const SortableItem = SortableElement(({ value }) => {
     return (
-        <EditableSectionItem section={{...value}} />
-        )
-    });
+        <EditableSectionItem section={{ ...value }} />
+    )
+});
 
 const SortableList = SortableContainer(({ items }) => {
     return (
@@ -138,7 +169,7 @@ const SortableList = SortableContainer(({ items }) => {
                 <SortableItem
                     key={`item-${index}`}
                     index={index} value={value}
-                    />
+                />
             ))}
             <AddSectionButton />
         </div>
@@ -160,7 +191,9 @@ const mapDispatchToProps = (dispatch) => {
         getMyStories,
         setCurrentStory,
         arrangeSections,
-        setGridWidth
+        setGridWidth,
+        updateTitle,
+        updateDescription
     }, dispatch)
 }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Header, Container, Button, Message } from 'semantic-ui-react'
 import { Link } from 'react-router-dom';
+import  ScrollToTop from '../components/ScrollToTop';
 import image from '../img/lotus.svg';
 import { isEmpty } from 'lodash';
 //stylesheet shared with login
@@ -40,6 +41,7 @@ class Signup extends Component {
         const { fetchError, fetching, signUp, currentUser } = this.props
         return (
             <Container className='logincontainer'>
+                <ScrollToTop />
                 <Header id="title" textAlign='center' as='h1'>
                     <img src={image} alt='logo' />
                     Bloom
@@ -59,9 +61,9 @@ class Signup extends Component {
                         <input placeholder='Confirm Password' type='password' value={p2} onChange={this.handlePasswordConfChange} />
                     </Form.Field>
                     <Message warning>{fetchError}</Message>
-                    <Button className="submit-button" fluid={true} onClick={this.submit}>Submit</Button>
+                    <Button className="submit-button" color='green' fluid={true} onClick={this.submit}>Submit</Button>
                     <p className='center-text'>
-                        By signing up, you agree to the <a href="">Terms of Service</a> and <a href="">Privacy Policy</a>
+                        By signing up, you agree to the <Link to='/tos'>Terms of Service </Link> and <Link to='/privacy'>Privacy Policy</Link>
                     </p><br />
                     <p id="disclaimer">*Disclaimer: your email address is for the use of API Chaya alone and will never be displayed publically
                     </p>

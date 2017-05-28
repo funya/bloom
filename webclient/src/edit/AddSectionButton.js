@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Segment, Menu, Button, Header, Grid, Modal, Icon, Form, TextArea, Message, Input, Image } from 'semantic-ui-react';
-import { apiRoot, storageKey } from '../authentication/Auth';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -49,14 +48,14 @@ class AddSectionButton extends Component {
                         <Icon name='plus square outline' size='massive'></Icon>
                     </div>
                 }
-                dimmer="inverted"
+                dimmer="blurring"
                 open={visible}
                 onClose={this.hideModal}
                 closeOnEscape={true}
                 closeOnRootNodeClick={false}
             >
-                <Modal.Header as='h3'> <Icon name='plus square outline' />Add Section</Modal.Header>
-                <Modal.Content>
+                <Modal.Header as='h2' className="modal-header"> <Icon name='plus square outline'/>Add Section</Modal.Header>
+                <Modal.Content className='modal-content-container'>
                     <Grid>
                         <Grid.Row>
                             <Grid.Column as={Menu} icon vertical tabular className='input-menu'>
@@ -81,7 +80,7 @@ class AddSectionButton extends Component {
                                             </Form>
                                         ) : (
                                                 <Form onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0}>
-                                                    <TextArea value={text} onChange={this.handleTextSection} placeholder='Tell us your story' />
+                                                    <TextArea value={text} onChange={this.handleTextSection} placeholder='Tell your story' />
                                                     <Message warning>{fetchError}</Message>
                                                 </Form>
                                             )
@@ -93,11 +92,11 @@ class AddSectionButton extends Component {
                     </Grid>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='grey' onClick={this.hideModal} inverted className='cancel-button'>
-                        Exit
+                    <Button onClick={this.hideModal} className='cancel-button'>
+                        Cancel
                     </Button>
-                    <Button color='green' inverted onClick={this.submit}>
-                        <Icon name='save' /> Submit
+                    <Button color='green' onClick={this.submit}>
+                        <Icon name='save' /> Save
                     </Button>
                 </Modal.Actions>
             </Modal>

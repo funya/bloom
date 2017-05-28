@@ -2,15 +2,16 @@
 
 html {
   overflow: hidden;
+  height: 100%;
 }
 
 body {
+  height: 100%;
   margin: 0px;
   padding: 0px;
   font-family: "Open Sans","Helvetica Neue", Helvetica, sans-serif;
   font-weight: 400;
   letter-spacing: 0.7px;
-  font-size: 2em;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -20,8 +21,9 @@ h1,h2,h3,h4,h5,h6 {
 
 button {
   text-transform: uppercase !important;
-  font-weight: 400 !important;
+  font-weight: 600 !important;
   letter-spacing: 1.5px !important;
+  color: white;
 }
 
 .center-text {
@@ -42,7 +44,6 @@ button {
 }
 
 #app {
-  padding-top: 50px;
   position: relative;
 }
 
@@ -51,25 +52,6 @@ button {
   padding-top: 1px;
 }
 
-#addform {
-  width: 800px;
-  background-color: white;
-}
-
-
-.no-border {
-  border: none !important;
-  border-radius: none !important;
-  box-shadow: none !important;
-}
-
-.main-edit-container {
-
-  border: none !important;
-  border-radius: none !important;
-  padding-bottom: none;
-  box-shadow: none;
-}
 
 #nav-logo {
   margin-right: 10px;
@@ -77,12 +59,19 @@ button {
 
 #footer {
   position: relative;
+  color: white !important;
   bottom: 100%;
-  padding-top: 60px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   margin-top: 0px;
   border-radius: 0;
-  background-color: rgb(67, 72, 76);
+  background-color: rgb(57, 62, 66);
+}
 
+#footer #copyright {
+  float:right;
+  padding-bottom: 10px;
+  color: white;
 }
 
 .add-timeline-item-button {
@@ -90,32 +79,6 @@ button {
     margin: auto;
     padding: 3px;
 }
-
-.btn {
-  font-size: .92857143rem;
-  cursor: pointer;
-  display: inline-block;
-  min-height: 1em;
-  outline: 0;
-  border: none;
-  vertical-align: baseline;
-  background-color: #D8E2DC !important;
-  color: rgba(0,0,0,.6);
-  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
-  margin: 0 .25em 0 0;
-  padding: .78571429em 1.5em;
-  text-transform: none;
-  text-shadow: none;
-  font-weight: 700;
-  line-height: 1em;
-  font-style: normal;
-  text-align: center;
-  text-decoration: none;
-  border-radius: .28571429rem;
-  box-shadow: 0 0 0 1px transparent inset, 0 0 0 0 rgba(34,36,38,.15) inset;
-  transition: opacity .1s ease,background-color .1s ease,color .1s ease,box-shadow .1s ease,background .1s ease;
-}
-
 /*==================================
     TIMELINE
 ==================================*/
@@ -319,10 +282,10 @@ button {
     ----------------------------------------------*/
 
 .ui.red.button {
-  font-weight: 300 !important;
+  font-weight: 400 !important;
   letter-spacing: 1.5px !important;
   text-transform: uppercase !important;
-  background-color: rgb(255, 69, 90) !important; 
+  background-color: rgb(255, 69, 90) !important;
 }
 
 .ui.red.button:hover {
@@ -330,7 +293,7 @@ button {
 }
 
 .ui.green.button {
-  font-weight: 300 !important;
+  font-weight: 400 !important;
   letter-spacing: 1.5px !important;
   text-transform: uppercase !important;
   background-color: rgb(172, 222, 173) !important; 
@@ -341,7 +304,7 @@ button {
 }
 
 .ui.blue.button {
-  font-weight: 300 !important;
+  font-weight: 400 !important;
   letter-spacing: 1.5px !important;
   text-transform: uppercase !important;
   background-color: rgb(97, 175, 255) !important; 
@@ -361,4 +324,9 @@ button {
 
 .modal .modal-content-container .subtext{
   color: rgb(141, 149, 157) !important;
+}
+
+.modal .actions .cancel-button {
+    float: left;
+    font-weight: 400 !important;
 }

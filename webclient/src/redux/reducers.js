@@ -69,6 +69,10 @@ let currentStory = (state = {}, action) => {
                 return state
             }
             return action.data;
+        case "UPDATE TITLE":
+            return action.data
+        case "UPDATE DESCRIPTION":
+            return action.data
         default:
             return state
     }

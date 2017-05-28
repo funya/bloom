@@ -5,8 +5,3 @@
 .publish-button {
     float: right !important;
 }
-
-.modal-publish-button {
-    background-color: rgba(27, 179, 47, 0.8) !important;
-    color: white !important;
-}

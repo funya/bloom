@@ -52,18 +52,18 @@ class EditMessageModal extends Component {
                         inverted
                         basic
                         trigger={<Icon name='pencil' className='edit-icon' color='blue' size='large' onClick={this.showModal} />}
-                        content='Edit Message'
+                        content='Edit Section'
                     />
                 }
-                dimmer="inverted"
+                dimmer="blurring"
                 open={visible}
                 onClose={this.hideModal}
                 closeOnEscape={true}
                 closeOnRootNodeClick={false}
                 closeIcon='close'
             >
-                <Modal.Header as='h2'> <Icon name='pencil' color='blue' />Edit Section</Modal.Header>
-                <Modal.Content>
+                <Modal.Header as='h2' className="modal-header"> <Icon name='pencil' color='blue' />Edit Section</Modal.Header>
+                <Modal.Content className='modal-content-container'>
                     <Grid>
                         <Grid.Row>
                             <Grid.Column as={Menu} icon vertical tabular className='input-menu'>
@@ -107,9 +107,9 @@ class EditMessageModal extends Component {
                     <Button onClick={this.hideModal} style={{ float: "left" }}>
                         Cancel
                         </Button>
-                    <Button inverted color='green' onClick={this.update}>
+                    <Button color='green' onClick={this.update}>
+                        <Icon name='save' />
                         Save Changes
-                        <Icon name='long arrow right' />
                     </Button>
                 </Modal.Actions>
             </Modal>

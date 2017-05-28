@@ -12,15 +12,16 @@ class EditableSectionItem extends Component {
             <div className='section-grid-item-container' style={{width:gridWidth}}>
                 <div className='menu-icons'>
                     <Icon name='content' className='reorder-icon' size='large' />
-                    <div className='menu-icons-right'>
+                    <span className='menu-icons-right'>
                         <EditSectionModal section={section}/>
                         <DeleteSectionModal section={section}/>
-                    </div>
+                    </span>
                 </div>
+                <div style={{clear:"both"}}></div>
                 <Card className='section-grid-item-content'>
                     {
                         section.image.length > 0 ? (
-                            <Image src={section.image} />
+                            <Image src={section.image} wrapped syle={{background: "none"}}/>
                         ) : (
                                 <Card.Content description={section.body} />
                             )

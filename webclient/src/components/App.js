@@ -11,7 +11,7 @@ import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 
 //pages
 import Home from '../home/Home';
-import About from '../about/About';
+import AboutView from '../about/AboutView';
 import Account from '../account/AccountContainer';
 import Story from './Story';
 import Edit from '../edit/EditContainer';
@@ -20,16 +20,15 @@ import Login from '../authentication/Login';
 import Preview from '../preview/PreviewContainer';
 import Confirmation from '../preview/Confirmation';
 
+//redux
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { checkSession } from '../redux/actions';
-
 
 class App extends Component {
     componentDidMount() {
         this.props.checkSession()
     }
-
 
     render() {
         const AuthRoute = ({ component: Component, ...rest }) => (
@@ -49,19 +48,21 @@ class App extends Component {
             <BrowserRouter forceRefresh={!('pushState' in window.history)}>
                 <Container fluid id='app'>
                     <Navbar />
-                    <div>
+                    <Container fluid>
                         <Route exact path="/" component={Home} />
-                        <Route exact path="/about" component={About} />
+                        <Route exact path="/about" component={AboutView} />
+                        <Route exact path="/tos" component={AboutView} />
+                        <Route exact path="/privacy" component={AboutView} />
                         <AuthRoute exact path="/account" component={Account} />
                         <Route exact path="/story" component={Story} />
-                        <AuthRoute exact path="/story/:id/preview" component={Preview}/>
+                        <AuthRoute exact path="/story/:id/preview" component={Preview} />
                         <AuthRoute exact path="/story/:id/edit" component={Edit} />
                         <AuthRoute path="/story/:id/confirmation" component={Confirmation} />
                         <Route exact path="/edit" component={Edit} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/signup" component={Signup} />
                         <Route exact path="/story/:id" component={Story} />
-                    </div>
+                    </Container>
                     <Footer />
                 </Container>
             </BrowserRouter>

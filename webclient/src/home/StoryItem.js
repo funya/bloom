@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Segment, Icon, Image, Card, Divider } from 'semantic-ui-react';
-import image from '../img/image.png';
 import { Link } from 'react-router-dom';
-import { apiRoot } from '../authentication/Auth';
 
 
 class StoryItem extends Component {
@@ -17,7 +15,7 @@ class StoryItem extends Component {
                         }
                     </Card.Content>
                 <Card.Content extra className='extra-link-container'> 
-                    <Link to={{ pathname: `story/${this.props.id}`, state: {...this.props}}}> Read more <Icon name='long arrow right'/></Link> 
+                    <Link to={`story/${this.props.id}`}> Read more <Icon name='long arrow right'/></Link> 
                 </Card.Content>
             </Card>
         )

@@ -30,7 +30,7 @@ class StoryItem extends Component {
                     }
                     on='click'
                     basic
-                    hideOnScroll
+                    hideOnScroll={true}
                     style={{zIndex: 900}}
                     position='left center'
                     >

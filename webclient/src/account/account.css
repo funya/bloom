@@ -1,9 +1,11 @@
 #accountcontainer {
     min-height: 95vh;
     background-color: rgb(247, 247, 248);
+    padding-top: 20px;
 }
 
 #accountcontainer #user-info{
+    padding-top: 20px;
     font-weight: 400;
     letter-spacing: 0.8px;
     font-size: 2em;
@@ -19,6 +21,7 @@
 
 #accountcontainer .story-container {
     letter-spacing: 0.9px;
+    min-height: 100px;
 }
 
 #accountcontainer .story-container .story-item:hover{

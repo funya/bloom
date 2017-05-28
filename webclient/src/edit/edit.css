@@ -7,11 +7,41 @@
     margin-bottom: 0px;
     padding-bottom: 20px;
     padding-top: 20px;
+    margin-top:50px;
+}
+
+#editcontainer .little-label {
+    font-size: 11px;
+    text-align: center;
+    color: rgb(141, 149, 157);
+    line-height: initial;
+}
+
+#editcontainer .little-label .pencil.icon {
+    opacity: 0;
+}
+
+#editcontainer .story-input-container:hover .pencil.icon{
+    opacity: 1;
+}
+
+#editcontainer .story-input {
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 5px;
 }
 
 #editcontainer #timeline-title input {
     text-align: center;
-    font-size: 2em;
+    font-size: 2.5em;
+    font-weight: 400;
+    font-family: "Open Sans";
+    padding: 8px 10px;
+}
+
+#editcontainer #timeline-description input {
+    text-align: center;
+    font-size: 1em;
     font-weight: 400;
     font-family: "Open Sans";
     padding: 8px 10px;
@@ -38,8 +68,13 @@
 }
 
 .section-grid-item-container .section-grid-item-content {
-    height: 84%;
+    width: 99%;
     overflow-y: scroll;
+    height: calc(100% - 40px);
+    display: -webkit-flex;
+    margin: 0 auto;
+    background-color: rgba(254, 254, 253, 0.9);
+    line-height: 150%;
 }
 
 .section-grid-item-container {
@@ -52,30 +87,20 @@
     margin: 5px;
     border: 0;
     cursor: grab;
-    box-sizing: border-box;
-    display: -webkit-flex;
-    align-items: center;
-    justify-content: center;
     border-radius: .28571429rem;
     box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
     border: 1px solid rgba(34,36,38,.15);
     position: relative;
 }
 
+.section-grid-item-container .menu-icons {
+    padding-bottom: 8px;
+}
+
 .section-grid-item-container .reorder-icon {
-    position: absolute;
-    top: 13px;
-    left: 13px;
     color: rgb(151, 159, 167);
     cursor: grab;
-}
-
-.section-grid-item-container .menu-icons {
-    opacity: 0;
-}
-
-.section-grid-item-container:hover .menu-icons {
-    animation: appear 0.4s ease both;
+    padding: 2px;
 }
 
 @keyframes appear {
@@ -84,23 +109,23 @@
     }
 }
 
+.section-grid-item-container:hover .menu-icons-right {
+    animation: appear 0.3s ease both;
+}
+
 .section-grid-item-container .menu-icons-right {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+ float: right;
+ opacity: 0;
 }
 
 .section-grid-item-container .menu-icons-right .edit-icon {
-
-    color: rgb(151, 159, 167);
     cursor: pointer;
-    padding: 5px;
+    padding: 2px;
 }
 
 .section-grid-item-container .menu-icons-right .trash-icon {
-    color: rgb(151, 159, 167);
     cursor: pointer;
-    padding: 5px;
+    padding: 2px;
 }
 
 .section-grid-item-container:hover {
@@ -118,7 +143,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    flex-grow: 1;
+    display: -webkit-flex;
 }
 
 .section-grid-item-add:hover {
@@ -132,16 +157,6 @@
     }
 }
 
-.actions .cancel-button {
-    float: left;
-    color: rgba(0,0,0,.6) !important;
-    font-weight: 600 !important;
-}
-
-.actions {
-    clear: both;
-}
-
 .content .first-prompt-message {
     font-family: "Open Sans";
     font-weight: 300;
@@ -150,11 +165,6 @@
 
 .input-menu button i, button.ui.icon.button i {
     pointer-events: none;
-}
-
-.preview-story-button {
-    background-color: rgba(172, 222, 173, 0.8) !important;
-    color: white !important;
 }
 
 #editcontainer  a.preview-story-button {
@@ -167,5 +177,5 @@
 }
 
 #editcontainer  a.preview-story-button:hover {
-    background-color: rgba(139, 234, 134, 0.8) !important;
+    background-color: rgba(172, 222, 173, 0.8) !important;
 }

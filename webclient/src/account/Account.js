@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Segment, Header, Icon, Button, Dimmer, Loader, Divider } from 'semantic-ui-react'
 import StoryItem from './StoryItem';
+import  ScrollToTop from '../components/ScrollToTop';
 import AddStoryModal from './AddStoryModal';
 
 class Account extends Component {
@@ -8,7 +9,8 @@ class Account extends Component {
         const { currentUser, myStories, fetching } = this.props
         return (
             <Container fluid id='accountcontainer'>
-                <Container>
+                <ScrollToTop />
+                <Container style={{marginTop:"50px"}}>
                     <Segment basic padded>
                         <Segment padded>
                             <Header as='h1' icon textAlign='center' id="user-info">
@@ -21,9 +23,9 @@ class Account extends Component {
                     <Segment basic>
                         <Divider horizontal><Header as='h1' className='story-container-header'>My Stories</Header></Divider>
                     </Segment>
-                    <Segment basic padded className='story-container'>
-                        <Dimmer active={fetching.count !== 0} inverted>
-                            <Loader content='Retrieving personal stories' />
+                    <Dimmer.Dimmable as={Segment} blurring dimmed={fetching.count !== 0} basic padded className='story-container'>
+                        <Dimmer active={fetching.count !== 0} inverted style={{backgroundColor:"rgba(0,0,0,0)"}}>
+                            <Loader content='Retrieving personal stories' style={{height: "100%"}}/>
                         </Dimmer>
                         {myStories.map(story =>
                             <StoryItem
@@ -31,7 +33,7 @@ class Account extends Component {
                                 key={story.id}
                                 />
                         )}
-                    </Segment>
+                    </Dimmer.Dimmable>
                     <Segment basic padded>
                         <AddStoryModal />
                     </Segment>

@@ -1,12 +1,11 @@
 #title {
     color: #9D8189;
-    margin-left: -25px;
-    margin-top: -25px;
     font: "Open Sans";
 }
 
 .aboutcontainer {
     min-height: 100vh;
+    padding-bottom: 30px;
 }
 
 #lotuslogo {

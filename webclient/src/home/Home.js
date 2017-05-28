@@ -1,75 +1,80 @@
 import React, { Component } from 'react';
 import { Container, Header, Image, Grid, Card, Dimmer, Loader, Segment } from 'semantic-ui-react'
-import { apiRoot } from '../authentication/Auth';
 import image from '../img/lotus.svg';
-import Btn from '../components/Button.js';
-import './home.css'
-import StoryItem from './StoryItem'
+import { Link } from 'react-router-dom';
+import './home.css';
+import StoryItem from './StoryItem';
+import ScrollToTop from '../components/ScrollToTop';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { getStories } from '../redux/actions';
+
 
 class Home extends Component {
-	state = {
-		loading: true,
-		stories: []
-	}
 
-	componentDidMount() {
-		this.setState({ loading: true })
-		// Get the single story information 
-		fetch(`${apiRoot}/stories`, {
-			mode: "cors",
-		})
-			.then(resp => {
-				if (resp.ok) {
-					return resp.json()
-				} else {
-					return Promise.reject({
-						status: resp.status,
-						statusText: resp.statusText,
-						statusMessage: resp.text()
-					})
-				}
-			})
-			.then(data => {
-				this.setState({ stories: data, loading: false })
-			})
-			.catch(err => {
-				this.setState({ loading: false })
-				console.log(err)
-				return null
-			})
-	}
+    componentDidMount() {
+        this.props.getStories()
+    }
 
-	render() {
-		console.log("Rendering Home comp.: ", this.state)
-		return (
-			<Container id='homecontainer' fluid>
-				<Container id='hero-container' fluid>
-					<Segment textAlign='center' basic padded>
-						<Image centered src={image} size='medium' />
-						<Header as='h2' textAlign='center' className='hero-title'>We are API Chaya and we are collecting stories on</Header>
-						<Header as='h1' textAlign='center' className='hero-title'>sexual assault, domestic violence, and human trafficking</Header>
+    render() {
+        const { stories, fetching, fetchError } = this.props
 
-						<Btn path='/signup' content='Do you have a story?' id='action-button' />
+        return (
+            <Container id='homecontainer' fluid>
+                <ScrollToTop />
+                <Container id='hero-container' fluid>
+                    <Segment textAlign='center' basic padded>
+                        <Image centered src={image} size='medium' style={{ paddingRight: "5px" }} />
+                        <Header as='h2' textAlign='center' className='hero-title'>We are API Chaya and we are collecting stories on</Header>
+                        <Header as='h1' textAlign='center' className='hero-title'>sexual assault, domestic violence, and human trafficking.</Header>
 
-					</Segment>
-				</Container>
-				<Container fluid id='stories-container'>
-					<Dimmer inverted active={this.state.loading}>
-						<Loader>Loading Stories</Loader>
-					</Dimmer>
-					<Segment basic padded className='stories-grid-container'>
-							{this.state.stories.map(story =>
-								<div key={story.id} style={{ marginBottom: "30px", width: Math.floor(Math.random() * 450) + 280 , minHeight: "100%"}} className='story-item-container'>
-									<StoryItem
-										{...story}
-									/>
-								</div>
-							)}
-					</Segment>
-				</Container>
-			</Container>
-		)
-	}
+                        {
+                            (localStorage.getItem("auth") !== null && localStorage.getItem("auth").length > 0) ? (
+                                <Link className='ui button green' id='action-button' to={`/account`}>
+                                    Do you have a story?
+                                </Link>
+                            ) : (
+                                    <Link className='ui button green' id='action-button' to={`/signup`}>
+                                        Do you have a story?
+                                </Link>
+                                )
+                        }
+                    </Segment>
+                </Container>
+                <Container fluid id='stories-container'>
+                    <Dimmer.Dimmable as={Segment} dimmed={fetching.count !== 0} padded='very' basic>
+                        <Dimmer active={fetching.count !== 0 && fetching.fetch.includes("stories")} inverted>
+                            <Loader inverted content='Loading' />
+                        </Dimmer>
+                        <Segment basic padded='very' className='stories-grid-container'>
+                            {stories.map(story =>
+                                <div key={story.id} style={{ marginBottom: "30px", width: Math.floor(Math.random() * 380) + 300, minHeight: "100%" }} className='story-item-container'>
+                                    <StoryItem
+                                        {...story}
+                                    />
+                                </div>
+                            )}
+                        </Segment>
+                    </Dimmer.Dimmable>
+                </Container>
+            </Container>
+        )
+    }
 }
 
-export default Home
+const mapStateToProps = (state) => {
+    return {
+        fetching: state.fetching,
+        fetchError: state.fetchError,
+        stories: state.stories
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        getStories
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

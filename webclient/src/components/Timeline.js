@@ -1,24 +1,34 @@
 import React, { Component } from 'react';
+import TimelineItem from './TimelineItem';
 
-
-import TimelineItem from './TimelineItem'
+import { connect } from 'react-redux';
 
 
 class Timeline extends Component {
-
     render() {
+        const { sections, storyid } = this.props
+
+        let items = sections[storyid]
+
         return (
-            <ul className='timeline timeline-centered'>
-                {this.props.timelineitems.map(timelineitem =>
-                    <TimelineItem
-                        onClick={(event) => this.props.onTimelineItemClick(event)}
-                        {...timelineitem}
-                        key={timelineitem.id}
-                    />
-                )}
-            </ul>
+            items !== undefined && (
+                <ul className='timeline timeline-centered'>
+                    {items.map(section =>
+                        <TimelineItem
+                            {...section}
+                            key={section.id}
+                        />
+                    )}
+                </ul>
+            )
         )
     }
 }
 
-export default Timeline
+const mapStateToProps = (state) => {
+    return {
+        sections: state.sections
+    }
+}
+
+export default connect(mapStateToProps)(Timeline)
