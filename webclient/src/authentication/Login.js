@@ -1,67 +1,58 @@
 import React, { Component } from 'react';
-import { Form, Header, Container, Button, Image, Message, Segment } from 'semantic-ui-react'
+import { Form, Header, Container, Button, Image, Message, Segment } from 'semantic-ui-react';
 import { Link, Redirect } from 'react-router-dom';
+import { isEmpty } from 'lodash';
+import  ScrollToTop from '../components/ScrollToTop';
 
-import './Login_Signup.css'
+import './Login_Signup.css';
+import image from '../img/lotus.svg';
 
-import image from '../img/lotus.svg'
-import { Auth, storageKey } from './Auth'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { signIn } from '../redux/actions';
 
 class Login extends Component {
     state = {
         username: "",
         password: "",
-        redirectToReferrer: false,
-        loading: false,
-        error: false,
-        errmsg: ""
     }
 
-
     handlePasswordChange = (event) => this.setState({ password: event.target.value })
+
     handleUsernameChange = (event) => this.setState({ username: event.target.value })
 
-    handleSignInSubmit = (event) => {
-        event.preventDefault();
+    login = (event) => {
+        event.preventDefault()
 
-        Auth.authenticate(this, this.state.username, this.state.password)
+        const { username, password } = this.state
+        this.props.signIn(username, password)
     }
 
     render() {
-        const { from } = this.props.location.state || { from: { pathname: '/' } }
-        const { redirectToReferrer } = this.state
+        const { fetching, fetchError, currentUser } = this.props
+        const { username, password } = this.state
 
-        if (redirectToReferrer) {
-            return (
-                <Redirect to={from} />
-            )
-        }
-
-        let warningmessage = null
-        if (this.props.location.state) {
-            warningmessage = <Segment basic padded><Message error content='You need to sign in to access this page.' /></Segment>
+        if (!isEmpty(this.props.currentUser)) {
+            return <Redirect to={"/account"} />
         }
 
         return (
             <Container className='logincontainer'>
-                {warningmessage}
-                <Header id="title" textAlign='center' as='h1'>
+                <ScrollToTop />
+                <Header id="title" textAlign='center' as='h1' style={{marginTop:"50px"}}>
                     <Image src={image} alt='logo' />
                     Bloom
                 </Header>
-                <Form id='signup' onSubmit={event => this.handleSignInSubmit(event)} loading={this.state.loading} warning={this.state.error}>
+                <Form id='signup' onSubmit={this.login} loading={fetching.count !== 0} warning={fetchError.length > 0 && fetching.fetch !== "check session"}>
                     <Header textAlign='center' as='h2'> Sign In</Header>
                     <Form.Field>
-                        <input placeholder='Username' required type='text' value={this.state.username} onChange={event => this.handleUsernameChange(event)} />
+                        <input placeholder='Username' required type='text' value={username} onChange={this.handleUsernameChange} />
                     </Form.Field>
                     <Form.Field>
-                        <input placeholder='Password' required type='password' value={this.state.password} onChange={event => this.handlePasswordChange(event)} />
+                        <input placeholder='Password' required type='password' value={password} onChange={this.handlePasswordChange} />
                     </Form.Field>
-                    <Message warning>{this.state.errmsg}</Message>
-                    <Button className="submit-button" fluid={true} onClick={event => this.handleSignInSubmit(event)}>Submit</Button>
-                    <p className='center-text'>
-                        <Link to='/login'>Forgot password?</Link>
-                    </p>
+                    <Message warning>{fetchError}</Message>
+                    <Button className="submit-button" color='green' fluid={true} onClick={this.login}>Submit</Button>
                 </Form>
                 <p className='center-text'>Don't have an account?
                     <Link to='/signup'> Sign Up</Link>
@@ -72,4 +63,18 @@ class Login extends Component {
     }
 }
 
-export default Login
+const mapStateToProps = (state) => {
+    return {
+        fetching: state.fetching,
+        fetchError: state.fetchError,
+        currentUser: state.currentUser,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        signIn,
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

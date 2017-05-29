@@ -1,174 +1,93 @@
-import React, { Component } from 'react'
-import { Segment, Menu, Button, Header, Grid, Modal, Icon, Form, TextArea, Message, Input, Image } from 'semantic-ui-react'
-import 'whatwg-fetch'
-import { apiRoot, storageKey } from '../authentication/Auth'
+import React, { Component } from 'react';
+import { Segment, Menu, Button, Header, Grid, Modal, Icon, Form, TextArea, Message, Input, Image } from 'semantic-ui-react';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { createImageSection, createSection } from '../redux/actions';
 
 
 class AddSectionButton extends Component {
     state = {
-        visibleAddModal: false,
-        loading: false,
+        visible: false,
         imageUrl: "",
-        sectiontext: "",
+        text: "",
+        inputType: "text",
+        image: {},
     }
 
-    // Event handler that is called when save is clicked in the editing modal.
-    // A POST fetch call is made to submit the new item to the DB
-    submitNewSection = (e) => {
-        e.preventDefault()
-        this.setState({ loading: false })
+    showModal = (e) => this.setState({ visible: true })
 
-        if (this.state.inputType === "picture") {
-            var img64 = new FileReader()
-            img64.readAsDataURL(this.state.image)
-            img64.onload = () => {
-                fetch(`${apiRoot}/sections`, {
-                    method: 'post',
-                    mode: "cors",
-                    headers: new Headers({
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem(storageKey)
-                    }),
-                    body: JSON.stringify({
-                        body: this.state.sectiontext,
-                        storyid: this.props.storyid,
-                        image: img64.result,
-                    })
-                })
-                    .then(resp => {
-                        if (resp.ok) {
-                            return resp.json()
-                        } else {
-                            return Promise.reject({
-                                status: resp.status,
-                                statusText: resp.statusText,
-                                statusMessage: resp.text()
-                            })
-                        }
-                    })
-                    .then(data => {
-                        console.log(data)
-                        this.setState({ loading: false, visibleAddModal: false, sectiontext: "", image: null, imageUrl: "",inputType: null })
-                        this.props.fetchSections()
-                    })
-                    .catch(err => {
-                        this.setState({ loading: false })
-                        this.props.fetchSections()
-                        console.log(err)
-                        return null
-                    })
-            }
+    hideModal = (e) => this.setState({ visible: false })
+
+    showTextInput = (e) => this.setState({ inputType: "text" })
+
+    showPictureInput = (e) => this.setState({ inputType: "picture" })
+
+    handleTextSection = (e) => this.setState({ text: e.target.value })
+
+    handleImage = (e) => this.setState({ imageUrl: URL.createObjectURL(e.target.files[0]), image: e.target.files[0] })
+
+    submit = (e) => {
+        e.preventDefault()
+        const { text, image, inputType } = this.state
+        if (inputType === "text") {
+            this.props.createSection(this, text)
         } else {
-            fetch(`${apiRoot}/sections`, {
-                method: 'post',
-                mode: "cors",
-                headers: new Headers({
-                    "Content-Type": "application/json",
-                    "Authorization": localStorage.getItem(storageKey)
-                }),
-                body: JSON.stringify({
-                    body: this.state.sectiontext,
-                    storyid: this.props.storyid
-                })
-            })
-                .then(resp => {
-                    if (resp.ok) {
-                        return resp.json()
-                    } else {
-                        return Promise.reject({
-                            status: resp.status,
-                            statusText: resp.statusText,
-                            statusMessage: resp.text()
-                        })
-                    }
-                })
-                .then(data => {
-                    console.log(data)
-                    this.setState({ loading: false, visibleAddModal: false, sectiontext: "", inputType: null })
-                    this.props.fetchSections()
-                })
-                .catch(err => {
-                    this.setState({ loading: false })
-                    this.props.fetchSections()
-                    console.log(err)
-                    return null
-                })
+            this.props.createImageSection(this, image, text)
         }
     }
 
-    showAddModal = (e) => this.setState({ visibleAddModal: true, })
-
-    hideAddModal = (e) => this.setState({ visibleAddModal: false, })
-
-    showTextInput = (e) => {
-        e.preventDefault()
-        this.setState({ inputType: "text" })
-    }
-
-    showPictureInput = (e) => {
-        e.preventDefault()
-        this.setState({ inputType: "picture" })
-    }
-
-    handleTextSection = (e) => {
-        this.setState({ sectiontext: e.target.value })
-    }
-
-    handleCaption = (e) => this.setState({ imageCaption: e.target.value })
-
-    handleImage = (e) => {
-        e.preventDefault()
-        this.setState({ imageUrl: URL.createObjectURL(e.target.files[0]), image: e.target.files[0] })
-    }
-
     render() {
-        console.log("Rendering AddSectionButton: ", this.state, this.props)
+        const { fetching, fetchError} = this.props
+        const { visible, imageUrl, text, inputType } = this.state
+
         return (
             <Modal
                 trigger={
-                    <div className='section-grid-item-container section-grid-item-add' onClick={this.showAddModal}>
+                    <div className='section-grid-item-container section-grid-item-add' onClick={this.showModal}>
                         <Icon name='plus square outline' size='massive'></Icon>
                     </div>
                 }
-                dimmer="inverted"
-                open={this.state.visibleAddModal}
-                onClose={this.hideAddModal}
+                dimmer="blurring"
+                open={visible}
+                onClose={this.hideModal}
                 closeOnEscape={true}
                 closeOnRootNodeClick={false}
             >
-                <Modal.Header as='h3'> <Icon name='plus square outline' />Add Section</Modal.Header>
-                <Modal.Content>
+                <Modal.Header as='h2' className="modal-header"> <Icon name='plus square outline'/>Add Section</Modal.Header>
+                <Modal.Content className='modal-content-container'>
                     <Grid>
                         <Grid.Row>
                             <Grid.Column as={Menu} icon vertical tabular className='input-menu'>
                                 <Menu.Item>
-                                    <Button icon='picture' primary onClick={(event) => this.showPictureInput(event)} />
+                                    {
+                                        (inputType === "text") ? (<Button icon='picture' onClick={this.showPictureInput} />) 
+                                        : (<Button icon='picture' primary onClick={this.showPictureInput} />)
+                                    }
                                 </Menu.Item>
                                 <Menu.Item>
-                                    <Button icon='font' onClick={(event) => this.showTextInput(event)} />
+                                    {
+                                        (inputType === "text") ? (<Button icon='font' primary onClick={this.showTextInput} />) 
+                                        : (<Button icon='font' onClick={this.showTextInput} />)
+                                    }
                                 </Menu.Item>
                             </Grid.Column>
                             <Grid.Column as={Segment} basic width='14'>
-                                {!this.state.inputType &&
-                                    <Header as='h1' textAlign='center' className='first-prompt-message'>
-                                        <Icon name='long arrow left' size='huge' />
-                                        Select a type of input first
-                                    </Header>
-                                }
                                 <Segment basic className='input-container'>
-                                    {this.state.inputType && (
-                                        this.state.inputType === "picture" ? (
-                                            <Form loading={this.state.loading}>
+                                    {inputType && (
+                                        inputType === "picture" ? (
+                                            <Form onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0}>
                                                 <Form.Field>
-                                                    <Image src={this.state.imageUrl} />
+                                                    <Image src={imageUrl} />
                                                     <Form.Input as='input' type='file' accept='image/*' onChange={this.handleImage} />
                                                 </Form.Field>
-                                                <Form.Input type='text' placeholder='Optional Caption / Description' value={this.state.sectiontext} onChange={this.handleTextSection} />
+                                                <Form.Input type='text' placeholder='Optional Caption / Description' value={text} onChange={this.handleTextSection} />
+                                                <Message warning>{fetchError}</Message>
                                             </Form>
                                         ) : (
-                                                <Form loading={this.state.loading}>
-                                                    <TextArea value={this.state.sectiontext} onChange={this.handleTextSection} placeholder='Tell us your story' />
-                                                    <Message warning>Submitted</Message>
+                                                <Form onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0}>
+                                                    <TextArea value={text} onChange={this.handleTextSection} placeholder='Tell your story' />
+                                                    <Message warning>{fetchError}</Message>
                                                 </Form>
                                             )
                                     )
@@ -179,11 +98,11 @@ class AddSectionButton extends Component {
                     </Grid>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='red' onClick={this.hideAddModal} inverted className='cancel-button'>
-                        <Icon name='long arrow left' /> Exit
+                    <Button onClick={this.hideModal} className='cancel-button'>
+                        Cancel
                     </Button>
-                    <Button color='green' inverted onClick={this.submitNewSection}>
-                        <Icon name='save' /> Submit
+                    <Button color='green' onClick={this.submit}>
+                        <Icon name='save' /> Save
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -191,4 +110,19 @@ class AddSectionButton extends Component {
     }
 }
 
-export default AddSectionButton
+const mapStateToProps = (state) => {
+    return {
+        fetching: state.fetching,
+        fetchError: state.fetchError,
+
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        createImageSection,
+        createSection
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddSectionButton)

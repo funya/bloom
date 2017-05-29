@@ -4,7 +4,7 @@
 
 #homecontainer #hero-container {
   min-height: 30vh;
-  padding-top: 10px;
+  padding-top: 50px;
   padding-bottom: 20px;
 }
 
@@ -25,11 +25,12 @@
     font-size: 1.8em;
     font-family: "Open Sans";
     font-weight: 400;
-    color: rgb(0, 0, 0);
+    color: white;
+    text-transform: none !important;
 }
 
 #homecontainer #hero-container #action-button:hover {
-    color: rgb(0, 0, 0);
+    color: rgba(254, 254, 254, 1);
 }
 
 #homecontainer #stories-container {
@@ -60,16 +61,16 @@
 }
 
 #stories-container .story-item:hover {
-    box-shadow: 0 0 0 2px #D4D4D5, 0 4px 0 0 #E03997, 0 6px 6px 0 rgba(67, 72, 76,0.1);
+    box-shadow: 1px 1px 1px 3px #D4D4D5, 1px 6px 0 0 #E03997, 0 6px 6px 0 rgba(67, 72, 76,0.1);
 }
 
 #stories-container .story-item .text-container {
-    display: inline-block;
+    display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 9%;
-    margin: 1%;
+    padding: 4%;
+    margin: 2%;
     font-size: 1.2em;
     font-weight: 400;
     letter-spacing: 0.5px;

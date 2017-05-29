@@ -3,7 +3,6 @@ import { Image, Segment } from 'semantic-ui-react';
 
 class TimelineItem extends Component {
     handleItemMouseEnter = () => {
-        console.log(this)
     }
 
     render() {

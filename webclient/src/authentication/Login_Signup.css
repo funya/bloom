@@ -8,27 +8,17 @@
 }
 
 #title {
-    padding: 30px;
+    padding: 60px;
     padding-bottom: 10px;
     margin: 5px 0px !important;
-    font-family: "Open Sans"
+    font-family: "Open Sans";
+    font-size: 5rem;
 }
 
 #title img {
     margin-top: 0px;
 }
 
-#title.ui.header {
-    font-size: 4rem;
-}
-
-#signup button.submit-button{
-    background-color: rgb(173, 188, 165);
-}
-
-#signup button.submit-button:hover{
-    background-color: rgba(173, 188, 165,0.8);
-}
 
 .center-text {
     color:black;

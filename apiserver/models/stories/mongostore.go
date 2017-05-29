@@ -100,6 +100,7 @@ func (ms *MongoStore) InsertSection(id users.UserID, newSection *NewSection) (*S
 	s := newSection.ToSection()
 	s.CreatorID = id
 	s.ID = SectionID(bson.NewObjectId().Hex())
+	s.Index, _ = ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName).Find(bson.M{"story_id": newSection.StoryID}).Count()
 	err := ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName).Insert(s)
 	return s, err
 }
@@ -114,9 +115,23 @@ func (ms *MongoStore) UpdateSection(updates *SectionUpdates, currentSection *Sec
 }
 
 //DeleteSection deletes the section
-func (ms *MongoStore) DeleteSection(id SectionID) error {
-	err := ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName).RemoveId(id)
-	return err
+func (ms *MongoStore) DeleteSection(id SectionID) ([]*Section, error) {
+	section := &Section{}
+	err := ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName).FindId(id).One(section)
+	if err != nil {
+		return nil, err
+	}
+
+	err = ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName).RemoveId(id)
+	if err != nil {
+		return nil, err
+	}
+
+	sections := []*Section{}
+	query := bson.M{"story_id": section.StoryID}
+	err = ms.Session.DB(ms.DatabaseName).C(ms.SectionsCollectionName).Find(query).All(&sections)
+
+	return sections, err
 }
 
 //NewMongoStore constructs a new MongoStore, using the provided

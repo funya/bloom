@@ -19,6 +19,7 @@ type Section struct {
 	CreatedAt time.Time    `json:"createdAt"`
 	EditedAt  time.Time    `json:"editedAt"`
 	Image     string       `json:"image"`
+	Index     int          `json:"index"`
 }
 
 //NewSection represents the fields a new section the client wants
@@ -33,6 +34,7 @@ type NewSection struct {
 type SectionUpdates struct {
 	Body  string `json:"body"`
 	Image string `json:"image"`
+	Index int    `json:"index"`
 }
 
 //Validate validates the new section

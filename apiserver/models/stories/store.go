@@ -49,5 +49,5 @@ type Store interface {
 	UpdateSection(updates *SectionUpdates, currentSection *Section) error
 
 	//DeleteSection deletes the section
-	DeleteSection(id SectionID) error
+	DeleteSection(id SectionID) ([]*Section, error)
 }

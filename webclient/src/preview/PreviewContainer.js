@@ -1,55 +1,41 @@
 import React, { Component } from 'react';
 import 'whatwg-fetch';
-import Preview from './Preview';
-import { apiRoot, storageKey } from '../authentication/Auth';
-import './preview.css'
+import Timeline from '../components/Timeline';
+import  ScrollToTop from '../components/ScrollToTop';
+import { Container, Segment, Icon, Image } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import image from '../img/lotus.svg';
+import ConfirmationModal from './ConfirmationModal';
+import './preview.css';
 
+import { connect } from 'react-redux';
 
 class PreviewContainer extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            story: this.props.location.state,
-            items: []
-        }
-    }
-
-    componentDidMount() {
-        this.setState({ loading: true })
-        // Get the single story information 
-        fetch(`${apiRoot}/stories/${this.state.story.id}`, {
-            mode: "cors",
-            headers: new Headers({
-                "Authorization": localStorage.getItem(storageKey)
-            })
-        })
-            .then(resp => {
-                if (resp.ok) {
-                    return resp.json()
-                } else {
-                    return Promise.reject({
-                        status: resp.status,
-                        statusText: resp.statusText,
-                        statusMessage: resp.text()
-                    })
-                }
-            })
-            .then(data => {
-                this.setState({ items: data, loading: false })
-            })
-            .catch(err => {
-                this.setState({ loading: false })
-                console.log(err)
-                return null
-            })
-    }
 
     render() {
+        const { currentStory, sections } = this.props
         return (
-            <Preview {...this.state}/>
+            <Container className='previewcontainer'>
+                <ScrollToTop />
+                <Segment basic padded style={{marginTop:"50px"}}>
+                    <Link className='ui button back-button blue' to={`/story/${currentStory.id}/edit`}>
+                        Edit
+                    </Link>
+                    <ConfirmationModal />
+                </Segment>
+                <Segment basic padded>
+                    <Image src={image} size='medium' centered/>
+                    <Timeline storyid={currentStory.id}/>
+                </Segment>
+            </Container>
         )
     }
 }
 
-export default PreviewContainer
+const mapStateToProps = (state) => {
+    return {
+        currentStory: state.currentStory,
+    }
+}
+
+export default connect(mapStateToProps)(PreviewContainer)

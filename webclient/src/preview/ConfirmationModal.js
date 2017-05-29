@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Segment, Modal, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
+import { connect } from 'react-redux';
 
 class ConfirmationModal extends Component {
     state = {
@@ -14,7 +15,7 @@ class ConfirmationModal extends Component {
 
     render() {
         const { visible } = this.state
-        const { story } = this.props
+        const { currentStory } = this.props
         return (
             <Modal
                 trigger={
@@ -22,14 +23,13 @@ class ConfirmationModal extends Component {
                         Publish
                     </Button>
                 }
-                dimmer="inverted"
                 open={visible}
                 onClose={this.hideModal}
                 closeOnEscape={true}
                 closeOnRootNodeClick={false}
-                closeIcon='close'
-            >
-                <Modal.Header as='h2'> Publish Story</Modal.Header>
+                dimmer="blurring"
+            >   
+                <Modal.Header as='h2' className="modal-header">Publish Story</Modal.Header>
                 <Modal.Content>
                     <Segment basic padded>
                         <Segment textAlign='center' basic>
@@ -38,10 +38,10 @@ class ConfirmationModal extends Component {
                     </Segment>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={this.hideModal} color='red' style={{ float: 'left' }}>
+                    <Button onClick={this.hideModal} color='red' className='cancel-button' style={{color:"white"}}>
                         Cancel
                     </Button>
-                    <Link className='ui button modal-publish-button' to={{ pathname: `/story/${story.id}/confirmation`, state: { story } }}>
+                    <Link className='ui button green modal-publish-button' to={`/story/${currentStory.id}/confirmation`}>
                         Publish
                     </Link>
                 </Modal.Actions>
@@ -50,4 +50,11 @@ class ConfirmationModal extends Component {
     }
 }
 
-export default ConfirmationModal
+
+const mapStateToProps = (state) => {
+    return {
+        currentStory: state.currentStory,
+    }
+}
+
+export default connect(mapStateToProps)(ConfirmationModal)

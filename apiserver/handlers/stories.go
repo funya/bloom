@@ -271,16 +271,16 @@ func (ctx *Context) SpecificSectionHandler(w http.ResponseWriter, r *http.Reques
 	switch r.Method {
 	case "DELETE":
 		//if the current user is the section creator, delete the message and
-		//write a simple confirmation message
 
-		if err := ctx.StoryStore.DeleteSection(stories.SectionID(id)); err != nil {
+		sections, err := ctx.StoryStore.DeleteSection(stories.SectionID(id))
+		if err != nil {
 			http.Error(w, "error deleting section in DB: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Add(headerContentType, contentTypeTextUTF8)
-		w.Header().Add(headerContentType, contentTypeText)
-		w.Write([]byte("The section has been deleted."))
+		w.Header().Add(headerContentType, contentTypeJSONUTF8)
+		encoder := json.NewEncoder(w)
+		encoder.Encode(sections)
 
 	case "PATCH":
 		//If the current user is the section creator, update the specified section
