@@ -88,11 +88,22 @@ func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 //SessionsHandler allows existing users to sign-in
 func (ctx *Context) SessionsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
+
 		//Decode the request body into a models.Credentials struct
 		d := json.NewDecoder(r.Body)
 		c := &users.Credentials{}
 		if err := d.Decode(c); err != nil {
 			http.Error(w, "invalid JSON", http.StatusBadRequest)
+			return
+		}
+
+		overLoginAttemptThreshold, err := ctx.SessionStore.CheckLoginAttempt(c.UserName)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+		if overLoginAttemptThreshold {
+			http.Error(w, "Too many login attempts! Please try again later.", http.StatusUnauthorized)
 			return
 		}
 
@@ -107,6 +118,10 @@ func (ctx *Context) SessionsHandler(w http.ResponseWriter, r *http.Request) {
 		//Authenticate the user using the provided password; if that fails,
 		//respond with an http.StatusUnauthorized
 		if err := u.Authenticate(c.Password); err != nil {
+			if err := ctx.SessionStore.LogFailedAttempt(u.UserName); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 			http.Error(w, "Incorrect username or password ", http.StatusUnauthorized)
 			return
 		}

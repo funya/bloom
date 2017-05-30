@@ -111,6 +111,36 @@ func (rs *RedisStore) Get(sid SessionID, state interface{}) error {
 	return nil
 }
 
+//CheckLoginAttempt checks the following count of sing attemts for given username
+func (rs *RedisStore) CheckLoginAttempt(userName string) (bool, error) {
+	d := rs.Client.Get(userName)
+
+	if d.Err() == redis.Nil {
+		d2 := rs.Client.Set(userName, "0", time.Minute*15)
+		if d2.Err() == redis.Nil && d2.Err() != nil {
+			return false, d2.Err()
+		}
+	}
+
+	attempts, _ := d.Uint64()
+
+	return attempts > 5, nil
+}
+
+//LogFailedAttempt logs the following failed sing in attempt to the store
+func (rs *RedisStore) LogFailedAttempt(userName string) error {
+	d := rs.Client.Get(userName)
+
+	if d.Err() != nil {
+		return d.Err()
+	}
+
+	rs.Client.Incr(userName)
+	rs.Client.Expire(userName, time.Minute*15)
+
+	return nil
+}
+
 //Delete deletes all data associated with the session id from the store.
 func (rs *RedisStore) Delete(sid SessionID) error {
 	//use the .Del() method to delete the data associated

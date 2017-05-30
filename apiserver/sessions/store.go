@@ -28,6 +28,12 @@ type Store interface {
 	//reset the data's time to live in the store.
 	Get(sid SessionID, state interface{}) error
 
+	//LogFailedAttempt logs the following failed sing in attempt to the store
+	LogFailedAttempt(userName string) error
+
+	//CheckLoginAttempt checks the following count of sing attemts for given username
+	CheckLoginAttempt(userName string) (bool, error)
+
 	//Delete deletes all state data associated with the session id from the store.
 	Delete(sid SessionID) error
 }

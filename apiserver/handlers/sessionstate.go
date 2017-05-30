@@ -3,7 +3,6 @@ package handlers
 import (
 	"time"
 
-
 	"github.com/jadiego/bloom/apiserver/models/users"
 )
 
@@ -14,5 +13,5 @@ import (
 type SessionState struct {
 	BeganAt    time.Time
 	ClientAddr string
-	User *users.User
+	User       *users.User
 }
