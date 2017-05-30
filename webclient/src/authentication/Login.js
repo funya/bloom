@@ -53,6 +53,9 @@ class Login extends Component {
                     </Form.Field>
                     <Message warning>{fetchError}</Message>
                     <Button className="submit-button" color='green' fluid={true} onClick={this.login}>Submit</Button>
+                    <p className='center-text'>
+                        <Link to='/reset'> Forgot password?</Link>
+                    </p>
                 </Form>
                 <p className='center-text'>Don't have an account?
                     <Link to='/signup'> Sign Up</Link>

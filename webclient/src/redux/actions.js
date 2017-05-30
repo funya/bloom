@@ -632,3 +632,27 @@ export const updateDescription = (editpage, description) => {
 			})
 	}
 }
+
+export const sendResetCode = (resetpage, email) => {
+	return (dispatch) => {
+		dispatch({ type: 'FETCH START', fetch: "send reset code" })
+		return fetch(`${apiRoot}resetcodes`, {
+			mode: "cors",
+			method: "POST",
+			headers: new Headers({
+				"Authorization": localStorage.getItem(storageKey)
+			}),
+			body: JSON.stringify({
+				email: email
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				resetpage.setState({successmessage: data})
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "send reset code" })
+			})
+	}
+}

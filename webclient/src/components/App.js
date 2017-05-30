@@ -19,6 +19,7 @@ import Signup from '../authentication/Signup';
 import Login from '../authentication/Login';
 import Preview from '../preview/PreviewContainer';
 import Confirmation from '../preview/Confirmation';
+import Reset from '../authentication/Reset';
 
 //redux
 import { bindActionCreators } from 'redux';
@@ -62,6 +63,7 @@ class App extends Component {
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/signup" component={Signup} />
                         <Route exact path="/story/:id" component={Story} />
+                        <Route exact path="/reset" component={Reset}/>
                     </Container>
                     <Footer />
                 </Container>
