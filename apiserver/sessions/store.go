@@ -34,6 +34,12 @@ type Store interface {
 	//CheckLoginAttempt checks the following count of sing attemts for given username
 	CheckLoginAttempt(userName string) (bool, error)
 
+	//StoreRandomToken stores the randomtoken for password resets for email address
+	StoreRandomToken(email string) error
+
+	//GetRandomToken checks the following random for the given email address
+	GetRandomToken(email string) (string, error)
+
 	//Delete deletes all state data associated with the session id from the store.
 	Delete(sid SessionID) error
 }

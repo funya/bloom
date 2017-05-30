@@ -24,6 +24,11 @@ type Credentials struct {
 	Password string `json:"password"`
 }
 
+//EmailReset represents an email struct for reset passwords
+type EmailReset struct {
+	Email string `json:"email"`
+}
+
 //NewUser represents a new user signing up for an account
 type NewUser struct {
 	Email        string `json:"email"`
