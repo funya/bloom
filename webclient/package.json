@@ -4,14 +4,10 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
-    "draft-convert": "^1.4.6",
-    "draft-js": "^0.10.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "prop-types": "^15.5.8",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-fontawesome": "^1.6.1",
     "react-redux": "^5.0.5",
     "react-router": "^4.0.0",
     "react-router-dom": "^4.0.0",
@@ -21,8 +17,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.2.10",
-    "semantic-ui-react": "^0.67.2",
-    "vivus": "^0.4.0"
+    "semantic-ui-react": "^0.67.2"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"
