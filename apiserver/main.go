@@ -89,6 +89,9 @@ func main() {
 
 	//Get sessionkey
 	sesskey := os.Getenv("SESSIONKEY")
+	if len(sesskey) < 1 {
+		log.Fatal("sesion key env not set")
+	}
 
 	//Initialize context
 	ctx := &handlers.Context{
@@ -103,6 +106,20 @@ func main() {
 	//and the Let's Encrypt cert/key in production
 	tlsKeyPath := os.Getenv("TLSKEY")
 	tlsCertPath := os.Getenv("TLSCERT")
+
+	//ensure the mail env used by ctx.PasswordResetHandler
+	if len(os.Getenv("MAILHOST")) < 1 {
+		log.Fatal("mail host not set")
+	}
+	if len(os.Getenv("MAILPORT")) < 1 {
+		log.Fatal("mail port not set")
+	}
+	if len(os.Getenv("MAILUSERNAME")) < 1 {
+		log.Fatal("mail username not set")
+	}
+	if len(os.Getenv("MAILPASSWORD")) < 1 {
+		log.Fatal("mail password not set")
+	}
 
 	mux := http.NewServeMux()
 	muxLogged := http.NewServeMux()
