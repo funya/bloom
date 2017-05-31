@@ -259,7 +259,8 @@ export const togglePrivacy = (privacy, story) => {
 			mode: "cors",
 			method: "PATCH",
 			headers: new Headers({
-				"Authorization": localStorage.getItem(storageKey)
+				"Authorization": localStorage.getItem(storageKey),
+				"Content-Type": contentTypeJSONUTF8
 			}),
 			body: JSON.stringify({
 				name: story.name,
@@ -461,7 +462,8 @@ export const arrangeSections = (sections, oldIndex, newIndex) => {
 			mode: "cors",
 			method: "PATCH",
 			headers: new Headers({
-				"Authorization": localStorage.getItem(storageKey)
+				"Authorization": localStorage.getItem(storageKey),
+				"Content-Type": contentTypeJSONUTF8
 			}),
 			body: JSON.stringify({
 				body: section1.body,
@@ -528,7 +530,8 @@ const sortSections = (sections, dispatch, storyid) => {
 				mode: "cors",
 				method: "PATCH",
 				headers: new Headers({
-					"Authorization": localStorage.getItem(storageKey)
+					"Authorization": localStorage.getItem(storageKey),
+					"Content-Type": contentTypeJSONUTF8
 				}),
 				body: JSON.stringify({
 					body: ele.body,
@@ -584,7 +587,8 @@ export const updateTitle = (editpage, title) => {
 			mode: "cors",
 			method: "PATCH",
 			headers: new Headers({
-				"Authorization": localStorage.getItem(storageKey)
+				"Authorization": localStorage.getItem(storageKey),
+				"Content-Type": contentTypeJSONUTF8
 			}),
 			body: JSON.stringify({
 				name: title,
@@ -613,7 +617,8 @@ export const updateDescription = (editpage, description) => {
 			mode: "cors",
 			method: "PATCH",
 			headers: new Headers({
-				"Authorization": localStorage.getItem(storageKey)
+				"Authorization": localStorage.getItem(storageKey),
+				"Content-Type": contentTypeJSONUTF8
 			}),
 			body: JSON.stringify({
 				name: currentStory.name,
@@ -640,7 +645,7 @@ export const sendResetCode = (resetpage, email) => {
 			mode: "cors",
 			method: "POST",
 			headers: new Headers({
-				"Authorization": localStorage.getItem(storageKey)
+				"Content-Type": contentTypeJSONUTF8
 			}),
 			body: JSON.stringify({
 				email: email
@@ -649,10 +654,36 @@ export const sendResetCode = (resetpage, email) => {
 			.then(handleResponse)
 			.then(data => {
 				dispatch({ type: 'FETCH END', message: "", fetch: "" })
-				resetpage.setState({successmessage: data})
+				resetpage.setState({ successmessage: data })
 			})
 			.catch(error => {
 				dispatch({ type: 'FETCH END', message: error.message, fetch: "send reset code" })
+			})
+	}
+}
+
+export const verifyCode = (resetpage, code, email, password, passwordConf) => {
+	return dispatch => {
+		dispatch({ type: 'FETCH START', fetch: "reset password" })
+		return fetch(`${apiRoot}passwords/${email}`, {
+			mode: "cors",
+			method: "PUT",
+			headers: new Headers({
+				"Content-Type": contentTypeJSONUTF8
+			}),
+			body: JSON.stringify({
+				code: code,
+				password: password,
+				passwordConf: passwordConf
+			})
+		})
+			.then(handleResponse)
+			.then(data => {
+				dispatch({ type: 'FETCH END', message: "", fetch: "" })
+				resetpage.setState({ successmessage: data })
+			})
+			.catch(error => {
+				dispatch({ type: 'FETCH END', message: error.message, fetch: "reset password" })
 			})
 	}
 }
