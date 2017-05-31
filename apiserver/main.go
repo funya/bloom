@@ -27,6 +27,7 @@ const (
 	apiUsers            = apiRoot + "users"
 	apiSessions         = apiRoot + "sessions"
 	apiResetCodes       = apiRoot + "resetcodes"
+	apiResetPassword    = apiRoot + "passwords/"
 	apiSessionsMine     = apiSessions + "/mine"
 	apiUsersMe          = apiUsers + "/me"
 	apiStories          = apiRoot + "stories"
@@ -115,6 +116,7 @@ func main() {
 	muxLogged.HandleFunc(apiSections, ctx.SectionsHandler)
 	muxLogged.HandleFunc(apiSpecificSections, ctx.SpecificSectionHandler)
 	muxLogged.HandleFunc(apiResetCodes, ctx.ResetCodesHandler)
+	muxLogged.HandleFunc(apiResetPassword, ctx.PasswordResetHandler)
 
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	mux.Handle(apiRoot, middleware.Adapt(muxLogged, middleware.CORS("", "", "", ""), middleware.Notify(logger)))

@@ -35,10 +35,13 @@ type Store interface {
 	CheckLoginAttempt(userName string) (bool, error)
 
 	//StoreRandomToken stores the randomtoken for password resets for email address
-	StoreRandomToken(email string) error
+	StoreRandomToken(email, token string) error
 
 	//GetRandomToken checks the following random for the given email address
-	GetRandomToken(email string) (string, error)
+	GetRandomToken(code, email string) (string, error)
+
+	//Clear the token from the store
+	DeleteToken(email string) error
 
 	//Delete deletes all state data associated with the session id from the store.
 	Delete(sid SessionID) error

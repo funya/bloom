@@ -124,7 +124,6 @@ func (ctx *Context) SpecificStoryhandler(w http.ResponseWriter, r *http.Request)
 			return
 		}
 
-		w.Header().Add(headerContentType, contentTypeTextUTF8)
 		w.Header().Add(headerContentType, contentTypeText)
 		w.Write([]byte("The story has been deleted."))
 	case "GET":
@@ -307,9 +306,3 @@ func (ctx *Context) SpecificSectionHandler(w http.ResponseWriter, r *http.Reques
 		encoder.Encode(updatedsection)
 	}
 }
-
-// This will handle all requests made to the /v1/messages/<message-id> path. Get the specific message ID from the last part of the request's URL path (you can use path.Split() (Links to an external site.)Links to an external site. for this). What you do with that message ID will depend on the request method.
-
-// PATCH: if the current user is the message creator, update the specified message and write the updated Message object to the response.
-// DELETE: if the current user is the message creator, delete the message and write a simple confirmation message
-// If you get errors, respond with an appropriate error status code and the error message.

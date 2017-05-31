@@ -1,12 +1,9 @@
 package sessions
 
 import (
-	"crypto/rand"
 	"encoding/json"
 	"errors"
 	"time"
-
-	"fmt"
 
 	"gopkg.in/redis.v5"
 )
@@ -160,11 +157,7 @@ func (rs *RedisStore) Delete(sid SessionID) error {
 }
 
 //StoreRandomToken stores the randomtoken for password resets for email address
-func (rs *RedisStore) StoreRandomToken(email string) error {
-	//create random token
-	b := make([]byte, 4)
-	rand.Read(b)
-	token := fmt.Sprintf("%x", b)
+func (rs *RedisStore) StoreRandomToken(email, token string) error {
 
 	d := rs.Client.Set(email, token, time.Minute*5)
 	if d.Err() == redis.Nil && d.Err() != nil {
@@ -175,20 +168,28 @@ func (rs *RedisStore) StoreRandomToken(email string) error {
 }
 
 //GetRandomToken checks the following random for the given email address
-func (rs *RedisStore) GetRandomToken(email string) (string, error) {
+func (rs *RedisStore) GetRandomToken(code, email string) (string, error) {
 	d := rs.Client.Get(email)
 
-	if d.Err() != nil {
-		if d.Err() == redis.Nil {
-			return "", errors.New("your token has expired")
-		}
-		return "", d.Err()
+	if d.Err() != nil && d.Err() == redis.Nil {
+		return "", errors.New("your token has expired")
 	}
 
-	return d.String(), nil
+	return d.Val(), nil
 }
 
 //returns the key to use in redis
 func (sid SessionID) getRedisKey() string {
 	return redisKeyPrefix + sid.String()
+}
+
+//DeleteToken clears the token from the store
+func (rs *RedisStore) DeleteToken(email string) error {
+	d := rs.Client.Del(email)
+
+	if d.Err() != redis.Nil {
+		return d.Err()
+	}
+
+	return nil
 }

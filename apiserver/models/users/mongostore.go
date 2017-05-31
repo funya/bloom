@@ -1,6 +1,8 @@
 package users
 
 import (
+	"errors"
+
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -54,6 +56,23 @@ func (ms *MongoStore) GetByUserName(name string) (*User, error) {
 		return nil, ErrUserNotFound
 	}
 	return user, nil
+}
+
+//ResetPassword updates a users password
+func (ms *MongoStore) ResetPassword(user *User, password string) (*User, error) {
+	col := ms.Session.DB(ms.DatabaseName).C(ms.CollectionName)
+
+	if err := user.SetPassword(password); err != nil {
+		return user, errors.New("problem hashing password")
+	}
+
+	pwu := PasswordUpdates{
+		PassHash: user.PassHash,
+	}
+
+	passwordupdates := bson.M{"$set": pwu}
+	err := col.UpdateId(user.ID, passwordupdates)
+	return user, err
 }
 
 //Insert inserts a new NewUser into the store

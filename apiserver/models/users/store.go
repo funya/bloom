@@ -25,4 +25,7 @@ type Store interface {
 	//Insert inserts a new NewUser into the store
 	//and returns a User with a newly-assigned ID
 	Insert(newUser *NewUser) (*User, error)
+
+	//ResetPassword updates a users password
+	ResetPassword(user *User, password string) (*User, error)
 }

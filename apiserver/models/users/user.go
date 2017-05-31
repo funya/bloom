@@ -24,9 +24,21 @@ type Credentials struct {
 	Password string `json:"password"`
 }
 
-//EmailReset represents an email struct for reset passwords
-type EmailReset struct {
+//ResetCodeEmail represents an email struct for reset passwords
+type ResetCodeEmail struct {
 	Email string `json:"email"`
+}
+
+//PasswordUpdates represents updates one can make to a story
+type PasswordUpdates struct {
+	PassHash []byte `json:"-" bson:"passHash"`
+}
+
+//PasswordReset represents a struct for data containing resetting password
+type PasswordReset struct {
+	Code         string `json:"code"`
+	Password     string `json:"password"`
+	PasswordConf string `json:"passwordConf"`
 }
 
 //NewUser represents a new user signing up for an account
@@ -35,6 +47,24 @@ type NewUser struct {
 	Password     string `json:"password"`
 	PasswordConf string `json:"passwordConf"`
 	UserName     string `json:"userName"`
+}
+
+//ValidatePasswordReset validates the given password by the client
+func (pr *PasswordReset) ValidatePasswordReset() error {
+	if len(pr.Code) < 1 {
+		return fmt.Errorf("invalid code")
+	}
+
+	if len(pr.Password) < 1 || len(pr.PasswordConf) < 0 {
+		return fmt.Errorf("password can't be empty")
+	}
+
+	//ensure Password and PasswordConf match
+	if pr.Password != pr.PasswordConf {
+		return fmt.Errorf("password do not match")
+	}
+
+	return nil
 }
 
 //Validate validates the new user
@@ -54,12 +84,10 @@ func (nu *NewUser) Validate() error {
 	}
 
 	//ensure Password and PasswordConf match
-	//ensure Password and PasswordConf match
 	if nu.Password != nu.PasswordConf {
 		return fmt.Errorf("password do not match")
 	}
 
-	//ensure UserName has non-zero length
 	//ensure UserName has non-zero length
 	if len(nu.UserName) < 1 || len(nu.UserName) > 8 {
 		return fmt.Errorf("username not valid")
