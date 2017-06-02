@@ -20,6 +20,7 @@ Bloom is a project in collaboration with API Chaya, a local nonprofit that serve
 - MongoDB: NoSQL database program
 - Redis: In-memory data structure store for caching
 - React: Javascript library for building user interfaces
+- Redux: State container management system
 - Docker: Software container platform for deploying apps
 - Go: Programming language used for API server
 
