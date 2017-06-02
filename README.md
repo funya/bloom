@@ -33,10 +33,14 @@ Bloom is a project in collaboration with API Chaya, a local nonprofit that serve
 > schema changed quite often during development. A NoSQL made sense - it gave us the flexibility we needed.
 
 # Getting Started
-This project template was built with [Create React App](https://github.com/facebookincubator/create-react-app), which
+The client-side template was built with [Create React App](https://github.com/facebookincubator/create-react-app), which
 provides a simple way to start React projects with no build configuration needed.
 
 Projects built with Create-React-App include support for ES6 syntax, as well as several unofficial / not-yet-final forms of Javascript syntax such as Class Properties and JSX.  See the list of [language features and polyfills supported by Create-React-App](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#supported-language-features-and-polyfills) for more information.
+
+To run the API Server locally, you will need to have [Go](https://golang.org/dl/) installed in your machine, along with [Docker](https://docs.docker.com/engine/installation/). The API server will look for a running Redis and MongoDB docker container so you will need to install the following as well.
+##### `docker run --name devredis -d -p 6379:6379 redis`
+##### `docker run --name devmongo -d -p 27017:27017 mongo`
 
 ## Available Scripts
 
