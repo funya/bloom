@@ -6,6 +6,10 @@
 
 Bloom is a project in collaboration with API Chaya, a local nonprofit that serves survivors of sexual assault, domestic violence, and human trafficking. Bloom is a storytelling platform that allows anyone to convey their unique personal stories centered around the theme of sexual assault, domestic violence, and human trafficking, via different forms of media including text and images. Our project is designed to provide a simple platform for users who want to write their personal stories at their own pace and share their experiences with the public at any time.
 
+<p align="center">
+  <img src="https://github.com/jadiego/bloom/blob/master/bloom.png" alt="bloom logo"/>
+</p>
+
 # Features
 - View other user's personal stories at the front page
 - Shareable URL of stories that are public
