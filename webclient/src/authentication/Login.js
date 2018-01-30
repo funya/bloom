@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Header, Container, Button, Image, Message, Segment } from 'semantic-ui-react';
+import { Form, Header, Container, Button, Image, Message, Segment, Label } from 'semantic-ui-react';
 import { Link, Redirect } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import  ScrollToTop from '../components/ScrollToTop';
@@ -53,6 +53,16 @@ class Login extends Component {
                     </Form.Field>
                     <Message warning>{fetchError}</Message>
                     <Button className="submit-button" color='green' fluid={true} onClick={this.login}>Submit</Button>
+                    <p style={{ textAlign: 'center' }}>
+                        <Label>
+                            Email
+                            <Label.Detail>test@test.com</Label.Detail>
+                        </Label>
+                        <Label>
+                            Password
+                            <Label.Detail>password</Label.Detail>
+                        </Label>
+                    </p>
                     <p className='center-text'>
                         <Link to='/reset'> Forgot password?</Link>
                     </p>
