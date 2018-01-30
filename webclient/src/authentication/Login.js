@@ -53,7 +53,7 @@ class Login extends Component {
                     </Form.Field>
                     <Message warning>{fetchError}</Message>
                     <Button className="submit-button" color='green' fluid={true} onClick={this.login}>Submit</Button>
-                    <p style={{ textAlign: 'center' }}>
+                    <p className='center-text'>
                         <Label>
                             Email
                             <Label.Detail>test@test.com</Label.Detail>
