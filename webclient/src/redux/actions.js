@@ -9,7 +9,7 @@ const contentTypeTextUTF8 = contentTypeText + "; " + charsetUTF8
 const storageKey = "auth"
 
 
-export var apiRoot = "https://api.chayabloom.me/v1/";
+export var apiRoot = "https://api.bloom.jadiego.me/v1/";
 if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
 	apiRoot = "https://localhost:4000/v1/"
 }
