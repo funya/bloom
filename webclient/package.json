@@ -20,13 +20,16 @@
     "semantic-ui-react": "^0.67.2"
   },
   "devDependencies": {
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "surge": "^0.19.0"
   },
   "proxy": "https://localhost:4000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "surge -p ./build -d https://jadiego-bloom.surge.sh"
   }
 }
